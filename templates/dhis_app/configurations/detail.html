@@ -1,0 +1,671 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}{{ configuration.name }} - Détails{% endblock %}
+
+{% block extra_head %}
+<style>
+    .config-status {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.375rem 0.75rem;
+        border-radius: 0.375rem;
+        font-weight: 500;
+        font-size: 0.875rem;
+    }
+    .config-status.active {
+        background-color: #d1fae5;
+        color: #065f46;
+    }
+    .config-status.inactive {
+        background-color: #fee2e2;
+        color: #991b1b;
+    }
+    .compatibility-check {
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+    .compatibility-success {
+        border-color: #10b981;
+        background-color: #ecfdf5;
+    }
+    .compatibility-warning {
+        border-color: #f59e0b;
+        background-color: #fffbeb;
+    }
+    .compatibility-error {
+        border-color: #ef4444;
+        background-color: #fef2f2;
+    }
+    .stat-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- En-tête avec fil d'Ariane -->
+    <nav class="flex" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-3">
+            <li class="inline-flex items-center">
+                <a href="{% url 'sync_config_list' %}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600">
+                    <i class="fas fa-cogs mr-2"></i>
+                    Configurations
+                </a>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <i class="fas fa-chevron-right text-gray-400"></i>
+                    <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2">{{ configuration.name }}</span>
+                </div>
+            </li>
+        </ol>
+    </nav>
+
+    <!-- En-tête principal -->
+    <div class="bg-white shadow rounded-lg p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <div class="flex items-center space-x-4">
+                    <h1 class="text-3xl font-bold text-gray-900">{{ configuration.name }}</h1>
+                    <span class="config-status {% if configuration.is_active %}active{% else %}inactive{% endif %}">
+                        <i class="fas {% if configuration.is_active %}fa-check-circle{% else %}fa-pause-circle{% endif %} mr-2"></i>
+                        {% if configuration.is_active %}Actif{% else %}Inactif{% endif %}
+                    </span>
+                    <span class="px-3 py-1 text-sm font-semibold rounded-full bg-blue-100 text-blue-800">
+                        {{ configuration.get_sync_type_display }}
+                    </span>
+                </div>
+                <p class="mt-2 text-gray-600">
+                    <i class="fas fa-arrow-right mr-2"></i>
+                    <strong>{{ configuration.source_instance.name }}</strong> → <strong>{{ configuration.destination_instance.name }}</strong>
+                </p>
+                <p class="text-sm text-gray-500">
+                    Créé par {{ configuration.created_by.get_full_name|default:configuration.created_by.username }}
+                    le {{ configuration.created_at|date:"d/m/Y à H:i" }}
+                </p>
+            </div>
+            <div class="flex space-x-2">
+                <button onclick="testCompatibility()" class="btn btn-outline-info">
+                    <i class="fas fa-check-circle mr-2"></i>Tester la Compatibilité
+                </button>
+                <button onclick="toggleStatus()" class="btn {% if configuration.is_active %}btn-outline-warning{% else %}btn-outline-success{% endif %}">
+                    <i class="fas {% if configuration.is_active %}fa-pause{% else %}fa-play{% endif %} mr-2"></i>
+                    {% if configuration.is_active %}Désactiver{% else %}Activer{% endif %}
+                </button>
+                <button onclick="cloneConfiguration()" class="btn btn-outline-secondary">
+                    <i class="fas fa-copy mr-2"></i>Cloner
+                </button>
+                <a href="{% url 'sync_config_update' configuration.id %}" class="btn btn-outline-primary">
+                    <i class="fas fa-edit mr-2"></i>Modifier
+                </a>
+                <button onclick="runSync()" class="btn btn-success">
+                    <i class="fas fa-sync mr-2"></i>Lancer Sync
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistiques -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+                <div class="p-2 bg-blue-100 rounded-full">
+                    <i class="fas fa-tasks text-blue-600"></i>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900">{{ total_jobs }}</h3>
+                    <p class="text-gray-600">Jobs Total</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+                <div class="p-2 bg-green-100 rounded-full">
+                    <i class="fas fa-check text-green-600"></i>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900">{{ successful_jobs }}</h3>
+                    <p class="text-gray-600">Réussis</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+                <div class="p-2 bg-red-100 rounded-full">
+                    <i class="fas fa-times text-red-600"></i>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900">{{ failed_jobs }}</h3>
+                    <p class="text-gray-600">Échecs</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center">
+                <div class="p-2 bg-yellow-100 rounded-full">
+                    <i class="fas fa-percentage text-yellow-600"></i>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900">
+                        {% if total_jobs > 0 %}
+                            {{ successful_jobs|floatformat:0 }}%
+                        {% else %}
+                            0%
+                        {% endif %}
+                    </h3>
+                    <p class="text-gray-600">Taux de Réussite</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Configuration détaillée -->
+        <div class="lg:col-span-2 space-y-6">
+            <!-- Informations générales -->
+            <div class="bg-white shadow rounded-lg p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">
+                    <i class="fas fa-info-circle mr-2"></i>Informations Générales
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500">Type de Synchronisation</h3>
+                        <p class="mt-1 text-lg text-gray-900">{{ configuration.get_sync_type_display }}</p>
+                    </div>
+                    {% if configuration.data_type and configuration.sync_type in 'data,events,tracker,both,all_data' %}
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500">Type de Données</h3>
+                            <p class="mt-1 text-lg text-gray-900">{{ configuration.get_data_type_display }}</p>
+                        </div>
+                    {% endif %}
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500">Stratégie d'Import</h3>
+                        <p class="mt-1 text-lg text-gray-900">{{ configuration.get_import_strategy_display }}</p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500">Mode de Fusion</h3>
+                        <p class="mt-1 text-lg text-gray-900">{{ configuration.get_merge_mode_display }}</p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500">Mode d'Exécution</h3>
+                        <p class="mt-1 text-lg text-gray-900">{{ configuration.get_execution_mode_display }}</p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500">Taille de Page</h3>
+                        <p class="mt-1 text-lg text-gray-900">{{ configuration.max_page_size }}</p>
+                    </div>
+                </div>
+
+                {% if configuration.sync_start_date or configuration.sync_end_date %}
+                    <div class="mt-6 pt-6 border-t border-gray-200">
+                        <h3 class="text-sm font-medium text-gray-500 mb-2">Plage de Dates</h3>
+                        <p class="text-gray-900">
+                            {% if configuration.sync_start_date %}
+                                Du {{ configuration.sync_start_date|date:"d/m/Y" }}
+                            {% else %}
+                                Depuis le début
+                            {% endif %}
+                            {% if configuration.sync_end_date %}
+                                au {{ configuration.sync_end_date|date:"d/m/Y" }}
+                            {% else %}
+                                jusqu'à aujourd'hui
+                            {% endif %}
+                        </p>
+                    </div>
+                {% endif %}
+
+                {% if configuration.schedule_enabled %}
+                    <div class="mt-6 pt-6 border-t border-gray-200">
+                        <h3 class="text-sm font-medium text-gray-500 mb-2">Planification</h3>
+                        <p class="text-gray-900">
+                            <i class="fas fa-clock mr-2 text-blue-600"></i>
+                            Toutes les {{ configuration.schedule_interval }} minute{{ configuration.schedule_interval|pluralize }}
+                        </p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Étapes d'orchestration -->
+            {% if orchestration_steps %}
+                <div class="bg-white shadow rounded-lg p-6">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-4">
+                        <i class="fas fa-sitemap mr-2"></i>Étapes d'Orchestration
+                    </h2>
+                    <div class="space-y-4">
+                        {% for step in orchestration_steps %}
+                            <div class="flex items-center space-x-4 p-4 border border-gray-200 rounded-lg">
+                                <div class="flex-shrink-0 w-8 h-8 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center font-semibold">
+                                    {{ step.order }}
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="text-lg font-medium text-gray-900">{{ step.type|title }}</h3>
+                                    {% if step.data_type %}
+                                        <p class="text-sm text-gray-600">Type: {{ step.data_type|title }}</p>
+                                    {% endif %}
+                                    {% if step.depends_on %}
+                                        <p class="text-sm text-gray-500">Dépend de: {{ step.depends_on|title }}</p>
+                                    {% endif %}
+                                </div>
+                                <div class="flex-shrink-0">
+                                    {% if step.critical %}
+                                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
+                                            Critique
+                                        </span>
+                                    {% else %}
+                                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
+                                            Optionnel
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- Jobs récents -->
+            <div class="bg-white shadow rounded-lg p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold text-gray-900">
+                        <i class="fas fa-history mr-2"></i>Jobs Récents
+                    </h2>
+                    <a href="{% url 'sync_config_list' %}" class="text-blue-600 hover:text-blue-800 text-sm">
+                        Voir tous →
+                    </a>
+                </div>
+
+                {% if recent_jobs %}
+                    <div class="space-y-4">
+                        {% for job in recent_jobs %}
+                            <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                                <div class="flex items-center space-x-4">
+                                    <div class="flex-shrink-0">
+                                        {% if job.status == 'completed' %}
+                                            <i class="fas fa-check-circle text-green-600"></i>
+                                        {% elif job.status == 'failed' %}
+                                            <i class="fas fa-times-circle text-red-600"></i>
+                                        {% elif job.status == 'running' %}
+                                            <i class="fas fa-spinner fa-spin text-blue-600"></i>
+                                        {% else %}
+                                            <i class="fas fa-clock text-yellow-600"></i>
+                                        {% endif %}
+                                    </div>
+                                    <div>
+                                        <h3 class="text-sm font-medium text-gray-900">
+                                            Job #{{ job.id }} - {{ job.get_job_type_display }}
+                                        </h3>
+                                        <p class="text-sm text-gray-600">
+                                            {{ job.created_at|date:"d/m/Y à H:i" }}
+                                            {% if job.started_at %}
+                                                - Démarré à {{ job.started_at|date:"H:i" }}
+                                            {% endif %}
+                                            {% if job.completed_at %}
+                                                - Terminé à {{ job.completed_at|date:"H:i" }}
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-4">
+                                    {% if job.total_items > 0 %}
+                                        <div class="text-sm text-gray-600">
+                                            {{ job.processed_items }}/{{ job.total_items }}
+                                            ({{ job.progress_percentage }}%)
+                                        </div>
+                                    {% endif %}
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-full
+                                        {% if job.status == 'completed' %}bg-green-100 text-green-800
+                                        {% elif job.status == 'failed' %}bg-red-100 text-red-800
+                                        {% elif job.status == 'running' %}bg-blue-100 text-blue-800
+                                        {% else %}bg-gray-100 text-gray-800{% endif %}">
+                                        {{ job.get_status_display }}
+                                    </span>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="text-center py-8">
+                        <i class="fas fa-clock text-4xl text-gray-400 mb-4"></i>
+                        <p class="text-gray-600">Aucun job exécuté pour cette configuration</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Panneau latéral -->
+        <div class="space-y-6">
+            <!-- Compatibilité -->
+            <div class="bg-white shadow rounded-lg p-6">
+                <h2 class="text-lg font-semibold text-gray-900 mb-4">
+                    <i class="fas fa-shield-alt mr-2"></i>Compatibilité
+                </h2>
+                <div id="compatibility-info">
+                    {% if compatibility_info %}
+                        <div class="space-y-3">
+                            <div class="compatibility-check {% if compatibility_info.source_available %}compatibility-success{% else %}compatibility-error{% endif %}">
+                                <div class="flex items-center">
+                                    <i class="fas {% if compatibility_info.source_available %}fa-check-circle text-green-600{% else %}fa-times-circle text-red-600{% endif %} mr-2"></i>
+                                    <div>
+                                        <h4 class="font-medium">Source: {{ configuration.source_instance.name }}</h4>
+                                        <p class="text-sm">Version: {{ compatibility_info.source_version }}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="compatibility-check {% if compatibility_info.dest_available %}compatibility-success{% else %}compatibility-error{% endif %}">
+                                <div class="flex items-center">
+                                    <i class="fas {% if compatibility_info.dest_available %}fa-check-circle text-green-600{% else %}fa-times-circle text-red-600{% endif %} mr-2"></i>
+                                    <div>
+                                        <h4 class="font-medium">Destination: {{ configuration.destination_instance.name }}</h4>
+                                        <p class="text-sm">Version: {{ compatibility_info.dest_version }}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% if compatibility_info.warnings %}
+                                {% for warning in compatibility_info.warnings %}
+                                    <div class="compatibility-check compatibility-warning">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-exclamation-triangle text-yellow-600 mr-2"></i>
+                                            <p class="text-sm">{{ warning }}</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+
+                            {% if compatibility_info.errors %}
+                                {% for error in compatibility_info.errors %}
+                                    <div class="compatibility-check compatibility-error">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-times-circle text-red-600 mr-2"></i>
+                                            <p class="text-sm">{{ error }}</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <button onclick="testCompatibility()" class="btn btn-outline-primary btn-sm mt-4 w-full">
+                            <i class="fas fa-sync mr-2"></i>Actualiser
+                        </button>
+                    {% else %}
+                        <p class="text-gray-600 text-center py-4">
+                            <i class="fas fa-question-circle mb-2 block text-2xl"></i>
+                            Aucune information de compatibilité
+                        </p>
+                        <button onclick="testCompatibility()" class="btn btn-primary btn-sm w-full">
+                            <i class="fas fa-check-circle mr-2"></i>Tester
+                        </button>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Instances liées -->
+            <div class="bg-white shadow rounded-lg p-6">
+                <h2 class="text-lg font-semibold text-gray-900 mb-4">
+                    <i class="fas fa-server mr-2"></i>Instances
+                </h2>
+                <div class="space-y-4">
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500">Source</h3>
+                        <div class="mt-2 p-3 bg-blue-50 rounded-lg">
+                            <h4 class="font-medium text-blue-900">{{ configuration.source_instance.name }}</h4>
+                            <p class="text-sm text-blue-700">{{ configuration.source_instance.base_url }}</p>
+                            <a href="{% url 'dhis2_instance_detail' configuration.source_instance.id %}"
+                               class="text-blue-600 hover:text-blue-800 text-sm">
+                                Voir détails →
+                            </a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500">Destination</h3>
+                        <div class="mt-2 p-3 bg-green-50 rounded-lg">
+                            <h4 class="font-medium text-green-900">{{ configuration.destination_instance.name }}</h4>
+                            <p class="text-sm text-green-700">{{ configuration.destination_instance.base_url }}</p>
+                            <a href="{% url 'dhis2_instance_detail' configuration.destination_instance.id %}"
+                               class="text-green-600 hover:text-green-800 text-sm">
+                                Voir détails →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions rapides -->
+            <div class="bg-white shadow rounded-lg p-6">
+                <h2 class="text-lg font-semibold text-gray-900 mb-4">
+                    <i class="fas fa-bolt mr-2"></i>Actions Rapides
+                </h2>
+                <div class="space-y-3">
+                    <button onclick="runSync()" class="btn btn-success w-full">
+                        <i class="fas fa-sync mr-2"></i>Lancer Synchronisation
+                    </button>
+                    <button onclick="validateConfig()" class="btn btn-outline-info w-full">
+                        <i class="fas fa-check-double mr-2"></i>Valider Configuration
+                    </button>
+                    <a href="{% url 'sync_config_update' configuration.id %}" class="btn btn-outline-primary w-full">
+                        <i class="fas fa-edit mr-2"></i>Modifier Configuration
+                    </a>
+                    <button onclick="exportConfig()" class="btn btn-outline-secondary w-full">
+                        <i class="fas fa-download mr-2"></i>Exporter Configuration
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal pour le test de compatibilité -->
+<div class="modal fade" id="compatibility-modal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Test de Compatibilité</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="compatibility-loading" class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Test en cours...</span>
+                    </div>
+                    <p class="mt-2">Test de compatibilité en cours...</p>
+                </div>
+                <div id="compatibility-result" class="d-none">
+                    <!-- Résultat du test sera injecté ici -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function toggleStatus() {
+        const isActive = {{ configuration.is_active|yesno:"true,false" }};
+        const action = isActive ? 'désactiver' : 'activer';
+
+        if (confirm(`Êtes-vous sûr de vouloir ${action} cette configuration ?`)) {
+            DHIS2Sync.showLoading();
+
+            fetch(`/configurations/{{ configuration.id }}/toggle-status/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                DHIS2Sync.hideLoading();
+                if (data.success) {
+                    DHIS2Sync.showToast(data.message, 'success');
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    DHIS2Sync.showToast(data.message || 'Erreur lors du changement de statut', 'error');
+                }
+            })
+            .catch(error => {
+                DHIS2Sync.hideLoading();
+                DHIS2Sync.showToast('Erreur de réseau', 'error');
+            });
+        }
+    }
+
+    function testCompatibility() {
+        const modal = new bootstrap.Modal(document.getElementById('compatibility-modal'));
+        modal.show();
+
+        // Réinitialiser le modal
+        document.getElementById('compatibility-loading').classList.remove('d-none');
+        document.getElementById('compatibility-result').classList.add('d-none');
+
+        fetch(`/configurations/{{ configuration.id }}/test-compatibility/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('compatibility-loading').classList.add('d-none');
+            document.getElementById('compatibility-result').classList.remove('d-none');
+
+            let resultHtml = generateCompatibilityResultHtml(data);
+            document.getElementById('compatibility-result').innerHTML = resultHtml;
+
+            // Actualiser les informations de compatibilité dans la page
+            setTimeout(() => {
+                modal.hide();
+                location.reload(); // Recharger pour mettre à jour les infos de compatibilité
+            }, 3000);
+        })
+        .catch(error => {
+            document.getElementById('compatibility-loading').classList.add('d-none');
+            document.getElementById('compatibility-result').classList.remove('d-none');
+            document.getElementById('compatibility-result').innerHTML =
+                '<div class="alert alert-danger"><i class="fas fa-times-circle mr-2"></i>Erreur lors du test</div>';
+        });
+    }
+
+    function generateCompatibilityResultHtml(data) {
+        let resultHtml = '';
+
+        if (data.success) {
+            resultHtml += '<div class="alert alert-success"><i class="fas fa-check-circle mr-2"></i>Test de compatibilité réussi</div>';
+        } else {
+            resultHtml += '<div class="alert alert-danger"><i class="fas fa-times-circle mr-2"></i>Test de compatibilité échoué</div>';
+        }
+
+        // Afficher les résultats détaillés
+        if (data.source_test || data.destination_test) {
+            resultHtml += '<div class="row mt-3">';
+
+            if (data.source_test) {
+                resultHtml += '<div class="col-md-6">';
+                resultHtml += '<h6>Instance Source</h6>';
+                resultHtml += `<div class="alert ${data.source_test.success ? 'alert-success' : 'alert-danger'}">`;
+                resultHtml += `<strong>Statut:</strong> ${data.source_test.success ? 'Connecté' : 'Échec'}<br>`;
+                resultHtml += `<strong>Message:</strong> ${data.source_test.message}`;
+                if (data.source_test.dhis2_version) {
+                    resultHtml += `<br><strong>Version:</strong> ${data.source_test.dhis2_version}`;
+                }
+                resultHtml += '</div>';
+                resultHtml += '</div>';
+            }
+
+            if (data.destination_test) {
+                resultHtml += '<div class="col-md-6">';
+                resultHtml += '<h6>Instance Destination</h6>';
+                resultHtml += `<div class="alert ${data.destination_test.success ? 'alert-success' : 'alert-danger'}">`;
+                resultHtml += `<strong>Statut:</strong> ${data.destination_test.success ? 'Connecté' : 'Échec'}<br>`;
+                resultHtml += `<strong>Message:</strong> ${data.destination_test.message}`;
+                if (data.destination_test.dhis2_version) {
+                    resultHtml += `<br><strong>Version:</strong> ${data.destination_test.dhis2_version}`;
+                }
+                resultHtml += '</div>';
+                resultHtml += '</div>';
+            }
+
+            resultHtml += '</div>';
+        }
+
+        // Afficher les avertissements
+        if (data.warnings && data.warnings.length > 0) {
+            resultHtml += '<div class="mt-3"><h6>Avertissements</h6>';
+            data.warnings.forEach(warning => {
+                resultHtml += `<div class="alert alert-warning">${warning}</div>`;
+            });
+            resultHtml += '</div>';
+        }
+
+        // Afficher les recommandations
+        if (data.recommendations && data.recommendations.length > 0) {
+            resultHtml += '<div class="mt-3"><h6>Recommandations</h6>';
+            data.recommendations.forEach(rec => {
+                resultHtml += `<div class="alert alert-info">${rec}</div>`;
+            });
+            resultHtml += '</div>';
+        }
+
+        return resultHtml;
+    }
+
+    function cloneConfiguration() {
+        if (confirm('Êtes-vous sûr de vouloir cloner cette configuration ?')) {
+            DHIS2Sync.showLoading();
+
+            fetch(`/configurations/{{ configuration.id }}/clone/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                DHIS2Sync.hideLoading();
+                if (data.success) {
+                    DHIS2Sync.showToast(data.message, 'success');
+                    if (data.redirect) {
+                        setTimeout(() => window.location.href = data.redirect, 1000);
+                    }
+                } else {
+                    DHIS2Sync.showToast(data.message || 'Erreur lors du clonage', 'error');
+                }
+            })
+            .catch(error => {
+                DHIS2Sync.hideLoading();
+                DHIS2Sync.showToast('Erreur de réseau', 'error');
+            });
+        }
+    }
+
+    function runSync() {
+        DHIS2Sync.showToast('Fonctionnalité de synchronisation en développement', 'info');
+        // TODO: Implémenter le lancement de synchronisation
+    }
+
+    function validateConfig() {
+        DHIS2Sync.showToast('Validation de configuration en développement', 'info');
+        // TODO: Implémenter la validation de configuration
+    }
+
+    function exportConfig() {
+        DHIS2Sync.showToast('Export de configuration en développement', 'info');
+        // TODO: Implémenter l'export de configuration
+    }
+</script>
+{% endblock %}

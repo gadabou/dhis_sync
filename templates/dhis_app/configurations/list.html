@@ -1,0 +1,639 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}Configurations de Synchronisation{% endblock %}
+
+{% block extra_head %}
+<style>
+    .config-card {
+        transition: all 0.3s ease-in-out;
+        border-left: 4px solid #e5e7eb;
+    }
+    .config-card:hover {
+        transform: translateY(-0.5rem);
+        border-left-color: #3b82f6;
+    }
+    .sync-type-badge {
+        font-size: 0.75rem;
+        line-height: 1rem;
+    }
+    .status-indicator {
+        width: 0.75rem;
+        height: 0.75rem;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 0.5rem;
+    }
+    .status-active {
+        background-color: #10b981;
+    }
+    .status-inactive {
+        background-color: #ef4444;
+    }
+
+    /* Styles pour les boutons et éléments d'interface */
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid transparent;
+        border-radius: 0.375rem;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        font-weight: 500;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+    }
+    .btn:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+    }
+
+    .btn-primary {
+        color: white;
+        background-color: #2563eb;
+        border-color: #2563eb;
+    }
+    .btn-primary:hover {
+        background-color: #1d4ed8;
+        border-color: #1d4ed8;
+    }
+
+    .btn-outline-primary {
+        color: #1d4ed8;
+        background-color: white;
+        border-color: #93c5fd;
+    }
+    .btn-outline-primary:hover {
+        background-color: #eff6ff;
+        border-color: #60a5fa;
+    }
+
+    .btn-outline-secondary {
+        color: #374151;
+        background-color: white;
+        border-color: #d1d5db;
+    }
+    .btn-outline-secondary:hover {
+        background-color: #f9fafb;
+        border-color: #9ca3af;
+    }
+
+    .btn-outline-info {
+        color: #2563eb;
+        background-color: white;
+        border-color: #93c5fd;
+    }
+    .btn-outline-info:hover {
+        background-color: #eff6ff;
+        border-color: #60a5fa;
+    }
+
+    .btn-outline-warning {
+        color: #b45309;
+        background-color: white;
+        border-color: #fcd34d;
+    }
+    .btn-outline-warning:hover {
+        background-color: #fffbeb;
+        border-color: #f59e0b;
+    }
+
+    .btn-outline-success {
+        color: #065f46;
+        background-color: white;
+        border-color: #86efac;
+    }
+    .btn-outline-success:hover {
+        background-color: #f0fdf4;
+        border-color: #34d399;
+    }
+
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+        line-height: 1rem;
+    }
+
+    .form-control, .form-select {
+        width: 100%;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid #d1d5db;
+        border-radius: 0.375rem;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        transition: all 0.2s ease-in-out;
+    }
+    .form-control:focus, .form-select:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <!-- En-tête moderne -->
+    <div class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-4xl font-bold text-gray-900 mb-2">Configurations de Synchronisation</h1>
+                    <p class="text-lg text-gray-600">Gérez et surveillez vos configurations de synchronisation DHIS2</p>
+                </div>
+                <a href="{% url 'sync_config_create' %}" class="btn btn-primary text-lg px-6 py-3">
+                    <i class="fas fa-plus mr-2"></i>
+                    Nouvelle Configuration
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- Filtres de recherche modernes -->
+        <div class="bg-white shadow-lg rounded-xl p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <i class="fas fa-filter text-blue-600 mr-2"></i>
+                Filtres de recherche
+            </h3>
+            <form method="GET" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <!-- Recherche -->
+                    <div>
+                        <label for="search" class="block text-sm font-semibold text-gray-700 mb-2">Rechercher</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-search text-gray-400"></i>
+                            </div>
+                            <input type="text" id="search" name="search" value="{{ search_query }}"
+                                   class="form-control pl-10" placeholder="Nom, source ou destination...">
+                        </div>
+                    </div>
+
+                    <!-- Type de sync -->
+                    <div>
+                        <label for="sync_type" class="block text-sm font-semibold text-gray-700 mb-2">Type de Synchronisation</label>
+                        <select id="sync_type" name="sync_type" class="form-select">
+                            <option value="">Tous les types</option>
+                            {% for value, label in sync_types %}
+                                <option value="{{ value }}" {% if selected_sync_type == value %}selected{% endif %}>
+                                    {{ label }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Statut actif -->
+                    <div>
+                        <label for="is_active" class="block text-sm font-semibold text-gray-700 mb-2">Statut</label>
+                        <select id="is_active" name="is_active" class="form-select">
+                            <option value="">Tous les statuts</option>
+                            <option value="true" {% if selected_is_active == 'true' %}selected{% endif %}>Actif</option>
+                            <option value="false" {% if selected_is_active == 'false' %}selected{% endif %}>Inactif</option>
+                        </select>
+                    </div>
+
+                    <!-- Boutons -->
+                    <div class="flex items-end space-x-3">
+                        <button type="submit" class="btn btn-primary flex-1">
+                            <i class="fas fa-search mr-2"></i>Filtrer
+                        </button>
+                        <a href="{% url 'sync_config_list' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-times mr-1"></i>Reset
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Statistiques rapides redesignées -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform duration-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-3xl font-bold mb-1">{{ configurations|length }}</h3>
+                        <p class="text-blue-100 font-medium">Configuration{{ configurations|length|pluralize }}</p>
+                    </div>
+                    <div class="p-3 bg-white bg-opacity-20 rounded-full">
+                        <i class="fas fa-cogs text-2xl"></i>
+                    </div>
+                </div>
+                <div class="mt-4 flex items-center text-blue-100">
+                    <i class="fas fa-chart-line mr-2"></i>
+                    <span class="text-sm">Total configurations</span>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-r from-green-500 to-green-600 rounded-xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform duration-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-3xl font-bold mb-1">{{ configurations|length }}</h3>
+                        <p class="text-green-100 font-medium">Active{{ configurations|length|pluralize }}</p>
+                    </div>
+                    <div class="p-3 bg-white bg-opacity-20 rounded-full">
+                        <i class="fas fa-play text-2xl"></i>
+                    </div>
+                </div>
+                <div class="mt-4 flex items-center text-green-100">
+                    <i class="fas fa-check-circle mr-2"></i>
+                    <span class="text-sm">Configurations actives</span>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform duration-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-3xl font-bold mb-1">0</h3>
+                        <p class="text-yellow-100 font-medium">Planifiées</p>
+                    </div>
+                    <div class="p-3 bg-white bg-opacity-20 rounded-full">
+                        <i class="fas fa-clock text-2xl"></i>
+                    </div>
+                </div>
+                <div class="mt-4 flex items-center text-yellow-100">
+                    <i class="fas fa-calendar-alt mr-2"></i>
+                    <span class="text-sm">Synchronisations programmées</span>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-r from-red-500 to-red-600 rounded-xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform duration-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-3xl font-bold mb-1">0</h3>
+                        <p class="text-red-100 font-medium">Erreurs</p>
+                    </div>
+                    <div class="p-3 bg-white bg-opacity-20 rounded-full">
+                        <i class="fas fa-exclamation-triangle text-2xl"></i>
+                    </div>
+                </div>
+                <div class="mt-4 flex items-center text-red-100">
+                    <i class="fas fa-bug mr-2"></i>
+                    <span class="text-sm">Configurations en erreur</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Liste des configurations redesignée -->
+        <div class="bg-white shadow-lg rounded-xl border border-gray-200">
+            {% if configurations %}
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                        <i class="fas fa-list text-blue-600 mr-3"></i>
+                        Configurations disponibles
+                    </h3>
+                    <div class="space-y-4">
+                        {% for config in configurations %}
+                            <div class="config-card bg-gradient-to-r from-gray-50 to-gray-100 border border-gray-200 rounded-xl p-6 hover:shadow-xl hover:from-blue-50 hover:to-indigo-50 transition-all duration-300">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex-1">
+                                        <!-- En-tête de la configuration -->
+                                        <div class="flex items-center space-x-4 mb-4">
+                                            <div class="flex items-center space-x-3">
+                                                <div class="status-indicator {% if config.is_active %}status-active{% else %}status-inactive{% endif %} animate-pulse"></div>
+                                                <h3 class="text-xl font-bold text-gray-900">
+                                                    <a href="{% url 'sync_config_detail' config.id %}" class="text-blue-600 hover:text-blue-800 transition-colors">
+                                                        {{ config.name }}
+                                                    </a>
+                                                </h3>
+                                            </div>
+                                            <span class="sync-type-badge px-3 py-1 text-xs font-bold rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md">
+                                                {{ config.get_sync_type_display }}
+                                            </span>
+                                            {% if config.is_active %}
+                                                <span class="px-3 py-1 text-xs font-bold rounded-full bg-gradient-to-r from-green-500 to-green-600 text-white shadow-md">
+                                                    <i class="fas fa-check mr-1"></i>ACTIF
+                                                </span>
+                                            {% else %}
+                                                <span class="px-3 py-1 text-xs font-bold rounded-full bg-gradient-to-r from-gray-500 to-gray-600 text-white shadow-md">
+                                                    <i class="fas fa-pause mr-1"></i>INACTIF
+                                                </span>
+                                            {% endif %}
+                                        </div>
+
+                                        <!-- Informations détaillées -->
+                                        <div class="bg-white rounded-lg p-4 space-y-3 shadow-sm">
+                                            <div class="flex items-center justify-center">
+                                                <div class="flex items-center space-x-2 bg-blue-50 rounded-lg px-4 py-2">
+                                                    <div class="text-center">
+                                                        <div class="font-semibold text-blue-900">{{ config.source_instance.name }}</div>
+                                                        <div class="text-xs text-blue-600">Source</div>
+                                                    </div>
+                                                    <div class="mx-4">
+                                                        <i class="fas fa-arrow-right text-2xl text-blue-600"></i>
+                                                    </div>
+                                                    <div class="text-center">
+                                                        <div class="font-semibold text-blue-900">{{ config.destination_instance.name }}</div>
+                                                        <div class="text-xs text-blue-600">Destination</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {% if config.data_type and config.sync_type in 'data,events,tracker,both,all_data' %}
+                                                <div class="flex items-center text-sm text-gray-600 bg-gray-50 rounded-lg px-3 py-2">
+                                                    <i class="fas fa-database mr-2 text-gray-500"></i>
+                                                    <span class="font-medium">Type de données:</span>
+                                                    <span class="ml-2 font-semibold text-gray-800">{{ config.get_data_type_display }}</span>
+                                                </div>
+                                            {% endif %}
+
+                                            <div class="flex items-center text-sm text-gray-600 bg-gray-50 rounded-lg px-3 py-2">
+                                                <i class="fas fa-user mr-2 text-gray-500"></i>
+                                                <span>Créé par <span class="font-semibold">{{ config.created_by.get_full_name|default:config.created_by.username }}</span> le {{ config.created_at|date:"d/m/Y à H:i" }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Actions -->
+                                    <div class="flex flex-col space-y-2 ml-6">
+                                        <!-- Bouton de test de compatibilité -->
+                                        <button onclick="testCompatibility({{ config.id }})"
+                                                class="btn btn-sm btn-outline-info hover:scale-105 transition-transform" title="Tester la compatibilité">
+                                            <i class="fas fa-check-circle mr-1"></i>Test
+                                        </button>
+
+                                        <!-- Bouton activer/désactiver -->
+                                        <button onclick="toggleStatus({{ config.id }}, '{{ config.name|escapejs }}')"
+                                                class="btn btn-sm {% if config.is_active %}btn-outline-warning{% else %}btn-outline-success{% endif %} hover:scale-105 transition-transform"
+                                                title="{% if config.is_active %}Désactiver{% else %}Activer{% endif %}">
+                                            <i class="fas {% if config.is_active %}fa-pause{% else %}fa-play{% endif %} mr-1"></i>{% if config.is_active %}Pause{% else %}Start{% endif %}
+                                        </button>
+
+                                        <!-- Bouton cloner -->
+                                        <button onclick="cloneConfiguration({{ config.id }}, '{{ config.name|escapejs }}')"
+                                                class="btn btn-sm btn-outline-secondary hover:scale-105 transition-transform" title="Cloner">
+                                            <i class="fas fa-copy mr-1"></i>Clone
+                                        </button>
+
+                                        <!-- Bouton modifier -->
+                                        <a href="{% url 'sync_config_update' config.id %}"
+                                           class="btn btn-sm btn-outline-primary hover:scale-105 transition-transform" title="Modifier">
+                                            <i class="fas fa-edit mr-1"></i>Edit
+                                        </a>
+
+                                        <!-- Bouton voir détails -->
+                                        <a href="{% url 'sync_config_detail' config.id %}"
+                                           class="btn btn-sm btn-primary hover:scale-105 transition-transform" title="Voir les détails">
+                                            <i class="fas fa-eye mr-1"></i>Details
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            <!-- Pagination -->
+            {% if is_paginated %}
+                <div class="border-t border-gray-200 px-6 py-4">
+                    <nav class="flex items-center justify-between">
+                        <div class="flex-1 flex justify-between sm:hidden">
+                            {% if page_obj.has_previous %}
+                                <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-primary">Précédent</a>
+                            {% endif %}
+                            {% if page_obj.has_next %}
+                                <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-primary">Suivant</a>
+                            {% endif %}
+                        </div>
+                        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                            <p class="text-sm text-gray-700">
+                                Affichage de <span class="font-medium">{{ page_obj.start_index }}</span> à
+                                <span class="font-medium">{{ page_obj.end_index }}</span> sur
+                                <span class="font-medium">{{ paginator.count }}</span> résultat{{ paginator.count|pluralize }}
+                            </p>
+                            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+                                {% if page_obj.has_previous %}
+                                    <a href="?page=1" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                        <i class="fas fa-angle-double-left"></i>
+                                    </a>
+                                    <a href="?page={{ page_obj.previous_page_number }}" class="relative inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                        <i class="fas fa-angle-left"></i>
+                                    </a>
+                                {% endif %}
+
+                                <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-blue-50 text-sm font-medium text-blue-600">
+                                    {{ page_obj.number }}
+                                </span>
+
+                                {% if page_obj.has_next %}
+                                    <a href="?page={{ page_obj.next_page_number }}" class="relative inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                        <i class="fas fa-angle-right"></i>
+                                    </a>
+                                    <a href="?page={{ paginator.num_pages }}" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                        <i class="fas fa-angle-double-right"></i>
+                                    </a>
+                                {% endif %}
+                            </nav>
+                        </div>
+                    </nav>
+                </div>
+            {% endif %}
+
+            {% else %}
+                <div class="text-center py-16">
+                    <div class="max-w-md mx-auto">
+                        <div class="bg-gray-100 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
+                            <i class="fas fa-cogs text-4xl text-gray-400"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Aucune configuration trouvée</h3>
+                        <p class="text-gray-600 mb-8 text-lg">
+                            {% if search_query or selected_sync_type or selected_is_active %}
+                                Aucune configuration ne correspond à vos critères de recherche.
+                            {% else %}
+                                Commencez par créer votre première configuration de synchronisation.
+                            {% endif %}
+                        </p>
+                        {% if not search_query and not selected_sync_type and not selected_is_active %}
+                            <a href="{% url 'sync_config_create' %}" class="btn btn-primary text-lg px-8 py-3 hover:scale-105 transition-transform">
+                                <i class="fas fa-plus mr-2"></i>
+                                Créer une configuration
+                            </a>
+                        {% else %}
+                            <a href="{% url 'sync_config_list' %}" class="btn btn-outline-primary text-lg px-8 py-3 hover:scale-105 transition-transform">
+                                <i class="fas fa-times mr-2"></i>
+                                Effacer les filtres
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Modal pour le test de compatibilité -->
+<div class="modal fade" id="compatibility-modal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Test de Compatibilité</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="compatibility-loading" class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Test en cours...</span>
+                    </div>
+                    <p class="mt-2">Test de compatibilité en cours...</p>
+                </div>
+                <div id="compatibility-result" class="d-none">
+                    <!-- Résultat du test sera injecté ici -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function toggleStatus(configId, configName) {
+        if (confirm(`Êtes-vous sûr de vouloir changer le statut de "${configName}" ?`)) {
+            DHIS2Sync.showLoading();
+
+            fetch(`/configurations/${configId}/toggle-status/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                DHIS2Sync.hideLoading();
+                if (data.success) {
+                    DHIS2Sync.showToast(data.message, 'success');
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    DHIS2Sync.showToast(data.message || 'Erreur lors du changement de statut', 'error');
+                }
+            })
+            .catch(error => {
+                DHIS2Sync.hideLoading();
+                DHIS2Sync.showToast('Erreur de réseau', 'error');
+            });
+        }
+    }
+
+    function testCompatibility(configId) {
+        const modal = new bootstrap.Modal(document.getElementById('compatibility-modal'));
+        modal.show();
+
+        // Réinitialiser le modal
+        document.getElementById('compatibility-loading').classList.remove('d-none');
+        document.getElementById('compatibility-result').classList.add('d-none');
+
+        fetch(`/configurations/${configId}/test-compatibility/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('compatibility-loading').classList.add('d-none');
+            document.getElementById('compatibility-result').classList.remove('d-none');
+
+            let resultHtml = '';
+
+            if (data.success) {
+                resultHtml += '<div class="alert alert-success"><i class="fas fa-check-circle mr-2"></i>Test de compatibilité réussi</div>';
+            } else {
+                resultHtml += '<div class="alert alert-danger"><i class="fas fa-times-circle mr-2"></i>Test de compatibilité échoué</div>';
+            }
+
+            // Afficher les résultats détaillés
+            if (data.source_test || data.destination_test) {
+                resultHtml += '<div class="row mt-3">';
+
+                if (data.source_test) {
+                    resultHtml += '<div class="col-md-6">';
+                    resultHtml += '<h6>Instance Source</h6>';
+                    resultHtml += `<div class="alert ${data.source_test.success ? 'alert-success' : 'alert-danger'}">`;
+                    resultHtml += `<strong>Statut:</strong> ${data.source_test.success ? 'Connecté' : 'Échec'}<br>`;
+                    resultHtml += `<strong>Message:</strong> ${data.source_test.message}`;
+                    if (data.source_test.dhis2_version) {
+                        resultHtml += `<br><strong>Version:</strong> ${data.source_test.dhis2_version}`;
+                    }
+                    resultHtml += '</div>';
+                    resultHtml += '</div>';
+                }
+
+                if (data.destination_test) {
+                    resultHtml += '<div class="col-md-6">';
+                    resultHtml += '<h6>Instance Destination</h6>';
+                    resultHtml += `<div class="alert ${data.destination_test.success ? 'alert-success' : 'alert-danger'}">`;
+                    resultHtml += `<strong>Statut:</strong> ${data.destination_test.success ? 'Connecté' : 'Échec'}<br>`;
+                    resultHtml += `<strong>Message:</strong> ${data.destination_test.message}`;
+                    if (data.destination_test.dhis2_version) {
+                        resultHtml += `<br><strong>Version:</strong> ${data.destination_test.dhis2_version}`;
+                    }
+                    resultHtml += '</div>';
+                    resultHtml += '</div>';
+                }
+
+                resultHtml += '</div>';
+            }
+
+            // Afficher les avertissements
+            if (data.warnings && data.warnings.length > 0) {
+                resultHtml += '<div class="mt-3"><h6>Avertissements</h6>';
+                data.warnings.forEach(warning => {
+                    resultHtml += `<div class="alert alert-warning">${warning}</div>`;
+                });
+                resultHtml += '</div>';
+            }
+
+            // Afficher les recommandations
+            if (data.recommendations && data.recommendations.length > 0) {
+                resultHtml += '<div class="mt-3"><h6>Recommandations</h6>';
+                data.recommendations.forEach(rec => {
+                    resultHtml += `<div class="alert alert-info">${rec}</div>`;
+                });
+                resultHtml += '</div>';
+            }
+
+            document.getElementById('compatibility-result').innerHTML = resultHtml;
+        })
+        .catch(error => {
+            document.getElementById('compatibility-loading').classList.add('d-none');
+            document.getElementById('compatibility-result').classList.remove('d-none');
+            document.getElementById('compatibility-result').innerHTML =
+                '<div class="alert alert-danger"><i class="fas fa-times-circle mr-2"></i>Erreur lors du test</div>';
+        });
+    }
+
+    function cloneConfiguration(configId, configName) {
+        if (confirm(`Êtes-vous sûr de vouloir cloner la configuration "${configName}" ?`)) {
+            DHIS2Sync.showLoading();
+
+            fetch(`/configurations/${configId}/clone/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                DHIS2Sync.hideLoading();
+                if (data.success) {
+                    DHIS2Sync.showToast(data.message, 'success');
+                    if (data.redirect) {
+                        setTimeout(() => window.location.href = data.redirect, 1000);
+                    }
+                } else {
+                    DHIS2Sync.showToast(data.message || 'Erreur lors du clonage', 'error');
+                }
+            })
+            .catch(error => {
+                DHIS2Sync.hideLoading();
+                DHIS2Sync.showToast('Erreur de réseau', 'error');
+            });
+        }
+    }
+</script>
+{% endblock %}

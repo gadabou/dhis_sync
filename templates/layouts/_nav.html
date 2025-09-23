@@ -1,0 +1,277 @@
+<!-- Navigation -->
+<nav class="bg-white shadow-lg sticky top-0 z-40" x-data="{ mobileMenuOpen: false, userMenuOpen: false }">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+            <!-- Logo et liens principaux -->
+            <div class="flex">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="/" class="flex items-center space-x-3 group">
+                        <div class="flex items-center justify-center w-10 h-10 bg-blue-600 rounded-lg group-hover:bg-blue-700 transition-colors duration-200">
+                            <i class="fas fa-sync-alt text-white text-lg"></i>
+                        </div>
+                        <span class="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-200">
+                            DHIS2 Sync
+                        </span>
+                    </a>
+                </div>
+
+                <!-- Navigation links (desktop) -->
+                <div class="hidden md:ml-8 md:flex md:space-x-1">
+                    <!-- Dashboard -->
+                    <a href="{% url 'dhis2_instance_list' %}"
+                       class="nav-link {% if request.resolver_match.url_name == 'dhis2_instance_list' %}bg-blue-50 text-blue-700 border-blue-500{% else %}text-gray-600 hover:text-gray-900 hover:bg-gray-50{% endif %} px-3 py-2 rounded-md text-sm font-medium border-l-4 border-transparent transition-all duration-200">
+                        <i class="fas fa-tachometer-alt mr-2"></i>
+                        Tableau de bord
+                    </a>
+
+                    <!-- Instances -->
+                    <div class="relative" x-data="{ open: false }">
+                        <button @click="open = !open"
+                                class="nav-link flex items-center {% if 'instance' in request.resolver_match.url_name %}bg-blue-50 text-blue-700 border-blue-500{% else %}text-gray-600 hover:text-gray-900 hover:bg-gray-50{% endif %} px-3 py-2 rounded-md text-sm font-medium border-l-4 border-transparent transition-all duration-200">
+                            <i class="fas fa-server mr-2"></i>
+                            Instances
+                            <i class="fas fa-chevron-down ml-2 text-xs transition-transform duration-200"
+                               :class="{ 'rotate-180': open }"></i>
+                        </button>
+
+                        <!-- Dropdown -->
+                        <div x-show="open"
+                             x-transition:enter="transition ease-out duration-200"
+                             x-transition:enter-start="opacity-0 scale-95"
+                             x-transition:enter-end="opacity-100 scale-100"
+                             x-transition:leave="transition ease-in duration-150"
+                             x-transition:leave-start="opacity-100 scale-100"
+                             x-transition:leave-end="opacity-0 scale-95"
+                             @click.away="open = false"
+                             class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                            <div class="py-1">
+                                <a href="{% url 'dhis2_instance_list' %}"
+                                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-150">
+                                    <i class="fas fa-list mr-2 text-gray-400"></i>
+                                    Liste des instances
+                                </a>
+                                <a href="{% url 'dhis2_instance_create' %}"
+                                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-150">
+                                    <i class="fas fa-plus mr-2 text-gray-400"></i>
+                                    Nouvelle instance
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Configurations -->
+                    <div class="relative" x-data="{ open: false }">
+                        <button @click="open = !open"
+                                class="nav-link flex items-center {% if 'config' in request.resolver_match.url_name %}bg-blue-50 text-blue-700 border-blue-500{% else %}text-gray-600 hover:text-gray-900 hover:bg-gray-50{% endif %} px-3 py-2 rounded-md text-sm font-medium border-l-4 border-transparent transition-all duration-200">
+                            <i class="fas fa-cogs mr-2"></i>
+                            Configurations
+                            <i class="fas fa-chevron-down ml-2 text-xs transition-transform duration-200"
+                               :class="{ 'rotate-180': open }"></i>
+                        </button>
+
+                        <!-- Dropdown -->
+                        <div x-show="open"
+                             x-transition:enter="transition ease-out duration-200"
+                             x-transition:enter-start="opacity-0 scale-95"
+                             x-transition:enter-end="opacity-100 scale-100"
+                             x-transition:leave="transition ease-in duration-150"
+                             x-transition:leave-start="opacity-100 scale-100"
+                             x-transition:leave-end="opacity-0 scale-95"
+                             @click.away="open = false"
+                             class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                            <div class="py-1">
+                                <a href="{% url 'sync_config_list' %}"
+                                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-150">
+                                    <i class="fas fa-list mr-2 text-gray-400"></i>
+                                    Configurations de sync
+                                </a>
+                                <a href="{% url 'sync_config_create' %}"
+                                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-150">
+                                    <i class="fas fa-plus mr-2 text-gray-400"></i>
+                                    Nouvelle configuration
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Jobs -->
+                    <a href=""
+                       class="nav-link {% if 'job' in request.resolver_match.url_name %}bg-blue-50 text-blue-700 border-blue-500{% else %}text-gray-600 hover:text-gray-900 hover:bg-gray-50{% endif %} px-3 py-2 rounded-md text-sm font-medium border-l-4 border-transparent transition-all duration-200">
+                        <i class="fas fa-tasks mr-2"></i>
+                        Jobs de sync
+                    </a>
+                </div>
+            </div>
+
+            <!-- Actions utilisateur -->
+            <div class="flex items-center space-x-4">
+                <!-- Notifications -->
+                <div class="relative" x-data="{ open: false }">
+                    <button @click="open = !open"
+                            class="p-2 rounded-full text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200">
+                        <i class="fas fa-bell text-lg"></i>
+                        <span class="absolute top-0 right-0 block h-2 w-2 bg-red-400 rounded-full ring-2 ring-white"></span>
+                    </button>
+
+                    <!-- Dropdown notifications -->
+                    <div x-show="open"
+                         x-transition:enter="transition ease-out duration-200"
+                         x-transition:enter-start="opacity-0 scale-95"
+                         x-transition:enter-end="opacity-100 scale-100"
+                         x-transition:leave="transition ease-in duration-150"
+                         x-transition:leave-start="opacity-100 scale-100"
+                         x-transition:leave-end="opacity-0 scale-95"
+                         @click.away="open = false"
+                         class="absolute right-0 mt-2 w-80 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                        <div class="py-1">
+                            <div class="px-4 py-3 border-b border-gray-200">
+                                <h3 class="text-sm font-medium text-gray-900">Notifications</h3>
+                            </div>
+                            <div class="max-h-64 overflow-y-auto">
+                                <div class="px-4 py-3 text-center text-gray-500">
+                                    <i class="fas fa-bell-slash text-2xl mb-2"></i>
+                                    <p class="text-sm">Aucune notification</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu utilisateur -->
+                <div class="relative" x-data="{ open: false }">
+                    <button @click="open = !open"
+                            class="flex items-center space-x-3 p-2 rounded-lg text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200">
+                        <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                            {% if user.first_name %}
+                                <span class="text-white text-sm font-medium">{{ user.first_name.0 }}{{ user.last_name.0 }}</span>
+                            {% else %}
+                                <i class="fas fa-user text-white text-sm"></i>
+                            {% endif %}
+                        </div>
+                        <span class="hidden md:block text-sm font-medium">{{ user.get_full_name|default:user.username }}</span>
+                        <i class="fas fa-chevron-down text-xs transition-transform duration-200"
+                           :class="{ 'rotate-180': open }"></i>
+                    </button>
+
+                    <!-- Dropdown utilisateur -->
+                    <div x-show="open"
+                         x-transition:enter="transition ease-out duration-200"
+                         x-transition:enter-start="opacity-0 scale-95"
+                         x-transition:enter-end="opacity-100 scale-100"
+                         x-transition:leave="transition ease-in duration-150"
+                         x-transition:leave-start="opacity-100 scale-100"
+                         x-transition:leave-end="opacity-0 scale-95"
+                         @click.away="open = false"
+                         class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                        <div class="py-1">
+                            <div class="px-4 py-2 border-b border-gray-100">
+                                <p class="text-sm text-gray-900 font-medium">{{ user.get_full_name|default:user.username }}</p>
+                                <p class="text-xs text-gray-500">{{ user.email }}</p>
+                            </div>
+                            <a href=""
+                               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-150">
+                                <i class="fas fa-user mr-2 text-gray-400"></i>
+                                Mon profil
+                            </a>
+                            <a href=""
+                               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-150">
+                                <i class="fas fa-cog mr-2 text-gray-400"></i>
+                                Paramètres
+                            </a>
+                            <div class="border-t border-gray-100"></div>
+                            <a href=""
+                               class="block px-4 py-2 text-sm text-red-700 hover:bg-red-50 hover:text-red-900 transition-colors duration-150">
+                                <i class="fas fa-sign-out-alt mr-2 text-red-400"></i>
+                                Se déconnecter
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu mobile button -->
+                <button @click="mobileMenuOpen = !mobileMenuOpen"
+                        class="md:hidden p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200">
+                    <i class="fas fa-bars text-lg" x-show="!mobileMenuOpen"></i>
+                    <i class="fas fa-times text-lg" x-show="mobileMenuOpen"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Menu mobile -->
+    <div x-show="mobileMenuOpen"
+         x-transition:enter="transition ease-out duration-200"
+         x-transition:enter-start="opacity-0 scale-95"
+         x-transition:enter-end="opacity-100 scale-100"
+         x-transition:leave="transition ease-in duration-150"
+         x-transition:leave-start="opacity-100 scale-100"
+         x-transition:leave-end="opacity-0 scale-95"
+         class="md:hidden bg-white border-t border-gray-200 shadow-lg">
+        <div class="px-2 pt-2 pb-3 space-y-1">
+            <!-- Dashboard -->
+            <a href="{% url 'dhis2_instance_list' %}"
+               class="{% if request.resolver_match.url_name == 'dhis2_instance_list' %}bg-blue-50 text-blue-700 border-blue-500{% else %}text-gray-600 hover:text-gray-900 hover:bg-gray-50{% endif %} block px-3 py-2 rounded-md text-base font-medium border-l-4 border-transparent transition-all duration-200">
+                <i class="fas fa-tachometer-alt mr-3"></i>
+                Tableau de bord
+            </a>
+
+            <!-- Instances -->
+            <div x-data="{ open: false }">
+                <button @click="open = !open"
+                        class="w-full flex items-center justify-between {% if 'instance' in request.resolver_match.url_name %}bg-blue-50 text-blue-700 border-blue-500{% else %}text-gray-600 hover:text-gray-900 hover:bg-gray-50{% endif %} px-3 py-2 rounded-md text-base font-medium border-l-4 border-transparent transition-all duration-200">
+                    <span>
+                        <i class="fas fa-server mr-3"></i>
+                        Instances
+                    </span>
+                    <i class="fas fa-chevron-down transition-transform duration-200"
+                       :class="{ 'rotate-180': open }"></i>
+                </button>
+                <div x-show="open" class="ml-6 mt-2 space-y-1">
+                    <a href="{% url 'dhis2_instance_list' %}"
+                       class="block px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md text-sm transition-colors duration-150">
+                        <i class="fas fa-list mr-2"></i>
+                        Liste des instances
+                    </a>
+                    <a href="{% url 'dhis2_instance_create' %}"
+                       class="block px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md text-sm transition-colors duration-150">
+                        <i class="fas fa-plus mr-2"></i>
+                        Nouvelle instance
+                    </a>
+                </div>
+            </div>
+
+            <!-- Configurations -->
+            <div x-data="{ open: false }">
+                <button @click="open = !open"
+                        class="w-full flex items-center justify-between {% if 'config' in request.resolver_match.url_name %}bg-blue-50 text-blue-700 border-blue-500{% else %}text-gray-600 hover:text-gray-900 hover:bg-gray-50{% endif %} px-3 py-2 rounded-md text-base font-medium border-l-4 border-transparent transition-all duration-200">
+                    <span>
+                        <i class="fas fa-cogs mr-3"></i>
+                        Configurations
+                    </span>
+                    <i class="fas fa-chevron-down transition-transform duration-200"
+                       :class="{ 'rotate-180': open }"></i>
+                </button>
+                <div x-show="open" class="ml-6 mt-2 space-y-1">
+                    <a href="{% url 'sync_config_list' %}"
+                       class="block px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md text-sm transition-colors duration-150">
+                        <i class="fas fa-list mr-2"></i>
+                        Configurations de sync
+                    </a>
+                    <a href="{% url 'sync_config_create' %}"
+                       class="block px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md text-sm transition-colors duration-150">
+                        <i class="fas fa-plus mr-2"></i>
+                        Nouvelle configuration
+                    </a>
+                </div>
+            </div>
+
+            <!-- Jobs -->
+            <a href=""
+               class="{% if 'job' in request.resolver_match.url_name %}bg-blue-50 text-blue-700 border-blue-500{% else %}text-gray-600 hover:text-gray-900 hover:bg-gray-50{% endif %} block px-3 py-2 rounded-md text-base font-medium border-l-4 border-transparent transition-all duration-200">
+                <i class="fas fa-tasks mr-3"></i>
+                Jobs de sync
+            </a>
+        </div>
+    </div>
+</nav>

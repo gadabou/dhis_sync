@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}{{ title|default:"DHIS2 Sync" }}{% endblock %}</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body class="h-full bg-gray-50 text-gray-900" x-data="{ sidebarOpen: false }">
+    <!-- Navigation -->
+    {% include 'layouts/_nav.html' %}
+
+    <!-- Messages Flash -->
+    {% if messages %}
+        <div class="fixed top-4 right-4 z-50 space-y-2" x-data="{ showMessages: true }">
+            {% for message in messages %}
+                <div x-show="showMessages"
+                     x-transition:enter="transition ease-out duration-300"
+                     x-transition:enter-start="opacity-0 transform translate-x-full"
+                     x-transition:enter-end="opacity-100 transform translate-x-0"
+                     x-transition:leave="transition ease-in duration-200"
+                     x-transition:leave-start="opacity-100 transform translate-x-0"
+                     x-transition:leave-end="opacity-0 transform translate-x-full"
+                     class="alert max-w-sm rounded-lg shadow-lg overflow-hidden {% if message.tags == 'error' %}bg-red-50 border-l-4 border-red-400{% elif message.tags == 'warning' %}bg-yellow-50 border-l-4 border-yellow-400{% elif message.tags == 'success' %}bg-green-50 border-l-4 border-green-400{% else %}bg-blue-50 border-l-4 border-blue-400{% endif %}">
+                    <div class="p-4">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                {% if message.tags == 'error' %}
+                                    <i class="fas fa-exclamation-circle text-red-400"></i>
+                                {% elif message.tags == 'warning' %}
+                                    <i class="fas fa-exclamation-triangle text-yellow-400"></i>
+                                {% elif message.tags == 'success' %}
+                                    <i class="fas fa-check-circle text-green-400"></i>
+                                {% else %}
+                                    <i class="fas fa-info-circle text-blue-400"></i>
+                                {% endif %}
+                            </div>
+                            <div class="ml-3 flex-1">
+                                <p class="text-sm font-medium {% if message.tags == 'error' %}text-red-800{% elif message.tags == 'warning' %}text-yellow-800{% elif message.tags == 'success' %}text-green-800{% else %}text-blue-800{% endif %}">
+                                    {{ message }}
+                                </p>
+                            </div>
+                            <div class="ml-4 flex-shrink-0">
+                                <button @click="$el.closest('.alert').style.display = 'none'"
+                                        class="{% if message.tags == 'error' %}text-red-400 hover:text-red-600{% elif message.tags == 'warning' %}text-yellow-400 hover:text-yellow-600{% elif message.tags == 'success' %}text-green-400 hover:text-green-600{% else %}text-blue-400 hover:text-blue-600{% endif %} transition-colors duration-200">
+                                    <i class="fas fa-times text-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Page Content -->
+    <main class="flex-1 relative overflow-y-auto focus:outline-none">
+        <!-- Page Header -->
+        {% block page_header %}
+            {% if title %}
+                <div class="bg-white shadow-sm border-b border-gray-200">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div class="py-6">
+                            <div class="flex items-center justify-between">
+                                <div class="fade-in">
+                                    <h1 class="text-2xl font-bold text-gray-900">{{ title }}</h1>
+                                    {% if subtitle %}
+                                        <p class="mt-1 text-sm text-gray-500">{{ subtitle }}</p>
+                                    {% endif %}
+                                </div>
+                                {% block page_actions %}{% endblock %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endblock %}
+
+        <!-- Content Area -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            {% block breadcrumbs %}{% endblock %}
+
+            <div class="fade-in">
+                {% block content %}
+                    <div class="text-center py-12">
+                        <div class="text-gray-400">
+                            <i class="fas fa-cube text-6xl mb-4"></i>
+                            <h3 class="text-lg font-medium text-gray-900 mb-2">Contenu à venir</h3>
+                            <p class="text-gray-500">Cette page est en cours de développement.</p>
+                        </div>
+                    </div>
+                {% endblock %}
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    {% include 'layouts/_footer.html' %}
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 max-w-sm mx-auto shadow-xl">
+            <div class="flex items-center space-x-4">
+                <div class="spinner"></div>
+                <span class="text-gray-700 font-medium">Chargement...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main JavaScript -->
+    <script src="{% static 'js/main.js' %}"></script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
