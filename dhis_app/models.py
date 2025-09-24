@@ -17,6 +17,9 @@ class DHIS2Instance(models.Model):
     version = models.CharField(max_length=20, blank=True, null=True, help_text="Version DHIS2 (ex: 2.38, 2.40)")
     is_source = models.BooleanField(default=False)
     is_destination = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True, help_text="Instance active/inactive")
+    connection_status = models.BooleanField(default=None, null=True, blank=True, help_text="Statut de connexion (True=connecté, False=déconnecté, None=non testé)")
+    last_connection_test = models.DateTimeField(null=True, blank=True, help_text="Dernière vérification de connexion")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -27,9 +30,13 @@ class DHIS2Instance(models.Model):
         """Validation personnalisée"""
         super().clean()
 
-        # Valider que l'URL se termine par un slash ou est correctement formée
-        if not self.base_url.endswith('/'):
-            self.base_url += '/'
+        # Nettoyer l'URL pour éviter les double slashes
+        if self.base_url:
+            # Supprimer les slashes multiples à la fin
+            self.base_url = self.base_url.rstrip('/')
+            # S'assurer qu'il n'y a qu'un seul slash à la fin
+            if not self.base_url.endswith('/'):
+                self.base_url += '/'
 
         # Vérifier qu'au moins l'un des deux flags est activé
         if not self.is_source and not self.is_destination:
@@ -39,13 +46,17 @@ class DHIS2Instance(models.Model):
         """
         Crée et retourne un client API dhis2.py pour cette instance
         """
-        print("base_url", self.base_url)
-        print("username", self.username)
-        print("password", self.password)
-        print("version", self.version)
         try:
+            # Nettoyer l'URL pour éviter les doubles slashes
+            clean_url = self.base_url.rstrip('/') if self.base_url else ''
+
+            print("base_url cleaned", clean_url)
+            print("username", self.username)
+            print("password", self.password)
+            print("version", self.version)
+
             api = Api(
-                server=self.base_url,
+                server=clean_url,  # Passer l'URL sans slash final
                 username=self.username,
                 password=self.password
             )

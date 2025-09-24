@@ -398,3 +398,79 @@ class DHIS2InstanceMetadataView(LoginRequiredMixin, TemplateView):
             context['error_message'] = f"Erreur lors de la récupération: {str(e)}"
 
         return self.render_to_response(context)
+
+
+class DHIS2InstanceBulkStatusCheckView(LoginRequiredMixin, View):
+    """Vérifie l'état de connexion de toutes les instances DHIS2 (API JSON)"""
+
+    def post(self, request):
+        try:
+            from django.utils import timezone
+            instances = DHIS2Instance.objects.filter(is_active=True)
+            results = []
+            updated_instances = []
+
+            for instance in instances:
+                try:
+                    # Test de connexion rapide
+                    connection_result = instance.test_connection()
+                    current_status = connection_result['success']
+
+                    # Si l'état a changé, mettre à jour en base
+                    status_changed = instance.connection_status != current_status
+                    if status_changed:
+                        old_status = instance.connection_status
+                        instance.connection_status = current_status
+                        instance.last_connection_test = timezone.now()
+                        instance.save(update_fields=['connection_status', 'last_connection_test'])
+                        updated_instances.append({
+                            'id': instance.id,
+                            'name': instance.name,
+                            'old_status': old_status,
+                            'new_status': current_status
+                        })
+
+                    results.append({
+                        'id': instance.id,
+                        'name': instance.name,
+                        'status': current_status,
+                        'message': connection_result.get('message', ''),
+                        'updated': status_changed
+                    })
+
+                except Exception as e:
+                    logger.error(f"Erreur lors de la vérification de l'instance {instance.name}: {e}")
+                    # Marquer comme déconnecté en cas d'erreur
+                    if instance.connection_status is not False:
+                        instance.connection_status = False
+                        instance.last_connection_test = timezone.now()
+                        instance.save(update_fields=['connection_status', 'last_connection_test'])
+                        updated_instances.append({
+                            'id': instance.id,
+                            'name': instance.name,
+                            'old_status': instance.connection_status,
+                            'new_status': False
+                        })
+
+                    results.append({
+                        'id': instance.id,
+                        'name': instance.name,
+                        'status': False,
+                        'message': f'Erreur: {str(e)}',
+                        'updated': True
+                    })
+
+            return JsonResponse({
+                'success': True,
+                'results': results,
+                'updated_count': len(updated_instances),
+                'updated_instances': updated_instances,
+                'total_checked': len(instances)
+            })
+
+        except Exception as e:
+            logger.error(f"Erreur lors de la vérification bulk des instances: {e}")
+            return JsonResponse({
+                'success': False,
+                'message': f'Erreur lors de la vérification: {str(e)}'
+            })

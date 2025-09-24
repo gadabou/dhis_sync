@@ -9,6 +9,7 @@ from .views.dhis2_instance import (
     DHIS2InstanceTestConnectionView,
     DHIS2InstanceTestConnectionPageView,
     DHIS2InstanceMetadataView,
+    DHIS2InstanceBulkStatusCheckView,
 )
 from .views.configurations import (
     SyncConfigurationListView,
@@ -48,6 +49,9 @@ urlpatterns = [
 
     # Métadonnées d'une instance
     path('instances/<int:instance_id>/metadata/', DHIS2InstanceMetadataView.as_view(), name='dhis2_instance_metadata'),
+
+    # Vérification bulk du statut des instances (API JSON)
+    path('instances/bulk-status-check/', DHIS2InstanceBulkStatusCheckView.as_view(), name='dhis2_instance_bulk_status_check'),
 
     # === CONFIGURATIONS DE SYNCHRONISATION ===
     # Liste des configurations

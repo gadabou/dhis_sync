@@ -1,0 +1,333 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}
+    {% if action == 'create' %}Créer une Instance DHIS2{% else %}Modifier {{ instance.name }}{% endif %}
+{% endblock %}
+
+{% block breadcrumbs %}
+<nav class="flex mb-6" aria-label="Breadcrumb">
+    <ol class="inline-flex items-center space-x-1 md:space-x-3">
+        <li class="inline-flex items-center">
+            <a href="{% url 'dhis2_instance_list' %}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600">
+                <i class="fas fa-server mr-2"></i>
+                Instances
+            </a>
+        </li>
+        {% if action == 'edit' and instance %}
+        <li>
+            <div class="flex items-center">
+                <i class="fas fa-chevron-right text-gray-400"></i>
+                <a href="{% url 'dhis2_instance_detail' instance.id %}" class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2">{{ instance.name }}</a>
+            </div>
+        </li>
+        <li>
+            <div class="flex items-center">
+                <i class="fas fa-chevron-right text-gray-400"></i>
+                <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2">Modifier</span>
+            </div>
+        </li>
+        {% else %}
+        <li>
+            <div class="flex items-center">
+                <i class="fas fa-chevron-right text-gray-400"></i>
+                <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2">Nouvelle Instance</span>
+            </div>
+        </li>
+        {% endif %}
+    </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <div class="bg-white shadow rounded-lg p-6">
+        <form method="post" id="instance-form">
+            {% csrf_token %}
+
+            <div class="space-y-6">
+                <!-- Informations générales -->
+                <div>
+                    <h2 class="text-lg font-semibold text-gray-900 mb-4">
+                        <i class="fas fa-info-circle mr-2"></i>Informations Générales
+                    </h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="md:col-span-2">
+                            <label for="id_name" class="block text-sm font-medium text-gray-700">
+                                Nom de l'instance *
+                            </label>
+                            <input type="text"
+                                   name="name"
+                                   id="id_name"
+                                   value="{{ form.name.value|default:'' }}"
+                                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                   required>
+                            {% if form.name.errors %}
+                                <div class="mt-1 text-sm text-red-600">
+                                    {{ form.name.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label for="id_base_url" class="block text-sm font-medium text-gray-700">
+                                URL de Base *
+                            </label>
+                            <input type="url"
+                                   name="base_url"
+                                   id="id_base_url"
+                                   value="{{ form.base_url.value|default:'' }}"
+                                   placeholder="https://dhis2.example.com"
+                                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                   required>
+                            {% if form.base_url.errors %}
+                                <div class="mt-1 text-sm text-red-600">
+                                    {{ form.base_url.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label for="id_username" class="block text-sm font-medium text-gray-700">
+                                Nom d'utilisateur *
+                            </label>
+                            <input type="text"
+                                   name="username"
+                                   id="id_username"
+                                   value="{{ form.username.value|default:'' }}"
+                                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                   required>
+                            {% if form.username.errors %}
+                                <div class="mt-1 text-sm text-red-600">
+                                    {{ form.username.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label for="id_password" class="block text-sm font-medium text-gray-700">
+                                Mot de passe *
+                            </label>
+                            <input type="password"
+                                   name="password"
+                                   id="id_password"
+                                   value="{{ form.password.value|default:'' }}"
+                                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                   required>
+                            {% if form.password.errors %}
+                                <div class="mt-1 text-sm text-red-600">
+                                    {{ form.password.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label for="id_version" class="block text-sm font-medium text-gray-700">
+                                Version DHIS2
+                            </label>
+                            <input type="text"
+                                   name="version"
+                                   id="id_version"
+                                   value="{{ form.version.value|default:'' }}"
+                                   placeholder="ex: 2.40.4"
+                                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            <p class="mt-1 text-sm text-gray-500">
+                                Optionnel - Sera détecté automatiquement lors du test de connexion
+                            </p>
+                            {% if form.version.errors %}
+                                <div class="mt-1 text-sm text-red-600">
+                                    {{ form.version.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Configuration du type d'instance -->
+                <div class="pt-6 border-t border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-4">
+                        <i class="fas fa-cogs mr-2"></i>Type d'Instance
+                    </h2>
+
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <input type="checkbox"
+                                   name="is_source"
+                                   id="id_is_source"
+                                   value="1"
+                                   {% if form.is_source.value %}checked{% endif %}
+                                   class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <label for="id_is_source" class="ml-3 text-sm font-medium text-gray-700">
+                                Instance source
+                            </label>
+                        </div>
+                        <p class="ml-7 text-sm text-gray-500">
+                            Cette instance peut être utilisée comme source de données pour la synchronisation
+                        </p>
+
+                        <div class="flex items-center">
+                            <input type="checkbox"
+                                   name="is_destination"
+                                   id="id_is_destination"
+                                   value="1"
+                                   {% if form.is_destination.value %}checked{% endif %}
+                                   class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <label for="id_is_destination" class="ml-3 text-sm font-medium text-gray-700">
+                                Instance destination
+                            </label>
+                        </div>
+                        <p class="ml-7 text-sm text-gray-500">
+                            Cette instance peut être utilisée comme destination pour la synchronisation
+                        </p>
+
+                        {% if form.is_source.errors %}
+                            <div class="text-sm text-red-600">
+                                {{ form.is_source.errors.0 }}
+                            </div>
+                        {% endif %}
+                        {% if form.is_destination.errors %}
+                            <div class="text-sm text-red-600">
+                                {{ form.is_destination.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Test de connexion -->
+                <div class="pt-6 border-t border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-4">
+                        <i class="fas fa-plug mr-2"></i>Test de Connexion
+                    </h2>
+
+                    <div id="connection-test-result" class="mb-4"></div>
+
+                    <button type="button"
+                            onclick="testConnection()"
+                            class="btn btn-outline-info">
+                        <i class="fas fa-plug mr-2"></i>Tester la Connexion
+                    </button>
+                </div>
+
+                <!-- Boutons d'action -->
+                <div class="pt-6 border-t border-gray-200 flex justify-end space-x-3">
+                    <a href="{% if action == 'edit' and instance %}{% url 'dhis2_instance_detail' instance.id %}{% else %}{% url 'dhis2_instance_list' %}{% endif %}"
+                       class="btn btn-outline-secondary">
+                        Annuler
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas {% if action == 'create' %}fa-plus{% else %}fa-save{% endif %} mr-2"></i>
+                        {% if action == 'create' %}Créer{% else %}Sauvegarder{% endif %}
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function testConnection() {
+    const resultDiv = document.getElementById('connection-test-result');
+    const form = document.getElementById('instance-form');
+    const formData = new FormData(form);
+
+    // Afficher le message de chargement
+    resultDiv.innerHTML = `
+        <div class="flex items-center text-blue-600 p-4 bg-blue-50 rounded-md">
+            <div class="spinner-border spinner-border-sm mr-2"></div>
+            Test de connexion en cours...
+        </div>
+    `;
+
+    // Préparer les données pour le test
+    const testData = {
+        base_url: formData.get('base_url'),
+        username: formData.get('username'),
+        password: formData.get('password')
+    };
+
+    // Créer une instance temporaire pour tester
+    fetch('{% url "dhis2_instance_create" %}', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            'test_only': 'true',
+            ...testData
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        let resultHtml = '';
+        if (data.success) {
+            resultHtml = `
+                <div class="p-4 rounded-md bg-green-50 border border-green-200">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                        <h3 class="text-sm font-medium text-green-800">Connexion réussie</h3>
+                    </div>
+                    <p class="mt-1 text-sm text-green-700">${data.message || 'La connexion à l\'instance DHIS2 a été établie avec succès'}</p>
+                    ${data.details ? `
+                        <div class="mt-2 text-sm text-green-700">
+                            ${data.details.dhis2_version ? `<p>Version DHIS2: ${data.details.dhis2_version}</p>` : ''}
+                            ${data.details.system_name ? `<p>Nom du système: ${data.details.system_name}</p>` : ''}
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+
+            // Mettre à jour automatiquement la version si détectée
+            if (data.details && data.details.dhis2_version) {
+                document.getElementById('id_version').value = data.details.dhis2_version;
+            }
+        } else {
+            resultHtml = `
+                <div class="p-4 rounded-md bg-red-50 border border-red-200">
+                    <div class="flex items-center">
+                        <i class="fas fa-times-circle text-red-600 mr-2"></i>
+                        <h3 class="text-sm font-medium text-red-800">Échec de connexion</h3>
+                    </div>
+                    <p class="mt-1 text-sm text-red-700">${data.message || 'Impossible de se connecter à l\'instance DHIS2'}</p>
+                    ${data.errors ? `
+                        <ul class="mt-2 text-sm text-red-700 list-disc list-inside">
+                            ${Object.entries(data.errors).map(([field, errors]) =>
+                                errors.map(error => `<li>${field}: ${error}</li>`).join('')
+                            ).join('')}
+                        </ul>
+                    ` : ''}
+                </div>
+            `;
+        }
+        resultDiv.innerHTML = resultHtml;
+    })
+    .catch(error => {
+        resultDiv.innerHTML = `
+            <div class="p-4 rounded-md bg-red-50 border border-red-200">
+                <div class="flex items-center">
+                    <i class="fas fa-times-circle text-red-600 mr-2"></i>
+                    <h3 class="text-sm font-medium text-red-800">Erreur</h3>
+                </div>
+                <p class="mt-1 text-sm text-red-700">Erreur de réseau lors du test de connexion</p>
+            </div>
+        `;
+    });
+}
+
+// Validation du formulaire côté client
+document.getElementById('instance-form').addEventListener('submit', function(e) {
+    const isSource = document.getElementById('id_is_source').checked;
+    const isDestination = document.getElementById('id_is_destination').checked;
+
+    if (!isSource && !isDestination) {
+        e.preventDefault();
+        alert('Veuillez sélectionner au moins un type d\'instance (source ou destination).');
+        return false;
+    }
+});
+</script>
+{% endblock %}
