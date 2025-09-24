@@ -49,6 +49,9 @@
 {% endblock %}
 
 {% block content %}
+<!-- Token CSRF caché pour les appels AJAX -->
+{% csrf_token %}
+
 <div class="space-y-6">
     <!-- En-tête avec fil d'Ariane -->
     <nav class="flex" aria-label="Breadcrumb">
@@ -653,19 +656,330 @@
         }
     }
 
+    function getCSRFToken() {
+        // Essayer plusieurs méthodes pour récupérer le token CSRF
+        let token = null;
+
+        // Méthode 1: meta tag (recommandée)
+        const metaTag = document.querySelector('meta[name=csrf-token]');
+        if (metaTag) {
+            token = metaTag.getAttribute('content');
+        }
+
+        // Méthode 2: input hidden dans un formulaire
+        if (!token) {
+            const csrfInput = document.querySelector('[name=csrfmiddlewaretoken]');
+            if (csrfInput) {
+                token = csrfInput.value;
+            }
+        }
+
+        // Méthode 3: cookie (si configuré)
+        if (!token) {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                const [name, value] = cookie.trim().split('=');
+                if (name === 'csrftoken') {
+                    token = value;
+                    break;
+                }
+            }
+        }
+
+        return token;
+    }
+
     function runSync() {
-        DHIS2Sync.showToast('Fonctionnalité de synchronisation en développement', 'info');
-        // TODO: Implémenter le lancement de synchronisation
+        // Vérifier si la configuration est active
+        const isActive = {{ configuration.is_active|yesno:"true,false" }};
+        if (!isActive) {
+            DHIS2Sync.showToast('La configuration doit être active pour lancer une synchronisation', 'warning');
+            return;
+        }
+
+        // Afficher une boîte de dialogue de confirmation avec options
+        const syncOptions = [
+            { value: 'complete', label: 'Synchronisation Complète', description: 'Métadonnées + Données (Tracker, Events, Agrégées)' },
+            { value: 'metadata', label: 'Métadonnées Seulement', description: 'Synchroniser uniquement les métadonnées' },
+            { value: 'data', label: 'Données Seulement', description: 'Synchroniser uniquement les données' }
+        ];
+
+        let optionsHtml = syncOptions.map(option => `
+            <div class="mb-2">
+                <label class="flex items-center cursor-pointer p-2 rounded hover:bg-gray-50">
+                    <input type="radio" name="sync_type" value="${option.value}" class="mr-3" ${option.value === '{{ configuration.sync_type }}' ? 'checked' : ''}>
+                    <div>
+                        <div class="font-medium">${option.label}</div>
+                        <div class="text-sm text-gray-600">${option.description}</div>
+                    </div>
+                </label>
+            </div>
+        `).join('');
+
+        const modalHtml = `
+            <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" id="sync-modal">
+                <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Lancer Synchronisation</h3>
+                        <p class="text-sm text-gray-600 mb-4">
+                            Configuration: <strong>{{ configuration.name }}</strong>
+                        </p>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Type de synchronisation:</label>
+                            ${optionsHtml}
+                        </div>
+                        <div class="flex justify-end space-x-3">
+                            <button onclick="closeSyncModal()" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                Annuler
+                            </button>
+                            <button onclick="confirmSync()" class="px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700">
+                                🚀 Lancer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+    }
+
+    function closeSyncModal() {
+        const modal = document.getElementById('sync-modal');
+        if (modal) {
+            modal.remove();
+        }
+    }
+
+    function confirmSync() {
+        const selectedType = document.querySelector('input[name="sync_type"]:checked')?.value;
+        if (!selectedType) {
+            DHIS2Sync.showToast('Veuillez sélectionner un type de synchronisation', 'warning');
+            return;
+        }
+
+        // Fermer la modal
+        closeSyncModal();
+
+        // Afficher loading
+        DHIS2Sync.showLoading('Lancement de la synchronisation...');
+
+        // Déterminer l'URL selon le type
+        let syncUrl;
+        switch (selectedType) {
+            case 'metadata':
+                syncUrl = '{% url "launch_metadata_sync" configuration.id %}';
+                break;
+            case 'data':
+                syncUrl = '{% url "launch_data_sync" configuration.id %}';
+                break;
+            default:
+                syncUrl = '{% url "launch_synchronization" configuration.id %}';
+        }
+
+        // Lancer la synchronisation
+        fetch(syncUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': getCSRFToken()
+            },
+            body: selectedType !== 'complete' ? `sync_types=${selectedType}` : ''
+        })
+        .then(response => response.json())
+        .then(data => {
+            DHIS2Sync.hideLoading();
+            if (data.success) {
+                DHIS2Sync.showToast(data.message, 'success');
+                // Rediriger vers la page du job après 2 secondes
+                setTimeout(() => {
+                    window.location.href = data.redirect;
+                }, 2000);
+            } else {
+                DHIS2Sync.showToast(data.message || 'Erreur lors du lancement', 'error');
+            }
+        })
+        .catch(error => {
+            DHIS2Sync.hideLoading();
+            console.error('Erreur:', error);
+            DHIS2Sync.showToast('Erreur de réseau lors du lancement', 'error');
+        });
     }
 
     function validateConfig() {
-        DHIS2Sync.showToast('Validation de configuration en développement', 'info');
-        // TODO: Implémenter la validation de configuration
+        DHIS2Sync.showLoading('Test de compatibilité en cours...');
+
+        fetch('{% url "sync_config_test_compatibility" configuration.id %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': getCSRFToken()
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            DHIS2Sync.hideLoading();
+
+            if (data.success) {
+                // Afficher les résultats détaillés dans une modal
+                showValidationResults(data);
+            } else {
+                DHIS2Sync.showToast(data.message || 'Erreur lors du test de compatibilité', 'error');
+            }
+        })
+        .catch(error => {
+            DHIS2Sync.hideLoading();
+            console.error('Erreur:', error);
+            DHIS2Sync.showToast('Erreur de réseau lors du test', 'error');
+        });
+    }
+
+    function showValidationResults(data) {
+        let checksHtml = '';
+        if (data.compatibility_checks) {
+            checksHtml = data.compatibility_checks.map(check => `
+                <div class="mb-2 p-2 rounded ${check.status === 'success' ? 'bg-green-50 border border-green-200' : 'bg-yellow-50 border border-yellow-200'}">
+                    <div class="flex items-center">
+                        <span class="${check.status === 'success' ? 'text-green-600' : 'text-yellow-600'} mr-2">
+                            ${check.status === 'success' ? '✅' : '⚠️'}
+                        </span>
+                        <strong>${check.check}</strong>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-1">${check.message}</p>
+                </div>
+            `).join('');
+        }
+
+        let warningsHtml = '';
+        if (data.warnings && data.warnings.length > 0) {
+            warningsHtml = `
+                <div class="mt-4">
+                    <h4 class="font-medium text-yellow-800 mb-2">⚠️ Avertissements:</h4>
+                    <ul class="list-disc list-inside text-sm text-yellow-700 space-y-1">
+                        ${data.warnings.map(warning => `<li>${warning}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+
+        let recommendationsHtml = '';
+        if (data.recommendations && data.recommendations.length > 0) {
+            recommendationsHtml = `
+                <div class="mt-4">
+                    <h4 class="font-medium text-blue-800 mb-2">💡 Recommandations:</h4>
+                    <ul class="list-disc list-inside text-sm text-blue-700 space-y-1">
+                        ${data.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+
+        const modalHtml = `
+            <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" id="validation-modal">
+                <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-96 overflow-y-auto">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                            ${data.success ? '✅' : '❌'} Résultats de Validation
+                        </h3>
+
+                        <div class="mb-4">
+                            <h4 class="font-medium text-gray-800 mb-2">Tests de Connexion:</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="p-3 rounded border ${data.source_test?.success ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}">
+                                    <div class="font-medium">Source: {{ configuration.source_instance.name }}</div>
+                                    <div class="text-sm ${data.source_test?.success ? 'text-green-600' : 'text-red-600'}">
+                                        ${data.source_test?.success ? '✅ Connectée' : '❌ Échec'}
+                                    </div>
+                                    ${data.source_test?.dhis2_version ? `<div class="text-xs text-gray-600">Version: ${data.source_test.dhis2_version}</div>` : ''}
+                                </div>
+                                <div class="p-3 rounded border ${data.destination_test?.success ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}">
+                                    <div class="font-medium">Destination: {{ configuration.destination_instance.name }}</div>
+                                    <div class="text-sm ${data.destination_test?.success ? 'text-green-600' : 'text-red-600'}">
+                                        ${data.destination_test?.success ? '✅ Connectée' : '❌ Échec'}
+                                    </div>
+                                    ${data.destination_test?.dhis2_version ? `<div class="text-xs text-gray-600">Version: ${data.destination_test.dhis2_version}</div>` : ''}
+                                </div>
+                            </div>
+                        </div>
+
+                        ${checksHtml ? `<div class="mb-4"><h4 class="font-medium text-gray-800 mb-2">Vérifications de Compatibilité:</h4>${checksHtml}</div>` : ''}
+                        ${warningsHtml}
+                        ${recommendationsHtml}
+
+                        <div class="flex justify-end mt-6">
+                            <button onclick="closeValidationModal()" class="px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700">
+                                Fermer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+    }
+
+    function closeValidationModal() {
+        const modal = document.getElementById('validation-modal');
+        if (modal) {
+            modal.remove();
+        }
     }
 
     function exportConfig() {
-        DHIS2Sync.showToast('Export de configuration en développement', 'info');
-        // TODO: Implémenter l'export de configuration
+        DHIS2Sync.showLoading('Préparation de l\'export...');
+
+        // Préparer les données de configuration pour l'export
+        const configData = {
+            name: '{{ configuration.name|escapejs }}',
+            description: '{{ configuration.description|default:""|escapejs }}',
+            sync_type: '{{ configuration.sync_type }}',
+            data_type: '{{ configuration.data_type|default:""|escapejs }}',
+            import_strategy: '{{ configuration.import_strategy }}',
+            merge_mode: '{{ configuration.merge_mode }}',
+            execution_mode: '{{ configuration.execution_mode }}',
+            source_instance: {
+                name: '{{ configuration.source_instance.name|escapejs }}',
+                base_url: '{{ configuration.source_instance.base_url|escapejs }}',
+                username: '{{ configuration.source_instance.username|escapejs }}'
+            },
+            destination_instance: {
+                name: '{{ configuration.destination_instance.name|escapejs }}',
+                base_url: '{{ configuration.destination_instance.base_url|escapejs }}',
+                username: '{{ configuration.destination_instance.username|escapejs }}'
+            },
+            sync_start_date: '{{ configuration.sync_start_date|default:""|date:"Y-m-d" }}',
+            sync_end_date: '{{ configuration.sync_end_date|default:""|date:"Y-m-d" }}',
+            schedule_enabled: {{ configuration.schedule_enabled|yesno:"true,false" }},
+            schedule_interval: {{ configuration.schedule_interval|default:"null" }},
+            max_page_size: {{ configuration.max_page_size|default:"null" }},
+            supports_paging: {{ configuration.supports_paging|yesno:"true,false" }},
+            exported_at: new Date().toISOString(),
+            dhis2_sync_version: '1.0.0'
+        };
+
+        DHIS2Sync.hideLoading();
+
+        // Créer et télécharger le fichier JSON
+        const dataStr = JSON.stringify(configData, null, 2);
+        const blob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `dhis2-sync-config-${configData.name.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase()}-${new Date().toISOString().split('T')[0]}.json`;
+
+        // Ajouter le lien au DOM temporairement et le cliquer
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        // Nettoyer l'URL
+        URL.revokeObjectURL(url);
+
+        DHIS2Sync.showToast('Configuration exportée avec succès', 'success');
     }
 </script>
 {% endblock %}

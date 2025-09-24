@@ -6,14 +6,15 @@ from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.urls import reverse
 from django.http import JsonResponse
-from django.views.generic import CreateView, UpdateView, ListView, DetailView
+from django.views.generic import CreateView, UpdateView, ListView, DetailView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.db.models import Q
 import logging
 
-from ..models import SyncConfiguration, DHIS2Instance
+from ..models import SyncConfiguration, DHIS2Instance, SyncJob
 from ..forms import SyncConfigurationForm
+from ..services.sync_orchestrator import SyncOrchestrator
 
 logger = logging.getLogger(__name__)
 
@@ -295,12 +296,12 @@ class SyncConfigurationUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_invalid(form)
 
 
-@login_required
-def toggle_configuration_status(request, config_id):
+class ToggleConfigurationStatusView(LoginRequiredMixin, View):
     """Vue pour activer/désactiver une configuration"""
-    config = get_object_or_404(SyncConfiguration, id=config_id)
 
-    if request.method == 'POST':
+    def post(self, request, config_id):
+        config = get_object_or_404(SyncConfiguration, id=config_id)
+
         try:
             # Inverser le statut
             config.is_active = not config.is_active
@@ -332,15 +333,16 @@ def toggle_configuration_status(request, config_id):
             messages.error(request, error_message)
             return redirect('sync_config_detail', config_id=config.id)
 
-    return redirect('sync_config_detail', config_id=config.id)
+    def get(self, request, config_id):
+        return redirect('sync_config_detail', config_id=config_id)
 
 
-@login_required
-def test_configuration_compatibility(request, config_id):
+class TestConfigurationCompatibilityView(LoginRequiredMixin, View):
     """Vue pour tester la compatibilité entre source et destination"""
-    config = get_object_or_404(SyncConfiguration, id=config_id)
 
-    if request.method == 'POST':
+    def post(self, request, config_id):
+        config = get_object_or_404(SyncConfiguration, id=config_id)
+
         try:
             # Test de connexion aux deux instances
             source_result = config.source_instance.test_connection()
@@ -412,15 +414,16 @@ def test_configuration_compatibility(request, config_id):
             messages.error(request, error_result['message'])
             return redirect('sync_config_detail', config_id=config.id)
 
-    return redirect('sync_config_detail', config_id=config.id)
+    def get(self, request, config_id):
+        return redirect('sync_config_detail', config_id=config_id)
 
 
-@login_required
-def clone_configuration(request, config_id):
+class CloneConfigurationView(LoginRequiredMixin, View):
     """Vue pour cloner une configuration existante"""
-    original_config = get_object_or_404(SyncConfiguration, id=config_id)
 
-    if request.method == 'POST':
+    def post(self, request, config_id):
+        original_config = get_object_or_404(SyncConfiguration, id=config_id)
+
         try:
             with transaction.atomic():
                 # Créer une copie de la configuration
@@ -468,4 +471,6 @@ def clone_configuration(request, config_id):
             messages.error(request, error_message)
             return redirect('sync_config_detail', config_id=config_id)
 
-    return redirect('sync_config_detail', config_id=config_id)
+    def get(self, request, config_id):
+        return redirect('sync_config_detail', config_id=config_id)
+

@@ -16,9 +16,18 @@ from .views.configurations import (
     SyncConfigurationDetailView,
     SyncConfigurationCreateView,
     SyncConfigurationUpdateView,
-    toggle_configuration_status,
-    test_configuration_compatibility,
-    clone_configuration,
+    ToggleConfigurationStatusView,
+    TestConfigurationCompatibilityView,
+    CloneConfigurationView,
+)
+from .views.synchronisations import (
+    LaunchSynchronizationView,
+    LaunchMetadataSyncView,
+    LaunchDataSyncView,
+    GetSyncParametersView,
+)
+from .views.sync_jobs import (
+    SyncJobDetailView,
 )
 
 urlpatterns = [
@@ -67,11 +76,28 @@ urlpatterns = [
     path('configurations/<int:config_id>/edit/', SyncConfigurationUpdateView.as_view(), name='sync_config_update'),
 
     # Activer/Désactiver une configuration
-    path('configurations/<int:config_id>/toggle-status/', toggle_configuration_status, name='sync_config_toggle_status'),
+    path('configurations/<int:config_id>/toggle-status/', ToggleConfigurationStatusView.as_view(), name='sync_config_toggle_status'),
 
     # Test de compatibilité
-    path('configurations/<int:config_id>/test-compatibility/', test_configuration_compatibility, name='sync_config_test_compatibility'),
+    path('configurations/<int:config_id>/test-compatibility/', TestConfigurationCompatibilityView.as_view(), name='sync_config_test_compatibility'),
 
     # Cloner une configuration
-    path('configurations/<int:config_id>/clone/', clone_configuration, name='sync_config_clone'),
+    path('configurations/<int:config_id>/clone/', CloneConfigurationView.as_view(), name='sync_config_clone'),
+
+    # === SYNCHRONISATION ===
+    # Lancer une synchronisation complète
+    path('configurations/<int:config_id>/launch-sync/', LaunchSynchronizationView.as_view(), name='launch_synchronization'),
+
+    # Lancer synchronisation métadonnées uniquement
+    path('configurations/<int:config_id>/launch-metadata-sync/', LaunchMetadataSyncView.as_view(), name='launch_metadata_sync'),
+
+    # Lancer synchronisation données uniquement
+    path('configurations/<int:config_id>/launch-data-sync/', LaunchDataSyncView.as_view(), name='launch_data_sync'),
+
+    # Récupérer les paramètres disponibles pour la synchronisation
+    path('configurations/<int:config_id>/sync-parameters/', GetSyncParametersView.as_view(), name='get_sync_parameters'),
+
+    # === JOBS DE SYNCHRONISATION ===
+    # Détail d'un job de synchronisation
+    path('jobs/<int:job_id>/', SyncJobDetailView.as_view(), name='sync_job_detail'),
 ]
