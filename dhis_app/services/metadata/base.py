@@ -448,6 +448,19 @@ class BaseMetadataService:
                 job.total_items += len(data)
                 job.save()
 
+            # Si aucune donnée, retourner succès
+            if not data:
+                if job:
+                    job.log_message += f"Résultat {resource}: 0 éléments à synchroniser\n"
+                    job.save()
+                return {
+                    'resource': resource,
+                    'success': True,
+                    'imported_count': 0,
+                    'error_count': 0,
+                    'result': {'status': 'OK', 'message': 'Aucune donnée à importer'}
+                }
+
             # Importer les données
             result = self.import_metadata_resource(resource, data, strategy)
 

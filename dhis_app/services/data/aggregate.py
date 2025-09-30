@@ -244,11 +244,27 @@ class AggregateDataService(BaseDataService):
         """
         params = {}
 
-        # Unités d'organisation
+        # Unités d'organisation (obligatoire pour DHIS2)
         if org_units:
             valid_org_units = self.validate_org_units(org_units)
             if valid_org_units:
                 params['orgUnits'] = valid_org_units
+        else:
+            # Si aucune unité n'est spécifiée, récupérer toutes les unités
+            try:
+                all_org_units = self.source_instance.get_metadata(
+                    resource='organisationUnits',
+                    fields='id',
+                    paging=False
+                )
+                if all_org_units:
+                    # Limiter aux 10 premières unités pour éviter une requête trop large
+                    params['orgUnits'] = [ou['id'] for ou in all_org_units[:10]]
+                    self.logger.warning(f"Aucune unité d'organisation spécifiée. Utilisation des {len(params['orgUnits'])} premières unités.")
+            except Exception as e:
+                self.logger.error(f"Impossible de récupérer les unités d'organisation: {e}")
+                # Pas d'unités = erreur
+                raise DataServiceError("Au moins une unité d'organisation doit être spécifiée pour synchroniser les données agrégées")
 
         # Périodes
         if periods:
