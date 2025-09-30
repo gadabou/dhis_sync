@@ -213,16 +213,16 @@ class BaseMetadataService:
         'messageConversations': 55,
     }
 
-    def __init__(self, source_instance: DHIS2Instance, destination_instance: DHIS2Instance):
+    def __init__(self, sync_config: SyncConfiguration):
         """
         Initialise le service de métadonnées
 
         Args:
-            source_instance: Instance DHIS2 source
-            destination_instance: Instance DHIS2 destination
+            sync_config: Configuration de synchronisation contenant les instances source et destination
         """
-        self.source_instance = source_instance
-        self.destination_instance = destination_instance
+        self.sync_config = sync_config
+        self.source_instance = sync_config.source_instance
+        self.destination_instance = sync_config.destination_instance
         self.logger = logger
 
     def get_ordered_families(self, selected_families: Optional[List[str]] = None) -> List[Dict[str, Any]]:
