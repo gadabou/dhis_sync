@@ -53,6 +53,8 @@ class AggregateDataService(BaseDataService):
                 config=sync_config
             )
 
+            print("Aggregate params", params)
+
             job.log_message += f"Paramètres: {params}\n"
             job.save()
 
@@ -132,38 +134,79 @@ class AggregateDataService(BaseDataService):
             # Utiliser l'API dataValueSets pour récupérer les données
             api = self.source_instance.get_api_client()
 
-            # Construire les paramètres pour l'API
-            api_params = {}
+            all_data_values = []
 
-            if params.get('orgUnits'):
-                api_params['orgUnit'] = params['orgUnits']
+            # Si des dataSets sont spécifiés, les récupérer un par un pour gérer les permissions
+            if params.get('dataSet') and isinstance(params['dataSet'], list):
+                data_sets = params['dataSet']
 
-            if params.get('periods'):
-                api_params['period'] = params['periods']
+                for dataset_id in data_sets:
+                    try:
+                        # Construire les paramètres pour l'API
+                        api_params = {'dataSet': dataset_id, 'paging': 'false'}
 
-            if params.get('startDate'):
-                api_params['startDate'] = params['startDate']
+                        if params.get('orgUnits'):
+                            api_params['orgUnit'] = params['orgUnits']
 
-            if params.get('endDate'):
-                api_params['endDate'] = params['endDate']
+                        if params.get('periods'):
+                            api_params['period'] = params['periods']
 
-            if params.get('dataElements'):
-                api_params['dataElement'] = params['dataElements']
+                        if params.get('startDate'):
+                            api_params['startDate'] = params['startDate']
 
-            if params.get('dataSet'):
-                api_params['dataSet'] = params['dataSet']
+                        if params.get('endDate'):
+                            api_params['endDate'] = params['endDate']
 
-            # Ajouter la pagination
-            api_params['paging'] = 'false'  # Récupérer toutes les données
+                        response = api.get('dataValueSets', params=api_params)
 
-            response = api.get('dataValueSets', params=api_params)
-            response.raise_for_status()
+                        data_values = response.get('dataValues', [])
+                        all_data_values.extend(data_values)
 
-            data = response.json()
-            data_values = data.get('dataValues', [])
+                        self.logger.info(f"Récupéré {len(data_values)} valeurs pour dataSet {dataset_id}")
 
-            self.logger.info(f"Récupérés {len(data_values)} valeurs de données agrégées")
-            return data_values
+                    except Exception as e:
+                        error_str = str(e)
+                        # Ignorer les erreurs de permission (code 409, E2010)
+                        if "409" in error_str and ("E2010" in error_str or "not allowed" in error_str.lower()):
+                            self.logger.warning(f"Permission refusée pour dataSet {dataset_id} - ignoré")
+                            continue
+                        else:
+                            # Pour les autres erreurs, continuer mais logger
+                            self.logger.warning(f"Erreur récupération dataSet {dataset_id}: {e}")
+                            continue
+
+                return all_data_values
+
+            else:
+                # Récupération classique si pas de dataSets spécifiques
+                api_params = {'paging': 'false'}
+
+                if params.get('orgUnits'):
+                    api_params['orgUnit'] = params['orgUnits']
+
+                if params.get('periods'):
+                    api_params['period'] = params['periods']
+
+                if params.get('startDate'):
+                    api_params['startDate'] = params['startDate']
+
+                if params.get('endDate'):
+                    api_params['endDate'] = params['endDate']
+
+                if params.get('dataElements'):
+                    api_params['dataElement'] = params['dataElements']
+
+                if params.get('dataSet'):
+                    api_params['dataSet'] = params['dataSet']
+
+                response = api.get('dataValueSets', params=api_params)
+                response.raise_for_status()
+
+                data = response.json()
+                data_values = data.get('dataValues', [])
+
+                self.logger.info(f"Récupérés {len(data_values)} valeurs de données agrégées")
+                return data_values
 
         except Exception as e:
             self.logger.error(f"Erreur lors de la récupération des données agrégées: {e}")

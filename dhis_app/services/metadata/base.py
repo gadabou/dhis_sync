@@ -374,6 +374,54 @@ class BaseMetadataService:
             self.logger.warning(f"Erreur lors du nettoyage du sharing: {e}. Continuation sans nettoyage.")
             return items
 
+    def clean_visualization_references(self, visualizations: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """
+        Nettoie les références dans les visualizations qui peuvent causer des erreurs
+
+        Args:
+            visualizations: Liste des visualizations
+
+        Returns:
+            Liste des visualizations nettoyées
+        """
+        try:
+            for viz in visualizations:
+                # Retirer les références aux categoryCombo qui peuvent causer des erreurs
+                # Les visualizations n'ont généralement pas besoin de categoryCombo explicite
+                if 'categoryCombo' in viz:
+                    del viz['categoryCombo']
+
+                # Nettoyer les dataDimensionItems qui peuvent avoir des références invalides
+                if 'dataDimensionItems' in viz:
+                    cleaned_items = []
+                    for item in viz['dataDimensionItems']:
+                        # Garder seulement les items qui ont un ID valide
+                        if item and isinstance(item, dict):
+                            # Retirer categoryCombo des dataDimensionItems
+                            if 'categoryCombo' in item:
+                                del item['categoryCombo']
+                            cleaned_items.append(item)
+                    viz['dataDimensionItems'] = cleaned_items
+
+                # Nettoyer les dimensions columns/rows/filters
+                for dimension_type in ['columns', 'rows', 'filters']:
+                    if dimension_type in viz and viz[dimension_type]:
+                        cleaned_dimensions = []
+                        for dimension in viz[dimension_type]:
+                            if dimension and isinstance(dimension, dict):
+                                # Retirer categoryCombo des dimensions
+                                if 'categoryCombo' in dimension:
+                                    del dimension['categoryCombo']
+                                cleaned_dimensions.append(dimension)
+                        viz[dimension_type] = cleaned_dimensions
+
+            self.logger.info(f"Nettoyé {len(visualizations)} visualizations")
+            return visualizations
+
+        except Exception as e:
+            self.logger.warning(f"Erreur lors du nettoyage des visualizations: {e}. Continuation sans nettoyage.")
+            return visualizations
+
     def validate_dependencies(self, families: List[str]) -> List[str]:
         """
         Valide et résout les dépendances entre familles

@@ -230,12 +230,16 @@ class TrackerDataService(BaseDataService):
             if org_units:
                 valid_org_units = self.validate_org_units(org_units)
 
+                if not valid_org_units:
+                    self.logger.warning(f"Aucune orgUnit valide trouvée dans la source pour le programme {program_uid}")
+                    return all_tei_data
+
                 for org_unit in valid_org_units:
                     try:
                         tei_response = self.source_instance.get_tracked_entity_instances(
                             program=program_uid,
                             orgUnit=org_unit,
-                            ouMode='SELECTED',
+                            ouMode='DESCENDANTS',
                             lastUpdatedStartDate=last_updated_start,
                             lastUpdatedEndDate=last_updated_end,
                             paging='false'
@@ -255,7 +259,7 @@ class TrackerDataService(BaseDataService):
                                 all_tei_data['events'].extend(events)
 
                     except Exception as e:
-                        self.logger.warning(f"Erreur récupération TEI pour {org_unit}: {e}")
+                        self.logger.warning(f"Erreur récupération TEI pour orgUnit {org_unit}: {e}")
                         continue
             else:
                 # Récupérer toutes les TEI du programme

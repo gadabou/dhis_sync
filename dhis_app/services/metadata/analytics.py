@@ -37,6 +37,9 @@ class VisualizationsService(BaseMetadataService):
             # Nettoyer les références invalides dans le sharing
             visualizations = self.clean_sharing_user_references(visualizations, 'visualizations')
 
+            # Nettoyer les références aux categoryCombo et autres objets qui peuvent causer des erreurs
+            visualizations = self.clean_visualization_references(visualizations)
+
             result = self.destination_instance.post_metadata(
                 resource='visualizations',
                 data=visualizations,

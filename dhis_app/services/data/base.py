@@ -18,16 +18,16 @@ class DataServiceError(Exception):
 class BaseDataService:
     """Service de base pour la synchronisation des données DHIS2"""
 
-    def __init__(self, source_instance: DHIS2Instance, destination_instance: DHIS2Instance):
+    def __init__(self, sync_config: SyncConfiguration):
         """
         Initialise le service de données
 
         Args:
-            source_instance: Instance DHIS2 source
-            destination_instance: Instance DHIS2 destination
+            sync_config: Configuration de synchronisation
         """
-        self.source_instance = source_instance
-        self.destination_instance = destination_instance
+        self.sync_config = sync_config
+        self.source_instance = sync_config.source_instance
+        self.destination_instance = sync_config.destination_instance
         self.logger = logger
 
     def check_instances_compatibility(self) -> Dict[str, Any]:

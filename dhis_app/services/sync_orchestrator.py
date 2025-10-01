@@ -38,9 +38,9 @@ class SyncOrchestrator:
 
         # Initialiser les services
         self.metadata_service = MetadataSyncService(sync_config)
-        self.tracker_service = TrackerDataService(self.source_instance, self.destination_instance)
-        self.events_service = EventsDataService(self.source_instance, self.destination_instance)
-        self.aggregate_service = AggregateDataService(self.source_instance, self.destination_instance)
+        self.tracker_service = TrackerDataService(sync_config)
+        self.events_service = EventsDataService(sync_config)
+        self.aggregate_service = AggregateDataService(sync_config)
 
     def execute_full_sync(self, sync_config: SyncConfiguration,
                          sync_types: Optional[List[str]] = None,
