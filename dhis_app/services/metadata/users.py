@@ -26,6 +26,9 @@ class UserRolesService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(roles)
+
             if not roles:
                 if job:
                     job.log_message += "Résultat userRoles: 0 importés, 0 erreurs\n"
@@ -79,6 +82,8 @@ class UsersService(BaseMetadataService):
                 fields='id,name,code,displayName,username,firstName,surname,email,phoneNumber,userRoles[id],userGroups[id],organisationUnits[id],dataViewOrganisationUnits[id]',
                 paging=False
             )
+
+            source_count = len(users)
 
             if not users:
                 if job:
@@ -207,6 +212,9 @@ class UserGroupsService(BaseMetadataService):
                 fields='id,name,displayName,code,managedGroups[id],sharing',
                 paging=False
             )
+
+
+            source_count = len(groups)
 
             if not groups:
                 if job:

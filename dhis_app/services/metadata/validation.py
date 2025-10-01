@@ -26,9 +26,12 @@ class ValidationRulesService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(rules)
+
             if not rules:
                 if job:
-                    job.log_message += "Resultat validationRules: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('validationRules', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -41,7 +44,7 @@ class ValidationRulesService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat validationRules: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('validationRules', source_count, stats)
                 job.save()
 
             return {
@@ -75,9 +78,12 @@ class ValidationRuleGroupsService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(groups)
+
             if not groups:
                 if job:
-                    job.log_message += "Resultat validationRuleGroups: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('validationRuleGroups', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -90,7 +96,7 @@ class ValidationRuleGroupsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat validationRuleGroups: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('validationRuleGroups', source_count, stats)
                 job.save()
 
             return {

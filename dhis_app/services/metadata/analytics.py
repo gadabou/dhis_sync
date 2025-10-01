@@ -25,9 +25,12 @@ class VisualizationsService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(visualizations)
+
             if not visualizations:
                 if job:
-                    job.log_message += "Resultat visualizations: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('visualizations', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -43,7 +46,7 @@ class VisualizationsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat visualizations: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('visualizations', source_count, stats)
                 job.save()
 
             return {
@@ -86,9 +89,12 @@ class MapsService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(maps)
+
             if not maps:
                 if job:
-                    job.log_message += "Resultat maps: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('maps', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -101,7 +107,7 @@ class MapsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat maps: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('maps', source_count, stats)
                 job.save()
 
             return {

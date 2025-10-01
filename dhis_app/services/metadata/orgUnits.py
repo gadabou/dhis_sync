@@ -26,9 +26,12 @@ class OrganisationUnitLevelsService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(levels)
+
             if not levels:
                 if job:
-                    job.log_message += "Resultat organisationUnitLevels: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('organisationUnitLevels', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -41,7 +44,7 @@ class OrganisationUnitLevelsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat organisationUnitLevels: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('organisationUnitLevels', source_count, stats)
                 job.save()
 
             return {
@@ -77,9 +80,11 @@ class OrganisationUnitsService(BaseMetadataService):
                 page_size=100
             )
 
+            source_count = len(org_units)
+
             if not org_units:
                 if job:
-                    job.log_message += "Resultat organisationUnits: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('organisationUnits', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -100,7 +105,7 @@ class OrganisationUnitsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat organisationUnits: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('organisationUnits', source_count, stats)
                 job.save()
 
             return {
@@ -134,9 +139,12 @@ class OrganisationUnitGroupsService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(groups)
+
             if not groups:
                 if job:
-                    job.log_message += "Resultat organisationUnitGroups: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('organisationUnitGroups', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -149,7 +157,7 @@ class OrganisationUnitGroupsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat organisationUnitGroups: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('organisationUnitGroups', source_count, stats)
                 job.save()
 
             return {
@@ -183,9 +191,12 @@ class OrganisationUnitGroupSetsService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(group_sets)
+
             if not group_sets:
                 if job:
-                    job.log_message += "Resultat organisationUnitGroupSets: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('organisationUnitGroupSets', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -198,7 +209,7 @@ class OrganisationUnitGroupSetsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat organisationUnitGroupSets: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('organisationUnitGroupSets', source_count, stats)
                 job.save()
 
             return {

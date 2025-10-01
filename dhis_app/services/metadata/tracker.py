@@ -26,9 +26,12 @@ class TrackedEntityTypesService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(entity_types)
+
             if not entity_types:
                 if job:
-                    job.log_message += "Resultat trackedEntityTypes: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('trackedEntityTypes', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -41,7 +44,7 @@ class TrackedEntityTypesService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat trackedEntityTypes: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('trackedEntityTypes', source_count, stats)
                 job.save()
 
             return {
@@ -75,9 +78,12 @@ class TrackedEntityAttributesService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(attributes)
+
             if not attributes:
                 if job:
-                    job.log_message += "Resultat trackedEntityAttributes: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('trackedEntityAttributes', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -90,7 +96,7 @@ class TrackedEntityAttributesService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat trackedEntityAttributes: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('trackedEntityAttributes', source_count, stats)
                 job.save()
 
             return {

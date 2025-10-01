@@ -26,9 +26,12 @@ class LegendsService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(legends)
+
             if not legends:
                 if job:
-                    job.log_message += "Resultat legends: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('legends', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -41,7 +44,7 @@ class LegendsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat legends: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('legends', source_count, stats)
                 job.save()
 
             return {
@@ -84,9 +87,12 @@ class LegendSetsService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(legend_sets)
+
             if not legend_sets:
                 if job:
-                    job.log_message += "Resultat legendSets: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('legendSets', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -99,7 +105,7 @@ class LegendSetsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat legendSets: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('legendSets', source_count, stats)
                 job.save()
 
             return {

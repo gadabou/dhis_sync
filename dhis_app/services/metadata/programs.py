@@ -26,20 +26,19 @@ class ProgramsService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(programs)
+
+            source_count = len(programs)
+
             if not programs:
                 if job:
-                    job.log_message += "Resultat programs: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('programs', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
             # Nettoyer les références invalides dans le sharing
-            if job:
-                job.log_message += f"  Nettoyage du sharing pour {len(programs)} programmes...\n"
-                job.save()
             programs = self.clean_sharing_user_references(programs, 'programs')
-            if job:
-                job.log_message += f"  Sharing nettoyé\n"
-                job.save()
 
             result = self.destination_instance.post_metadata(
                 resource='programs',
@@ -50,7 +49,7 @@ class ProgramsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat programs: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('programs', source_count, stats)
                 job.save()
 
             return {
@@ -84,9 +83,12 @@ class ProgramStageSectionsService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(sections)
+
             if not sections:
                 if job:
-                    job.log_message += "Resultat programStageSections: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('programStageSections', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -99,7 +101,7 @@ class ProgramStageSectionsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat programStageSections: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('programStageSections', source_count, stats)
                 job.save()
 
             return {
@@ -133,9 +135,12 @@ class ProgramStagesService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(stages)
+
             if not stages:
                 if job:
-                    job.log_message += "Resultat programStages: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('programStages', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -151,7 +156,7 @@ class ProgramStagesService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat programStages: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('programStages', source_count, stats)
                 job.save()
 
             return {
@@ -185,9 +190,12 @@ class ProgramRuleVariablesService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(variables)
+
             if not variables:
                 if job:
-                    job.log_message += "Resultat programRuleVariables: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('programRuleVariables', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -200,7 +208,7 @@ class ProgramRuleVariablesService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat programRuleVariables: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('programRuleVariables', source_count, stats)
                 job.save()
 
             return {
@@ -234,9 +242,12 @@ class ProgramRulesService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(rules)
+
             if not rules:
                 if job:
-                    job.log_message += "Resultat programRules: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('programRules', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -249,7 +260,7 @@ class ProgramRulesService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat programRules: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('programRules', source_count, stats)
                 job.save()
 
             return {
@@ -283,9 +294,12 @@ class ProgramRuleActionsService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(actions)
+
             if not actions:
                 if job:
-                    job.log_message += "Resultat programRuleActions: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('programRuleActions', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -298,7 +312,7 @@ class ProgramRuleActionsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat programRuleActions: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('programRuleActions', source_count, stats)
                 job.save()
 
             return {
@@ -332,9 +346,12 @@ class ProgramIndicatorsService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(indicators)
+
             if not indicators:
                 if job:
-                    job.log_message += "Resultat programIndicators: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('programIndicators', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -347,7 +364,7 @@ class ProgramIndicatorsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat programIndicators: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('programIndicators', source_count, stats)
                 job.save()
 
             return {

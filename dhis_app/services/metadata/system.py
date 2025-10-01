@@ -26,9 +26,12 @@ class AttributesService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(attributes)
+
             if not attributes:
                 if job:
-                    job.log_message += "Resultat attributes: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('attributes', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -41,7 +44,7 @@ class AttributesService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat attributes: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('attributes', source_count, stats)
                 job.save()
 
             return {
@@ -75,9 +78,12 @@ class ConstantsService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(constants)
+
             if not constants:
                 if job:
-                    job.log_message += "Resultat constants: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('constants', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -90,7 +96,7 @@ class ConstantsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat constants: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('constants', source_count, stats)
                 job.save()
 
             return {

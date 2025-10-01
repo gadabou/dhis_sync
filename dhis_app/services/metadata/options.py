@@ -27,9 +27,12 @@ class OptionsService(BaseMetadataService):
                 page_size=100
             )
 
+
+            source_count = len(options)
+
             if not options:
                 if job:
-                    job.log_message += "Resultat options: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('options', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -42,7 +45,7 @@ class OptionsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat options: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('options', source_count, stats)
                 job.save()
 
             return {
@@ -76,9 +79,12 @@ class OptionSetsService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(option_sets)
+
             if not option_sets:
                 if job:
-                    job.log_message += "Resultat optionSets: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('optionSets', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -91,7 +97,7 @@ class OptionSetsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat optionSets: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('optionSets', source_count, stats)
                 job.save()
 
             return {
@@ -125,9 +131,12 @@ class OptionGroupsService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(groups)
+
             if not groups:
                 if job:
-                    job.log_message += "Resultat optionGroups: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('optionGroups', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -140,7 +149,7 @@ class OptionGroupsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat optionGroups: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('optionGroups', source_count, stats)
                 job.save()
 
             return {
@@ -174,9 +183,12 @@ class OptionGroupSetsService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(group_sets)
+
             if not group_sets:
                 if job:
-                    job.log_message += "Resultat optionGroupSets: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('optionGroupSets', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -189,7 +201,7 @@ class OptionGroupSetsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat optionGroupSets: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('optionGroupSets', source_count, stats)
                 job.save()
 
             return {

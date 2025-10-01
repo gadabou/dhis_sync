@@ -26,9 +26,12 @@ class PredictorsService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(predictors)
+
             if not predictors:
                 if job:
-                    job.log_message += "Resultat predictors: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('predictors', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -41,7 +44,7 @@ class PredictorsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat predictors: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('predictors', source_count, stats)
                 job.save()
 
             return {
@@ -75,9 +78,12 @@ class PredictorGroupsService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(groups)
+
             if not groups:
                 if job:
-                    job.log_message += "Resultat predictorGroups: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('predictorGroups', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -90,7 +96,7 @@ class PredictorGroupsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat predictorGroups: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('predictorGroups', source_count, stats)
                 job.save()
 
             return {

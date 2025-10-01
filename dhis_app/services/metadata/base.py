@@ -584,7 +584,7 @@ class BaseMetadataService:
         Returns:
             Statistiques extraites
         """
-        stats = {'imported': 0, 'updated': 0, 'errors': 0, 'warnings': 0}
+        stats = {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0}
 
         try:
             # Structure typique de réponse DHIS2
@@ -592,20 +592,61 @@ class BaseMetadataService:
                 summary = result['importSummary']
                 stats['imported'] = summary.get('importCount', 0)
                 stats['updated'] = summary.get('updateCount', 0)
+                stats['ignored'] = summary.get('ignoredCount', 0)
                 stats['errors'] = len(summary.get('conflicts', []))
 
             elif 'typeReports' in result:
                 # Format pour les métadonnées
                 for type_report in result['typeReports']:
-                    stats['imported'] += type_report.get('stats', {}).get('created', 0)
-                    stats['updated'] += type_report.get('stats', {}).get('updated', 0)
+                    type_stats = type_report.get('stats', {})
+                    stats['imported'] += type_stats.get('created', 0)
+                    stats['updated'] += type_stats.get('updated', 0)
+                    stats['ignored'] += type_stats.get('ignored', 0)
 
                     object_reports = type_report.get('objectReports', [])
                     for obj_report in object_reports:
-                        if obj_report.get('errorReports'):
-                            stats['errors'] += len(obj_report['errorReports'])
+                        error_reports = obj_report.get('errorReports', [])
+                        if error_reports:
+                            stats['errors'] += len(error_reports)
 
         except Exception as e:
             self.logger.warning(f"Erreur lors de l'analyse du résultat d'import: {e}")
 
         return stats
+
+    def _format_sync_log(self, resource: str, source_count: int, stats: Dict[str, int]) -> str:
+        """
+        Formate un message de log détaillé pour une synchronisation de ressource
+
+        Args:
+            resource: Nom de la ressource (ex: 'programs', 'dataElements')
+            source_count: Nombre d'éléments récupérés de la source
+            stats: Statistiques d'import (imported, updated, ignored, errors, warnings)
+
+        Returns:
+            Message de log formaté
+        """
+        created = stats.get('imported', 0)
+        updated = stats.get('updated', 0)
+        ignored = stats.get('ignored', 0)
+        errors = stats.get('errors', 0)
+        warnings = stats.get('warnings', 0)
+
+        # Format: ✓ resource: Source=X | Created=Y, Updated=Z [| Ignored=W] [| Errors=E, Warnings=W]
+        # Commencer avec la base
+        log_parts = [f"Source={source_count}", f"Created={created}, Updated={updated}"]
+
+        # Ajouter ignored si > 0
+        if ignored > 0:
+            log_parts.append(f"Ignored={ignored}")
+
+        # Ajouter errors et/ou warnings si > 0
+        if errors > 0 or warnings > 0:
+            error_parts = []
+            if errors > 0:
+                error_parts.append(f"Errors={errors}")
+            if warnings > 0:
+                error_parts.append(f"Warnings={warnings}")
+            log_parts.append(", ".join(error_parts))
+
+        return f"✓ {resource}: {' | '.join(log_parts)}\n"

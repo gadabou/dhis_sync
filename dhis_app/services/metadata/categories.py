@@ -26,9 +26,12 @@ class CategoryOptionsService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(options)
+
             if not options:
                 if job:
-                    job.log_message += "Resultat categoryOptions: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('categoryOptions', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -41,7 +44,7 @@ class CategoryOptionsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat categoryOptions: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('categoryOptions', source_count, stats)
                 job.save()
 
             return {
@@ -75,9 +78,12 @@ class CategoriesService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(categories)
+
             if not categories:
                 if job:
-                    job.log_message += "Resultat categories: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('categories', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -90,7 +96,7 @@ class CategoriesService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat categories: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('categories', source_count, stats)
                 job.save()
 
             return {
@@ -124,9 +130,12 @@ class CategoryCombosService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(combos)
+
             if not combos:
                 if job:
-                    job.log_message += "Resultat categoryCombos: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('categoryCombos', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -139,7 +148,7 @@ class CategoryCombosService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat categoryCombos: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('categoryCombos', source_count, stats)
                 job.save()
 
             return {
@@ -174,9 +183,12 @@ class CategoryOptionCombosService(BaseMetadataService):
                 page_size=100
             )
 
+
+            source_count = len(option_combos)
+
             if not option_combos:
                 if job:
-                    job.log_message += "Resultat categoryOptionCombos: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('categoryOptionCombos', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -189,7 +201,7 @@ class CategoryOptionCombosService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat categoryOptionCombos: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('categoryOptionCombos', source_count, stats)
                 job.save()
 
             return {
@@ -223,9 +235,12 @@ class CategoryOptionGroupsService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(groups)
+
             if not groups:
                 if job:
-                    job.log_message += "Resultat categoryOptionGroups: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('categoryOptionGroups', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -238,7 +253,7 @@ class CategoryOptionGroupsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat categoryOptionGroups: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('categoryOptionGroups', source_count, stats)
                 job.save()
 
             return {
@@ -272,9 +287,12 @@ class CategoryOptionGroupSetsService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(group_sets)
+
             if not group_sets:
                 if job:
-                    job.log_message += "Resultat categoryOptionGroupSets: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('categoryOptionGroupSets', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -287,7 +305,7 @@ class CategoryOptionGroupSetsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat categoryOptionGroupSets: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('categoryOptionGroupSets', source_count, stats)
                 job.save()
 
             return {

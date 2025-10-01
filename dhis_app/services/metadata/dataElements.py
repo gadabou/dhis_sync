@@ -27,9 +27,12 @@ class DataElementsService(BaseMetadataService):
                 page_size=100
             )
 
+
+            source_count = len(data_elements)
+
             if not data_elements:
                 if job:
-                    job.log_message += "Resultat dataElements: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('dataElements', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -42,7 +45,7 @@ class DataElementsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat dataElements: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('dataElements', source_count, stats)
                 job.save()
 
             return {
@@ -76,9 +79,12 @@ class DataElementGroupsService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(groups)
+
             if not groups:
                 if job:
-                    job.log_message += "Resultat dataElementGroups: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('dataElementGroups', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -91,7 +97,7 @@ class DataElementGroupsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat dataElementGroups: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('dataElementGroups', source_count, stats)
                 job.save()
 
             return {
@@ -125,9 +131,12 @@ class DataElementGroupSetsService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(group_sets)
+
             if not group_sets:
                 if job:
-                    job.log_message += "Resultat dataElementGroupSets: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('dataElementGroupSets', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -140,7 +149,7 @@ class DataElementGroupSetsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat dataElementGroupSets: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('dataElementGroupSets', source_count, stats)
                 job.save()
 
             return {

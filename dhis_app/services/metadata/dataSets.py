@@ -26,9 +26,12 @@ class DataSetsService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(data_sets)
+
             if not data_sets:
                 if job:
-                    job.log_message += "Resultat dataSets: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('dataSets', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -41,7 +44,7 @@ class DataSetsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat dataSets: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('dataSets', source_count, stats)
                 job.save()
 
             return {
@@ -75,9 +78,12 @@ class SectionsService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(sections)
+
             if not sections:
                 if job:
-                    job.log_message += "Resultat sections: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('sections', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -90,7 +96,7 @@ class SectionsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat sections: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('sections', source_count, stats)
                 job.save()
 
             return {

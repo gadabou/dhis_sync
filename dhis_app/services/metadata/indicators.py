@@ -26,9 +26,12 @@ class IndicatorTypesService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(indicator_types)
+
             if not indicator_types:
                 if job:
-                    job.log_message += "Resultat indicatorTypes: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('indicatorTypes', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -41,7 +44,7 @@ class IndicatorTypesService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat indicatorTypes: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('indicatorTypes', source_count, stats)
                 job.save()
 
             return {
@@ -76,9 +79,12 @@ class IndicatorsService(BaseMetadataService):
                 page_size=100
             )
 
+
+            source_count = len(indicators)
+
             if not indicators:
                 if job:
-                    job.log_message += "Resultat indicators: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('indicators', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -91,7 +97,7 @@ class IndicatorsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat indicators: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('indicators', source_count, stats)
                 job.save()
 
             return {
@@ -125,9 +131,12 @@ class IndicatorGroupsService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(groups)
+
             if not groups:
                 if job:
-                    job.log_message += "Resultat indicatorGroups: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('indicatorGroups', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -140,7 +149,7 @@ class IndicatorGroupsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat indicatorGroups: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('indicatorGroups', source_count, stats)
                 job.save()
 
             return {
@@ -174,9 +183,12 @@ class IndicatorGroupSetsService(BaseMetadataService):
                 paging=False
             )
 
+
+            source_count = len(group_sets)
+
             if not group_sets:
                 if job:
-                    job.log_message += "Resultat indicatorGroupSets: 0 importes, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('indicatorGroupSets', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -189,7 +201,7 @@ class IndicatorGroupSetsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Resultat indicatorGroupSets: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('indicatorGroupSets', source_count, stats)
                 job.save()
 
             return {
