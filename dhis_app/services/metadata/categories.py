@@ -35,6 +35,9 @@ class CategoryOptionsService(BaseMetadataService):
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
+            # Nettoyer les références invalides dans le sharing
+            options = self.clean_sharing_user_references(options, 'categoryOptions')
+
             result = self.destination_instance.post_metadata(
                 resource='categoryOptions',
                 data=options,
@@ -87,6 +90,9 @@ class CategoriesService(BaseMetadataService):
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
+            # Nettoyer les références invalides dans le sharing
+            categories = self.clean_sharing_user_references(categories, 'categories')
+
             result = self.destination_instance.post_metadata(
                 resource='categories',
                 data=categories,
@@ -138,6 +144,9 @@ class CategoryCombosService(BaseMetadataService):
                     job.log_message += self._format_sync_log('categoryCombos', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
+
+            # Nettoyer les références invalides dans le sharing
+            combos = self.clean_sharing_user_references(combos, 'categoryCombos')
 
             result = self.destination_instance.post_metadata(
                 resource='categoryCombos',
@@ -192,6 +201,9 @@ class CategoryOptionCombosService(BaseMetadataService):
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
+            # Nettoyer les références invalides dans le sharing
+            option_combos = self.clean_sharing_user_references(option_combos, 'categoryOptionCombos')
+
             result = self.destination_instance.post_metadata(
                 resource='categoryOptionCombos',
                 data=option_combos,
@@ -244,6 +256,9 @@ class CategoryOptionGroupsService(BaseMetadataService):
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
+            # Nettoyer les références invalides dans le sharing
+            groups = self.clean_sharing_user_references(groups, 'categoryOptionGroups')
+
             result = self.destination_instance.post_metadata(
                 resource='categoryOptionGroups',
                 data=groups,
@@ -295,6 +310,9 @@ class CategoryOptionGroupSetsService(BaseMetadataService):
                     job.log_message += self._format_sync_log('categoryOptionGroupSets', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
+
+            # Nettoyer les références invalides dans le sharing
+            group_sets = self.clean_sharing_user_references(group_sets, 'categoryOptionGroupSets')
 
             result = self.destination_instance.post_metadata(
                 resource='categoryOptionGroupSets',

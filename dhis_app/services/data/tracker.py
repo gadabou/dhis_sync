@@ -172,7 +172,16 @@ class TrackerDataService(BaseDataService):
             job.processed_items += tei_count + enrollment_count + event_count
             job.success_count += total_imported
             job.error_count += total_errors
-            job.log_message += f"Programme {program_uid}: {total_imported} importés, {total_errors} erreurs\n"
+
+            # Log détaillé
+            source_total = tei_count + enrollment_count + event_count
+            job.log_message += self._format_sync_log(f"Programme {program_uid}", source_total, {
+                'imported': total_imported,
+                'updated': 0,
+                'ignored': 0,
+                'deleted': 0,
+                'errors': total_errors
+            })
             job.save()
 
             return {

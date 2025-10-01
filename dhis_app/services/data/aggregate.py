@@ -60,9 +60,11 @@ class AggregateDataService(BaseDataService):
             job.log_message += "Récupération des données agrégées...\n"
             data_values = self.fetch_aggregate_data(params)
 
+            source_count = len(data_values) if data_values else 0
+
             if not data_values:
                 job.status = 'completed'
-                job.log_message += "Aucune donnée agrégée à synchroniser\n"
+                job.log_message += self._format_sync_log('dataValues', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'deleted': 0, 'errors': 0})
                 job.save()
                 return {'success': True, 'imported_count': 0, 'message': 'Aucune donnée à synchroniser'}
 
@@ -83,12 +85,15 @@ class AggregateDataService(BaseDataService):
             job.completed_at = timezone.now()
             job.progress = 100
 
+            # Log détaillé
+            job.log_message += self._format_sync_log('dataValues', source_count, stats)
+
             if stats.get('errors', 0) == 0:
                 job.status = 'completed'
-                job.log_message += f"=== SYNCHRONISATION RÉUSSIE - {job.success_count} valeurs importées ===\n"
+                job.log_message += f"=== SYNCHRONISATION RÉUSSIE ===\n"
             else:
                 job.status = 'completed_with_warnings'
-                job.log_message += f"=== SYNCHRONISATION TERMINÉE AVEC AVERTISSEMENTS - {job.success_count} valeurs importées, {job.error_count} erreurs ===\n"
+                job.log_message += f"=== SYNCHRONISATION TERMINÉE AVEC AVERTISSEMENTS ===\n"
 
             job.save()
 

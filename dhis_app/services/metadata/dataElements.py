@@ -36,6 +36,9 @@ class DataElementsService(BaseMetadataService):
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
+            # Nettoyer les références invalides dans le sharing
+            data_elements = self.clean_sharing_user_references(data_elements, 'dataElements')
+
             result = self.destination_instance.post_metadata(
                 resource='dataElements',
                 data=data_elements,
@@ -88,6 +91,9 @@ class DataElementGroupsService(BaseMetadataService):
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
+            # Nettoyer les références invalides dans le sharing
+            groups = self.clean_sharing_user_references(groups, 'dataElementGroups')
+
             result = self.destination_instance.post_metadata(
                 resource='dataElementGroups',
                 data=groups,
@@ -139,6 +145,9 @@ class DataElementGroupSetsService(BaseMetadataService):
                     job.log_message += self._format_sync_log('dataElementGroupSets', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
+
+            # Nettoyer les références invalides dans le sharing
+            group_sets = self.clean_sharing_user_references(group_sets, 'dataElementGroupSets')
 
             result = self.destination_instance.post_metadata(
                 resource='dataElementGroupSets',

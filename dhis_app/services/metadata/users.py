@@ -31,7 +31,7 @@ class UserRolesService(BaseMetadataService):
 
             if not roles:
                 if job:
-                    job.log_message += "Résultat userRoles: 0 importés, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('userRoles', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -44,7 +44,7 @@ class UserRolesService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Résultat userRoles: {stats.get('imported', 0)} importés, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('userRoles', source_count, stats)
                 job.save()
 
             return {
@@ -87,7 +87,7 @@ class UsersService(BaseMetadataService):
 
             if not users:
                 if job:
-                    job.log_message += "Résultat users: 0 importés, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('users', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -96,7 +96,7 @@ class UsersService(BaseMetadataService):
 
             if not cleaned_users:
                 if job:
-                    job.log_message += "Résultat users: 0 importés, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('users', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -110,7 +110,7 @@ class UsersService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Résultat users: {stats.get('imported', 0)} importés, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('users', source_count, stats)
                 job.save()
 
             return {
@@ -218,7 +218,7 @@ class UserGroupsService(BaseMetadataService):
 
             if not groups:
                 if job:
-                    job.log_message += "Résultat userGroups: 0 importés, 0 erreurs\n"
+                    job.log_message += self._format_sync_log('userGroups', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
@@ -231,7 +231,7 @@ class UserGroupsService(BaseMetadataService):
             stats = self._analyze_import_result(result)
 
             if job:
-                job.log_message += f"Résultat userGroups: {stats.get('imported', 0)} importés, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log('userGroups', source_count, stats)
                 job.save()
 
             return {

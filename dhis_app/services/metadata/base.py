@@ -261,7 +261,14 @@ class BaseMetadataService:
 
     def clean_sharing_user_references(self, items: List[Dict[str, Any]], resource_name: str = '') -> List[Dict[str, Any]]:
         """
-        Nettoie les références invalides dans le sharing (userAccesses, userGroupAccesses)
+        Nettoie les références invalides dans le sharing pour éviter les erreurs lors de l'import.
+
+        DHIS2 utilise deux formats de sharing :
+        - Format API: 'users' et 'userGroups' (dict avec clés = user IDs)
+        - Format import: 'userAccesses' et 'userGroupAccesses' (list d'objets)
+
+        Cette méthode gère les deux formats et retire uniquement les utilisateurs/groupes
+        qui n'existent pas dans la destination.
 
         Args:
             items: Liste des objets avec sharing
@@ -286,43 +293,80 @@ class BaseMetadataService:
             )
             dest_usergroup_ids = {ug.get('id') for ug in dest_user_groups}
 
-            # Log pour debug
-            self.logger.debug(f"Nettoyage sharing pour {resource_name} - {len(dest_user_ids)} users disponibles dans destination")
-
             cleaned_count = 0
-            removed_user_ids = set()
+            removed_user_count = 0
+            removed_usergroup_count = 0
+
             for item in items:
-                if 'sharing' in item and isinstance(item['sharing'], dict):
-                    sharing = item['sharing']
+                if 'sharing' not in item or not isinstance(item['sharing'], dict):
+                    continue
 
-                    # Nettoyer userAccesses
-                    if 'userAccesses' in sharing and isinstance(sharing['userAccesses'], list):
-                        original_count = len(sharing['userAccesses'])
-                        original_user_ids = [ua.get('id') for ua in sharing['userAccesses']]
-                        sharing['userAccesses'] = [
-                            ua for ua in sharing['userAccesses']
-                            if ua.get('id') in dest_user_ids
-                        ]
-                        if len(sharing['userAccesses']) < original_count:
-                            cleaned_count += 1
-                            # Identifier les utilisateurs retirés
-                            kept_user_ids = [ua.get('id') for ua in sharing['userAccesses']]
-                            removed = set(original_user_ids) - set(kept_user_ids)
-                            removed_user_ids.update(removed)
+                sharing = item['sharing']
+                item_cleaned = False
 
-                    # Nettoyer userGroupAccesses
-                    if 'userGroupAccesses' in sharing and isinstance(sharing['userGroupAccesses'], list):
-                        sharing['userGroupAccesses'] = [
-                            uga for uga in sharing['userGroupAccesses']
-                            if uga.get('id') in dest_usergroup_ids
-                        ]
+                # Format 1: 'users' (dict) - Format API
+                if 'users' in sharing and isinstance(sharing['users'], dict):
+                    original_count = len(sharing['users'])
+                    # Garder seulement les users qui existent dans la destination
+                    valid_users = {
+                        uid: access for uid, access in sharing['users'].items()
+                        if uid in dest_user_ids
+                    }
+
+                    if len(valid_users) < original_count:
+                        removed = original_count - len(valid_users)
+                        removed_user_count += removed
+                        sharing['users'] = valid_users
+                        item_cleaned = True
+
+                # Format 2: 'userAccesses' (list) - Format import
+                if 'userAccesses' in sharing and isinstance(sharing['userAccesses'], list):
+                    original_count = len(sharing['userAccesses'])
+                    valid_user_accesses = [
+                        ua for ua in sharing['userAccesses']
+                        if ua.get('id') in dest_user_ids
+                    ]
+
+                    if len(valid_user_accesses) < original_count:
+                        removed = original_count - len(valid_user_accesses)
+                        removed_user_count += removed
+                        sharing['userAccesses'] = valid_user_accesses
+                        item_cleaned = True
+
+                # Format 1: 'userGroups' (dict) - Format API
+                if 'userGroups' in sharing and isinstance(sharing['userGroups'], dict):
+                    original_count = len(sharing['userGroups'])
+                    valid_usergroups = {
+                        uid: access for uid, access in sharing['userGroups'].items()
+                        if uid in dest_usergroup_ids
+                    }
+
+                    if len(valid_usergroups) < original_count:
+                        removed = original_count - len(valid_usergroups)
+                        removed_usergroup_count += removed
+                        sharing['userGroups'] = valid_usergroups
+                        item_cleaned = True
+
+                # Format 2: 'userGroupAccesses' (list) - Format import
+                if 'userGroupAccesses' in sharing and isinstance(sharing['userGroupAccesses'], list):
+                    original_count = len(sharing['userGroupAccesses'])
+                    valid_usergroup_accesses = [
+                        uga for uga in sharing['userGroupAccesses']
+                        if uga.get('id') in dest_usergroup_ids
+                    ]
+
+                    if len(valid_usergroup_accesses) < original_count:
+                        removed = original_count - len(valid_usergroup_accesses)
+                        removed_usergroup_count += removed
+                        sharing['userGroupAccesses'] = valid_usergroup_accesses
+                        item_cleaned = True
+
+                if item_cleaned:
+                    cleaned_count += 1
 
             if cleaned_count > 0:
                 resource_label = f" pour {resource_name}" if resource_name else ""
-                if removed_user_ids:
-                    self.logger.info(f"Nettoyé les sharing de {cleaned_count} objets{resource_label} - {len(removed_user_ids)} utilisateurs invalides retirés")
-                else:
-                    self.logger.info(f"Nettoyé les sharing de {cleaned_count} objets{resource_label}")
+                self.logger.info(f"Nettoyé le sharing de {cleaned_count} objets{resource_label}: {removed_user_count} users invalides, {removed_usergroup_count} userGroups invalides retirés")
 
             return items
 
@@ -527,7 +571,7 @@ class BaseMetadataService:
             # Si aucune donnée, retourner succès
             if not data:
                 if job:
-                    job.log_message += f"Résultat {resource}: 0 éléments à synchroniser\n"
+                    job.log_message += self._format_sync_log(resource, 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {
                     'resource': resource,
@@ -548,7 +592,7 @@ class BaseMetadataService:
                 job.success_count += stats.get('imported', 0)
                 job.error_count += stats.get('errors', 0)
                 job.warning_count += stats.get('warnings', 0)
-                job.log_message += f"Résultat {resource}: {stats.get('imported', 0)} importés, {stats.get('errors', 0)} erreurs\n"
+                job.log_message += self._format_sync_log(resource, len(data), stats)
                 job.save()
 
             return {
@@ -587,17 +631,24 @@ class BaseMetadataService:
         stats = {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0}
 
         try:
-            # Structure typique de réponse DHIS2
-            if 'importSummary' in result:
-                summary = result['importSummary']
+            # Gérer les deux formats de réponse DHIS2
+            # Format 1: {"importSummary": {...}} - pour les données agrégées
+            # Format 2: {"response": {"typeReports": [...]}} - pour les métadonnées
+
+            # Extraire la réponse (peut être directement result ou dans result['response'])
+            response = result.get('response', result)
+
+            # Structure typique de réponse DHIS2 pour les données
+            if 'importSummary' in response:
+                summary = response['importSummary']
                 stats['imported'] = summary.get('importCount', 0)
                 stats['updated'] = summary.get('updateCount', 0)
                 stats['ignored'] = summary.get('ignoredCount', 0)
                 stats['errors'] = len(summary.get('conflicts', []))
 
-            elif 'typeReports' in result:
-                # Format pour les métadonnées
-                for type_report in result['typeReports']:
+            # Format pour les métadonnées
+            elif 'typeReports' in response:
+                for type_report in response['typeReports']:
                     type_stats = type_report.get('stats', {})
                     stats['imported'] += type_stats.get('created', 0)
                     stats['updated'] += type_stats.get('updated', 0)
@@ -632,21 +683,12 @@ class BaseMetadataService:
         errors = stats.get('errors', 0)
         warnings = stats.get('warnings', 0)
 
-        # Format: ✓ resource: Source=X | Created=Y, Updated=Z [| Ignored=W] [| Errors=E, Warnings=W]
-        # Commencer avec la base
-        log_parts = [f"Source={source_count}", f"Created={created}, Updated={updated}"]
-
-        # Ajouter ignored si > 0
-        if ignored > 0:
-            log_parts.append(f"Ignored={ignored}")
-
-        # Ajouter errors et/ou warnings si > 0
-        if errors > 0 or warnings > 0:
-            error_parts = []
-            if errors > 0:
-                error_parts.append(f"Errors={errors}")
-            if warnings > 0:
-                error_parts.append(f"Warnings={warnings}")
-            log_parts.append(", ".join(error_parts))
+        # Format: ✓ resource: Source=X | Created=Y, Updated=Z | Ignored=W | Errors=E, Warnings=W
+        log_parts = [
+            f"Source={source_count}",
+            f"Created={created}, Updated={updated}",
+            f"Ignored={ignored}",
+            f"Errors={errors}, Warnings={warnings}"
+        ]
 
         return f"✓ {resource}: {' | '.join(log_parts)}\n"

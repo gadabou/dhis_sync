@@ -35,6 +35,9 @@ class AttributesService(BaseMetadataService):
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
+            # Nettoyer les références invalides dans le sharing
+            attributes = self.clean_sharing_user_references(attributes, 'attributes')
+
             result = self.destination_instance.post_metadata(
                 resource='attributes',
                 data=attributes,
@@ -86,6 +89,9 @@ class ConstantsService(BaseMetadataService):
                     job.log_message += self._format_sync_log('constants', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
+
+            # Nettoyer les références invalides dans le sharing
+            constants = self.clean_sharing_user_references(constants, 'constants')
 
             result = self.destination_instance.post_metadata(
                 resource='constants',

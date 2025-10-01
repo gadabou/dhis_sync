@@ -98,6 +98,9 @@ class MapsService(BaseMetadataService):
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
+            # Nettoyer les références invalides dans le sharing
+            maps = self.clean_sharing_user_references(maps, 'maps')
+
             result = self.destination_instance.post_metadata(
                 resource='maps',
                 data=maps,

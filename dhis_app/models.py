@@ -193,8 +193,8 @@ class DHIS2Instance(models.Model):
             params = {
                 'importStrategy': strategy,
                 'atomicMode': 'NONE',          # pour permettre des succès partiels
-                'mergeMode': 'MERGE',        # ou 'REPLACE'
-                'skipSharing': 'true',         # Ignorer le sharing pour éviter les erreurs de références invalides
+                'mergeMode': 'REPLACE',        # REPLACE pour remplacer complètement le sharing
+                'skipSharing': 'false',        # Importer le sharing (nettoyé des users invalides)
                 # 'preheatMode': 'REFERENCE',    # ou 'ALL'
                 # 'skipValidation': 'false',
             }

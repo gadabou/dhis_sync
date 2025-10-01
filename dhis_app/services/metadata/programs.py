@@ -92,6 +92,9 @@ class ProgramStageSectionsService(BaseMetadataService):
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
+            # Nettoyer les références invalides dans le sharing
+            sections = self.clean_sharing_user_references(sections, 'programStageSections')
+
             result = self.destination_instance.post_metadata(
                 resource='programStageSections',
                 data=sections,
@@ -199,6 +202,9 @@ class ProgramRuleVariablesService(BaseMetadataService):
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
+            # Nettoyer les références invalides dans le sharing
+            variables = self.clean_sharing_user_references(variables, 'programRuleVariables')
+
             result = self.destination_instance.post_metadata(
                 resource='programRuleVariables',
                 data=variables,
@@ -250,6 +256,9 @@ class ProgramRulesService(BaseMetadataService):
                     job.log_message += self._format_sync_log('programRules', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
+
+            # Nettoyer les références invalides dans le sharing
+            rules = self.clean_sharing_user_references(rules, 'programRules')
 
             result = self.destination_instance.post_metadata(
                 resource='programRules',
@@ -303,6 +312,9 @@ class ProgramRuleActionsService(BaseMetadataService):
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
+            # Nettoyer les références invalides dans le sharing
+            actions = self.clean_sharing_user_references(actions, 'programRuleActions')
+
             result = self.destination_instance.post_metadata(
                 resource='programRuleActions',
                 data=actions,
@@ -354,6 +366,9 @@ class ProgramIndicatorsService(BaseMetadataService):
                     job.log_message += self._format_sync_log('programIndicators', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
+
+            # Nettoyer les références invalides dans le sharing
+            indicators = self.clean_sharing_user_references(indicators, 'programIndicators')
 
             result = self.destination_instance.post_metadata(
                 resource='programIndicators',

@@ -35,6 +35,9 @@ class DataSetsService(BaseMetadataService):
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
+            # Nettoyer les références invalides dans le sharing
+            data_sets = self.clean_sharing_user_references(data_sets, 'dataSets')
+
             result = self.destination_instance.post_metadata(
                 resource='dataSets',
                 data=data_sets,
@@ -86,6 +89,9 @@ class SectionsService(BaseMetadataService):
                     job.log_message += self._format_sync_log('sections', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
+
+            # Nettoyer les références invalides dans le sharing
+            sections = self.clean_sharing_user_references(sections, 'sections')
 
             result = self.destination_instance.post_metadata(
                 resource='sections',

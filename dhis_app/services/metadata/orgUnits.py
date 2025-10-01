@@ -35,6 +35,9 @@ class OrganisationUnitLevelsService(BaseMetadataService):
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
+            # Nettoyer les références invalides dans le sharing
+            levels = self.clean_sharing_user_references(levels, 'organisationUnitLevels')
+
             result = self.destination_instance.post_metadata(
                 resource='organisationUnitLevels',
                 data=levels,
@@ -148,6 +151,9 @@ class OrganisationUnitGroupsService(BaseMetadataService):
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
+            # Nettoyer les références invalides dans le sharing
+            groups = self.clean_sharing_user_references(groups, 'organisationUnitGroups')
+
             result = self.destination_instance.post_metadata(
                 resource='organisationUnitGroups',
                 data=groups,
@@ -199,6 +205,9 @@ class OrganisationUnitGroupSetsService(BaseMetadataService):
                     job.log_message += self._format_sync_log('organisationUnitGroupSets', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
+
+            # Nettoyer les références invalides dans le sharing
+            group_sets = self.clean_sharing_user_references(group_sets, 'organisationUnitGroupSets')
 
             result = self.destination_instance.post_metadata(
                 resource='organisationUnitGroupSets',

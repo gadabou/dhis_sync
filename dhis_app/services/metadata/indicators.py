@@ -35,6 +35,9 @@ class IndicatorTypesService(BaseMetadataService):
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
+            # Nettoyer les références invalides dans le sharing
+            indicator_types = self.clean_sharing_user_references(indicator_types, 'indicatorTypes')
+
             result = self.destination_instance.post_metadata(
                 resource='indicatorTypes',
                 data=indicator_types,
@@ -88,6 +91,9 @@ class IndicatorsService(BaseMetadataService):
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
+            # Nettoyer les références invalides dans le sharing
+            indicators = self.clean_sharing_user_references(indicators, 'indicators')
+
             result = self.destination_instance.post_metadata(
                 resource='indicators',
                 data=indicators,
@@ -140,6 +146,9 @@ class IndicatorGroupsService(BaseMetadataService):
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
+            # Nettoyer les références invalides dans le sharing
+            groups = self.clean_sharing_user_references(groups, 'indicatorGroups')
+
             result = self.destination_instance.post_metadata(
                 resource='indicatorGroups',
                 data=groups,
@@ -191,6 +200,9 @@ class IndicatorGroupSetsService(BaseMetadataService):
                     job.log_message += self._format_sync_log('indicatorGroupSets', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
+
+            # Nettoyer les références invalides dans le sharing
+            group_sets = self.clean_sharing_user_references(group_sets, 'indicatorGroupSets')
 
             result = self.destination_instance.post_metadata(
                 resource='indicatorGroupSets',

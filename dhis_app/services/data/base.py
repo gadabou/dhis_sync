@@ -258,3 +258,37 @@ class BaseDataService:
         for i in range(0, len(data), chunk_size):
             chunks.append(data[i:i + chunk_size])
         return chunks
+
+    def _format_sync_log(self, resource: str, source_count: int, stats: Dict[str, int]) -> str:
+        """
+        Formate un message de log détaillé pour une synchronisation de données
+
+        Args:
+            resource: Nom de la ressource (ex: 'dataValues', 'events', 'trackedEntityInstances')
+            source_count: Nombre d'éléments récupérés de la source
+            stats: Statistiques d'import (imported, updated, ignored, deleted, errors)
+
+        Returns:
+            Message de log formaté
+        """
+        created = stats.get('imported', 0)
+        updated = stats.get('updated', 0)
+        ignored = stats.get('ignored', 0)
+        deleted = stats.get('deleted', 0)
+        errors = stats.get('errors', 0)
+
+        # Format: ✓ resource: Source=X | Created=Y, Updated=Z | Ignored=W | Deleted=D | Errors=E
+        log_parts = [
+            f"Source={source_count}",
+            f"Created={created}, Updated={updated}",
+            f"Ignored={ignored}",
+        ]
+
+        # Ajouter deleted si > 0 ou si c'est pertinent pour la ressource
+        if deleted > 0:
+            log_parts.append(f"Deleted={deleted}")
+
+        # Ajouter errors
+        log_parts.append(f"Errors={errors}")
+
+        return f"✓ {resource}: {' | '.join(log_parts)}\n"

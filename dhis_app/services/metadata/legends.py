@@ -35,6 +35,9 @@ class LegendsService(BaseMetadataService):
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
+            # Nettoyer les références invalides dans le sharing
+            legends = self.clean_sharing_user_references(legends, 'legends')
+
             result = self.destination_instance.post_metadata(
                 resource='legends',
                 data=legends,
@@ -95,6 +98,9 @@ class LegendSetsService(BaseMetadataService):
                     job.log_message += self._format_sync_log('legendSets', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
+
+            # Nettoyer les références invalides dans le sharing
+            legend_sets = self.clean_sharing_user_references(legend_sets, 'legendSets')
 
             result = self.destination_instance.post_metadata(
                 resource='legendSets',

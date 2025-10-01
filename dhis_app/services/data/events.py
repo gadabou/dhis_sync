@@ -162,10 +162,13 @@ class EventsDataService(BaseDataService):
             # Analyser les résultats
             stats = self._analyze_import_result(result)
 
-            job.processed_items += len(events)
+            event_count = len(events)
+            job.processed_items += event_count
             job.success_count += stats.get('imported', 0) + stats.get('updated', 0)
             job.error_count += stats.get('errors', 0)
-            job.log_message += f"Programme {program_uid}: {stats.get('imported', 0)} importés, {stats.get('errors', 0)} erreurs\n"
+
+            # Log détaillé
+            job.log_message += self._format_sync_log(f"Programme {program_uid}", event_count, stats)
             job.save()
 
             return {

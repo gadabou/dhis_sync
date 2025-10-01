@@ -35,6 +35,9 @@ class ValidationRulesService(BaseMetadataService):
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
+            # Nettoyer les références invalides dans le sharing
+            rules = self.clean_sharing_user_references(rules, 'validationRules')
+
             result = self.destination_instance.post_metadata(
                 resource='validationRules',
                 data=rules,
@@ -86,6 +89,9 @@ class ValidationRuleGroupsService(BaseMetadataService):
                     job.log_message += self._format_sync_log('validationRuleGroups', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'errors': 0, 'warnings': 0})
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
+
+            # Nettoyer les références invalides dans le sharing
+            groups = self.clean_sharing_user_references(groups, 'validationRuleGroups')
 
             result = self.destination_instance.post_metadata(
                 resource='validationRuleGroups',
