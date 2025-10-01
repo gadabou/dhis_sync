@@ -191,6 +191,10 @@ class MetadataSyncService(BaseMetadataService):
             if family_name == 'system':
                 return self._sync_system_family(job)
 
+            # Traitement spécial pour la famille "analytics"
+            if family_name == 'analytics':
+                return self._sync_analytics_family(job)
+
             # Traitement standard pour les autres familles
             resources = family_config['resources']
             job.log_message += f"Ressources: {', '.join(resources)}\n"
@@ -530,6 +534,80 @@ class MetadataSyncService(BaseMetadataService):
 
         except Exception as e:
             error_msg = f"Erreur synchronisation famille system: {str(e)}"
+            self.logger.error(error_msg)
+            job.log_message += f"ERREUR: {error_msg}\n"
+            job.save()
+            return {'success': False, 'error': error_msg}
+
+    def _sync_analytics_family(self, job: SyncJob) -> Dict[str, Any]:
+        """
+        Synchronise la famille analytics (visualizations, maps, etc.)
+
+        Args:
+            job: Job de synchronisation
+
+        Returns:
+            Resultat de la synchronisation
+        """
+        try:
+            from .analytics import VisualizationsService, MapsService
+
+            results = {}
+            total_imported = 0
+            total_errors = 0
+
+            # Synchroniser maps
+            maps_service = MapsService(job.sync_config)
+            maps_result = maps_service.sync(job, job.sync_config.import_strategy)
+            results['maps'] = maps_result
+            total_imported += maps_result.get('imported_count', 0)
+            if not maps_result.get('success', False):
+                total_errors += 1
+
+            # Synchroniser visualizations
+            viz_service = VisualizationsService(job.sync_config)
+            viz_result = viz_service.sync(job, job.sync_config.import_strategy)
+            results['visualizations'] = viz_result
+            total_imported += viz_result.get('imported_count', 0)
+            if not viz_result.get('success', False):
+                total_errors += 1
+
+            # Synchroniser eventReports avec les champs requis
+            event_reports_fields = 'id,name,displayName,program[id],programStage[id],dataElementDimensions,attributeDimensions,categoryDimensions,filters,columns,rows,sharing'
+            event_reports_data = self.fetch_metadata_resource('eventReports', fields=event_reports_fields)
+            if event_reports_data:
+                event_reports_result = self.import_metadata_resource(
+                    'eventReports', event_reports_data, job.sync_config.import_strategy
+                )
+                results['eventReports'] = event_reports_result
+                total_imported += event_reports_result.get('imported_count', 0)
+                if not event_reports_result.get('success', False):
+                    total_errors += 1
+
+            # Synchroniser dashboards avec les champs requis
+            dashboards_fields = 'id,name,displayName,dashboardItems,sharing'
+            dashboards_data = self.fetch_metadata_resource('dashboards', fields=dashboards_fields)
+            if dashboards_data:
+                # Nettoyer les références invalides dans le sharing
+                dashboards_data = self.clean_sharing_user_references(dashboards_data, 'dashboards')
+
+                dashboards_result = self.import_metadata_resource(
+                    'dashboards', dashboards_data, job.sync_config.import_strategy
+                )
+                results['dashboards'] = dashboards_result
+                total_imported += dashboards_result.get('imported_count', 0)
+                if not dashboards_result.get('success', False):
+                    total_errors += 1
+
+            return {
+                'success': total_errors == 0,
+                'total_imported': total_imported,
+                'total_errors': total_errors,
+                'details': results
+            }
+
+        except Exception as e:
+            error_msg = f"Erreur synchronisation famille analytics: {str(e)}"
             self.logger.error(error_msg)
             job.log_message += f"ERREUR: {error_msg}\n"
             job.save()

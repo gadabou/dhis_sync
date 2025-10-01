@@ -22,7 +22,7 @@ class ProgramsService(BaseMetadataService):
 
             programs = self.source_instance.get_metadata(
                 resource='programs',
-                fields='id,name,displayName,code,description,version,programType,trackedEntityType[id],categoryCombo[id],organisationUnits[id],programStages[id],programTrackedEntityAttributes[id,trackedEntityAttribute[id],mandatory,displayInList,sortOrder],withoutRegistration,captureCoordinates,useFirstStageDuringRegistration,displayFrontPageList,programIndicators[id],completeEventsExpiryDays,displayIncidentDate,incidentDateLabel,enrollmentDateLabel,ignoreOverdueEvents,selectIncidentDatesInFuture,selectEnrollmentDatesInFuture,onlyEnrollOnce,dataEntryMethod,minAttributesRequiredToSearch,maxTeiCountToReturn,accessLevel',
+                fields='id,name,shortName,displayName,code,description,version,programType,trackedEntityType[id],categoryCombo[id],organisationUnits[id],programStages[id],programTrackedEntityAttributes[id,trackedEntityAttribute[id],mandatory,displayInList,sortOrder],withoutRegistration,captureCoordinates,useFirstStageDuringRegistration,displayFrontPageList,programIndicators[id],completeEventsExpiryDays,displayIncidentDate,incidentDateLabel,enrollmentDateLabel,ignoreOverdueEvents,selectIncidentDatesInFuture,selectEnrollmentDatesInFuture,onlyEnrollOnce,dataEntryMethod,minAttributesRequiredToSearch,maxTeiCountToReturn,accessLevel,sharing',
                 paging=False
             )
 
@@ -31,6 +31,15 @@ class ProgramsService(BaseMetadataService):
                     job.log_message += "Resultat programs: 0 importes, 0 erreurs\n"
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
+
+            # Nettoyer les références invalides dans le sharing
+            if job:
+                job.log_message += f"  Nettoyage du sharing pour {len(programs)} programmes...\n"
+                job.save()
+            programs = self.clean_sharing_user_references(programs, 'programs')
+            if job:
+                job.log_message += f"  Sharing nettoyé\n"
+                job.save()
 
             result = self.destination_instance.post_metadata(
                 resource='programs',
@@ -59,6 +68,55 @@ class ProgramsService(BaseMetadataService):
             return {'success': False, 'imported_count': 0, 'error_count': 1}
 
 
+class ProgramStageSectionsService(BaseMetadataService):
+    """Service de synchronisation des sections d'etapes de programmes"""
+
+    def sync(self, job: Optional[SyncJob] = None, strategy: str = 'CREATE_AND_UPDATE') -> Dict[str, Any]:
+        """Synchronise les sections d'etapes de programmes"""
+        try:
+            if job:
+                job.log_message += "Synchronisation de programStageSections...\n"
+                job.save()
+
+            sections = self.source_instance.get_metadata(
+                resource='programStageSections',
+                fields='id,name,shortName,displayName,sortOrder,programStage[id],dataElements[id],indicators[id],sharing',
+                paging=False
+            )
+
+            if not sections:
+                if job:
+                    job.log_message += "Resultat programStageSections: 0 importes, 0 erreurs\n"
+                    job.save()
+                return {'success': True, 'imported_count': 0, 'error_count': 0}
+
+            result = self.destination_instance.post_metadata(
+                resource='programStageSections',
+                data=sections,
+                strategy=strategy
+            )
+
+            stats = self._analyze_import_result(result)
+
+            if job:
+                job.log_message += f"Resultat programStageSections: {stats.get('imported', 0)} importes, {stats.get('errors', 0)} erreurs\n"
+                job.save()
+
+            return {
+                'success': stats.get('errors', 0) == 0,
+                'imported_count': stats.get('imported', 0) + stats.get('updated', 0),
+                'error_count': stats.get('errors', 0)
+            }
+
+        except Exception as e:
+            error_msg = f"Impossible d'importer programStageSections: {str(e)}"
+            self.logger.error(error_msg)
+            if job:
+                job.log_message += f"ERREUR programStageSections: {error_msg}\n"
+                job.save()
+            return {'success': False, 'imported_count': 0, 'error_count': 1}
+
+
 class ProgramStagesService(BaseMetadataService):
     """Service de synchronisation des etapes de programmes"""
 
@@ -71,7 +129,7 @@ class ProgramStagesService(BaseMetadataService):
 
             stages = self.source_instance.get_metadata(
                 resource='programStages',
-                fields='id,name,displayName,description,sortOrder,program[id],minDaysFromStart,repeatable,periodType,displayGenerateEventBox,standardInterval,executionDateLabel,dueDateLabel,autoGenerateEvent,validationStrategy,blockEntryForm,preGenerateUID,remindCompleted,generatedByEnrollmentDate,allowGenerateNextVisit,openAfterEnrollment,reportDateToUse,hideDueDate,programStageDataElements[id,dataElement[id],compulsory,allowProvidedElsewhere,displayInReports,sortOrder],programStageSections[id]',
+                fields='id,name,shortName,displayName,description,sortOrder,program[id],minDaysFromStart,repeatable,periodType,displayGenerateEventBox,standardInterval,executionDateLabel,dueDateLabel,autoGenerateEvent,validationStrategy,blockEntryForm,preGenerateUID,remindCompleted,generatedByEnrollmentDate,allowGenerateNextVisit,openAfterEnrollment,reportDateToUse,hideDueDate,programStageDataElements[id,dataElement[id],compulsory,allowProvidedElsewhere,displayInReports,sortOrder],programStageSections[id],sharing',
                 paging=False
             )
 
@@ -80,6 +138,9 @@ class ProgramStagesService(BaseMetadataService):
                     job.log_message += "Resultat programStages: 0 importes, 0 erreurs\n"
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
+
+            # Nettoyer les références invalides dans le sharing
+            stages = self.clean_sharing_user_references(stages, 'programStages')
 
             result = self.destination_instance.post_metadata(
                 resource='programStages',
@@ -120,7 +181,7 @@ class ProgramRuleVariablesService(BaseMetadataService):
 
             variables = self.source_instance.get_metadata(
                 resource='programRuleVariables',
-                fields='id,name,displayName,program[id],programStage[id],dataElement[id],trackedEntityAttribute[id],sourceType,useCodeForOptionSet,valueType',
+                fields='id,name,displayName,program[id],programStage[id],dataElement[id],trackedEntityAttribute[id],programRuleVariableSourceType,useCodeForOptionSet,valueType,sharing',
                 paging=False
             )
 
@@ -169,7 +230,7 @@ class ProgramRulesService(BaseMetadataService):
 
             rules = self.source_instance.get_metadata(
                 resource='programRules',
-                fields='id,name,displayName,description,program[id],programStage[id],condition,priority,programRuleActions[id]',
+                fields='id,name,displayName,description,program[id],programStage[id],condition,priority,sharing',
                 paging=False
             )
 
@@ -218,7 +279,7 @@ class ProgramRuleActionsService(BaseMetadataService):
 
             actions = self.source_instance.get_metadata(
                 resource='programRuleActions',
-                fields='id,programRuleActionType,programRule[id],dataElement[id],trackedEntityAttribute[id],programStage[id],programStageSection[id],content,data,location',
+                fields='id,programRuleActionType,programRule[id],dataElement[id],trackedEntityAttribute[id],programStage[id],programStageSection[id],option[id],optionGroup[id],content,data,location,sharing',
                 paging=False
             )
 
@@ -267,7 +328,7 @@ class ProgramIndicatorsService(BaseMetadataService):
 
             indicators = self.source_instance.get_metadata(
                 resource='programIndicators',
-                fields='id,name,displayName,code,description,program[id],expression,filter,aggregationType,analyticsType,decimals',
+                fields='id,name,shortName,displayName,code,description,program[id],expression,filter,aggregationType,analyticsType,decimals,sharing',
                 paging=False
             )
 
@@ -307,7 +368,7 @@ class ProgramIndicatorsService(BaseMetadataService):
 class ProgramsSyncService:
     """
     Service orchestrateur pour la synchronisation des programmes
-    Respecte l'ordre DHIS2: programs -> programStages -> programRuleVariables -> programRules -> programRuleActions -> programIndicators
+    Respecte l'ordre DHIS2: programs -> programStageSections -> programStages -> programRuleVariables -> programRules -> programRuleActions -> programIndicators
     """
 
     def __init__(self, sync_config: SyncConfiguration):
@@ -317,12 +378,13 @@ class ProgramsSyncService:
         self.dest = sync_config.destination_instance
 
         # Initialiser les services
-        self.programs_service = ProgramsService(self.source, self.dest)
-        self.stages_service = ProgramStagesService(self.source, self.dest)
-        self.rule_variables_service = ProgramRuleVariablesService(self.source, self.dest)
-        self.rules_service = ProgramRulesService(self.source, self.dest)
-        self.rule_actions_service = ProgramRuleActionsService(self.source, self.dest)
-        self.indicators_service = ProgramIndicatorsService(self.source, self.dest)
+        self.programs_service = ProgramsService(sync_config)
+        self.stage_sections_service = ProgramStageSectionsService(sync_config)
+        self.stages_service = ProgramStagesService(sync_config)
+        self.rule_variables_service = ProgramRuleVariablesService(sync_config)
+        self.rules_service = ProgramRulesService(sync_config)
+        self.rule_actions_service = ProgramRuleActionsService(sync_config)
+        self.indicators_service = ProgramIndicatorsService(sync_config)
 
         self.logger = logger
 
@@ -349,35 +411,42 @@ class ProgramsSyncService:
             if not programs_result.get('success', False):
                 total_errors += 1
 
-            # 2. programStages (necessite programs)
+            # 2. programStageSections (necessite programs)
+            sections_result = self.stage_sections_service.sync(job, strategy)
+            results['programStageSections'] = sections_result
+            total_imported += sections_result.get('imported_count', 0)
+            if not sections_result.get('success', False):
+                total_errors += 1
+
+            # 3. programStages (necessite programs et programStageSections)
             stages_result = self.stages_service.sync(job, strategy)
             results['programStages'] = stages_result
             total_imported += stages_result.get('imported_count', 0)
             if not stages_result.get('success', False):
                 total_errors += 1
 
-            # 3. programRuleVariables (necessite programs et programStages)
+            # 4. programRuleVariables (necessite programs et programStages)
             variables_result = self.rule_variables_service.sync(job, strategy)
             results['programRuleVariables'] = variables_result
             total_imported += variables_result.get('imported_count', 0)
             if not variables_result.get('success', False):
                 total_errors += 1
 
-            # 4. programRules (necessite programRuleVariables)
+            # 5. programRules (necessite programRuleVariables)
             rules_result = self.rules_service.sync(job, strategy)
             results['programRules'] = rules_result
             total_imported += rules_result.get('imported_count', 0)
             if not rules_result.get('success', False):
                 total_errors += 1
 
-            # 5. programRuleActions (necessite programRules)
+            # 6. programRuleActions (necessite programRules)
             actions_result = self.rule_actions_service.sync(job, strategy)
             results['programRuleActions'] = actions_result
             total_imported += actions_result.get('imported_count', 0)
             if not actions_result.get('success', False):
                 total_errors += 1
 
-            # 6. programIndicators (necessite programs)
+            # 7. programIndicators (necessite programs)
             indicators_result = self.indicators_service.sync(job, strategy)
             results['programIndicators'] = indicators_result
             total_imported += indicators_result.get('imported_count', 0)

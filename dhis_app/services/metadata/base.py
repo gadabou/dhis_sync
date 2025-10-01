@@ -62,7 +62,7 @@ class BaseMetadataService:
             'dependencies': ['data_elements']
         },
         'data_sets': {
-            'resources': ['dataEntryForms', 'dataSets', 'dataSetElements', 'dataInputPeriods'],
+            'resources': ['dataEntryForms', 'dataSets', 'dataSetElements', 'dataInputPeriods', 'dataSetNotificationTemplates'],
             'description': 'Formulaires et ensembles de données',
             'priority': 8,
             'dependencies': ['data_elements', 'categories']
@@ -74,19 +74,19 @@ class BaseMetadataService:
             'dependencies': ['options', 'organisation']
         },
         'system_misc': {
-            'resources': ['relationshipTypes', 'notificationTemplates'],
-            'description': 'Types de relations et notifications',
+            'resources': ['relationshipTypes'],
+            'description': 'Types de relations',
             'priority': 10,
             'dependencies': []
         },
         'programs': {
-            'resources': ['programs', 'programStages', 'programStageSections', 'programStageDataElements', 'programRuleActions', 'programIndicators', 'programRuleVariables', 'programRules'],
+            'resources': ['programs', 'programStageSections', 'programStages', 'programStageDataElements', 'programRuleActions', 'programIndicators', 'programRuleVariables', 'programRules', 'programNotificationTemplates'],
             'description': 'Programmes de suivi et règles',
             'priority': 11,
             'dependencies': ['tracker', 'data_elements', 'categories', 'system_misc']
         },
         'validation': {
-            'resources': ['validationRules', 'validationRuleGroups'],
+            'resources': ['validationRules', 'validationRuleGroups', 'validationNotificationTemplates'],
             'description': 'Règles de validation des données',
             'priority': 12,
             'dependencies': ['data_elements', 'programs']
@@ -104,13 +104,13 @@ class BaseMetadataService:
             'dependencies': []
         },
         'analytics': {
-            'resources': ['charts', 'reportTables', 'maps', 'visualizations', 'eventReports', 'dashboards'],
+            'resources': ['maps', 'visualizations', 'eventReports', 'dashboards'],
             'description': 'Analytics et visualisations',
             'priority': 15,
             'dependencies': ['indicators', 'data_elements', 'programs', 'legends']
         },
         'misc': {
-            'resources': ['documents', 'interpretations', 'messageConversations'],
+            'resources': ['documents', 'interpretations'],
             'description': 'Éléments divers',
             'priority': 16,
             'dependencies': []
@@ -163,20 +163,20 @@ class BaseMetadataService:
         'dataSets': 25,
         'dataSetElements': 26,
         'dataInputPeriods': 27,
+        'dataSetNotificationTemplates': 28,
 
         # NIVEAU 10: Entités suivies
-        'trackedEntityTypes': 28,
-        'trackedEntityAttributes': 29,
-        'trackedEntityAttributeGroups': 30,
+        'trackedEntityTypes': 29,
+        'trackedEntityAttributes': 30,
+        'trackedEntityAttributeGroups': 31,
 
-        # NIVEAU 11: Relations et notifications
-        'relationshipTypes': 31,
-        'notificationTemplates': 32,
+        # NIVEAU 11: Relations
+        'relationshipTypes': 32,
 
         # NIVEAU 12: Programmes
         'programs': 33,
-        'programStages': 34,
-        'programStageSections': 35,
+        'programStageSections': 34,
+        'programStages': 35,
         'programStageDataElements': 36,
 
         # NIVEAU 13: Actions de règles (AVANT les règles)
@@ -186,22 +186,22 @@ class BaseMetadataService:
         'programIndicators': 38,
         'programRuleVariables': 39,
         'programRules': 40,
+        'programNotificationTemplates': 41,
 
         # NIVEAU 15: Validation
-        'validationRules': 41,
-        'validationRuleGroups': 42,
+        'validationRules': 42,
+        'validationRuleGroups': 43,
+        'validationNotificationTemplates': 44,
 
         # NIVEAU 16: Prédicteurs
-        'predictors': 43,
-        'predictorGroups': 44,
+        'predictors': 45,
+        'predictorGroups': 46,
 
         # NIVEAU 17: Légendes
-        'legends': 45,
-        'legendSets': 46,
+        'legends': 47,
+        'legendSets': 48,
 
         # NIVEAU 18: Visualisations et analyses
-        'charts': 47,
-        'reportTables': 48,
         'maps': 49,
         'visualizations': 50,
         'eventReports': 51,
@@ -210,7 +210,6 @@ class BaseMetadataService:
         # NIVEAU 19: Documents et communications
         'documents': 53,
         'interpretations': 54,
-        'messageConversations': 55,
     }
 
     def __init__(self, sync_config: SyncConfiguration):
@@ -259,6 +258,77 @@ class BaseMetadataService:
 
         # Trier par ordre d'import
         return sorted(all_resources, key=lambda x: self.IMPORT_ORDER.get(x, 999))
+
+    def clean_sharing_user_references(self, items: List[Dict[str, Any]], resource_name: str = '') -> List[Dict[str, Any]]:
+        """
+        Nettoie les références invalides dans le sharing (userAccesses, userGroupAccesses)
+
+        Args:
+            items: Liste des objets avec sharing
+            resource_name: Nom de la ressource (pour les logs)
+
+        Returns:
+            Liste des objets avec sharing nettoyé
+        """
+        try:
+            # Récupérer les users et userGroups existants dans la destination
+            dest_users = self.destination_instance.get_metadata(
+                resource='users',
+                fields='id',
+                paging=False
+            )
+            dest_user_ids = {u.get('id') for u in dest_users}
+
+            dest_user_groups = self.destination_instance.get_metadata(
+                resource='userGroups',
+                fields='id',
+                paging=False
+            )
+            dest_usergroup_ids = {ug.get('id') for ug in dest_user_groups}
+
+            # Log pour debug
+            self.logger.debug(f"Nettoyage sharing pour {resource_name} - {len(dest_user_ids)} users disponibles dans destination")
+
+            cleaned_count = 0
+            removed_user_ids = set()
+            for item in items:
+                if 'sharing' in item and isinstance(item['sharing'], dict):
+                    sharing = item['sharing']
+
+                    # Nettoyer userAccesses
+                    if 'userAccesses' in sharing and isinstance(sharing['userAccesses'], list):
+                        original_count = len(sharing['userAccesses'])
+                        original_user_ids = [ua.get('id') for ua in sharing['userAccesses']]
+                        sharing['userAccesses'] = [
+                            ua for ua in sharing['userAccesses']
+                            if ua.get('id') in dest_user_ids
+                        ]
+                        if len(sharing['userAccesses']) < original_count:
+                            cleaned_count += 1
+                            # Identifier les utilisateurs retirés
+                            kept_user_ids = [ua.get('id') for ua in sharing['userAccesses']]
+                            removed = set(original_user_ids) - set(kept_user_ids)
+                            removed_user_ids.update(removed)
+
+                    # Nettoyer userGroupAccesses
+                    if 'userGroupAccesses' in sharing and isinstance(sharing['userGroupAccesses'], list):
+                        sharing['userGroupAccesses'] = [
+                            uga for uga in sharing['userGroupAccesses']
+                            if uga.get('id') in dest_usergroup_ids
+                        ]
+
+            if cleaned_count > 0:
+                resource_label = f" pour {resource_name}" if resource_name else ""
+                if removed_user_ids:
+                    self.logger.info(f"Nettoyé les sharing de {cleaned_count} objets{resource_label} - {len(removed_user_ids)} utilisateurs invalides retirés")
+                else:
+                    self.logger.info(f"Nettoyé les sharing de {cleaned_count} objets{resource_label}")
+
+            return items
+
+        except Exception as e:
+            self.logger.warning(f"Erreur lors du nettoyage du sharing: {e}. Continuation sans nettoyage.")
+            return items
 
     def validate_dependencies(self, families: List[str]) -> List[str]:
         """
@@ -385,6 +455,12 @@ class BaseMetadataService:
             return data
 
         except Exception as e:
+            error_str = str(e)
+            # Gérer gracieusement les ressources non disponibles (404)
+            if "404" in error_str or "Not Found" in error_str:
+                self.logger.warning(f"Ressource {resource} non disponible sur l'instance source (404) - ignorée")
+                return []
+
             self.logger.error(f"Erreur lors de la récupération de {resource}: {e}")
             raise MetadataServiceError(f"Impossible de récupérer {resource}: {str(e)}")
 

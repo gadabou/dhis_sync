@@ -22,7 +22,7 @@ class TrackedEntityTypesService(BaseMetadataService):
 
             entity_types = self.source_instance.get_metadata(
                 resource='trackedEntityTypes',
-                fields='id,name,displayName,description,code',
+                fields='id,name,shortName,displayName,description,code,sharing',
                 paging=False
             )
 
@@ -71,7 +71,7 @@ class TrackedEntityAttributesService(BaseMetadataService):
 
             attributes = self.source_instance.get_metadata(
                 resource='trackedEntityAttributes',
-                fields='id,name,displayName,code,description,valueType,aggregationType,unique,inherit,optionSet[id],generated,pattern,orgunitScope,confidential',
+                fields='id,name,shortName,displayName,code,description,valueType,aggregationType,unique,inherit,optionSet[id],generated,pattern,orgunitScope,confidential,sharing',
                 paging=False
             )
 
@@ -121,8 +121,8 @@ class TrackerSyncService:
         self.dest = sync_config.destination_instance
 
         # Initialiser les services
-        self.entity_types_service = TrackedEntityTypesService(self.source, self.dest)
-        self.attributes_service = TrackedEntityAttributesService(self.source, self.dest)
+        self.entity_types_service = TrackedEntityTypesService(sync_config)
+        self.attributes_service = TrackedEntityAttributesService(sync_config)
 
         self.logger = logger
 

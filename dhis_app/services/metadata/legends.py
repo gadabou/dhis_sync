@@ -22,7 +22,7 @@ class LegendsService(BaseMetadataService):
 
             legends = self.source_instance.get_metadata(
                 resource='legends',
-                fields='id,name,displayName,startValue,endValue,color',
+                fields='id,name,displayName,startValue,endValue,color,sharing',
                 paging=False
             )
 
@@ -51,7 +51,16 @@ class LegendsService(BaseMetadataService):
             }
 
         except Exception as e:
-            error_msg = f"Impossible d'importer legends: {str(e)}"
+            error_str = str(e)
+            # Gérer gracieusement les ressources non disponibles (404)
+            if "404" in error_str or "Not Found" in error_str:
+                self.logger.warning(f"Ressource legends non disponible sur l'instance source (404) - ignorée")
+                if job:
+                    job.log_message += "INFO: Ressource legends non disponible (404) - ignorée\n"
+                    job.save()
+                return {'success': True, 'imported_count': 0, 'error_count': 0}
+
+            error_msg = f"Impossible d'importer legends: {error_str}"
             self.logger.error(error_msg)
             if job:
                 job.log_message += f"ERREUR legends: {error_msg}\n"
@@ -71,7 +80,7 @@ class LegendSetsService(BaseMetadataService):
 
             legend_sets = self.source_instance.get_metadata(
                 resource='legendSets',
-                fields='id,name,displayName,code,description,symbolizer,legends[id]',
+                fields='id,name,displayName,code,description,symbolizer,legends[id],sharing',
                 paging=False
             )
 
@@ -100,7 +109,16 @@ class LegendSetsService(BaseMetadataService):
             }
 
         except Exception as e:
-            error_msg = f"Impossible d'importer legendSets: {str(e)}"
+            error_str = str(e)
+            # Gérer gracieusement les ressources non disponibles (404)
+            if "404" in error_str or "Not Found" in error_str:
+                self.logger.warning(f"Ressource legendSets non disponible sur l'instance source (404) - ignorée")
+                if job:
+                    job.log_message += "INFO: Ressource legendSets non disponible (404) - ignorée\n"
+                    job.save()
+                return {'success': True, 'imported_count': 0, 'error_count': 0}
+
+            error_msg = f"Impossible d'importer legendSets: {error_str}"
             self.logger.error(error_msg)
             if job:
                 job.log_message += f"ERREUR legendSets: {error_msg}\n"
@@ -121,8 +139,8 @@ class LegendsSyncService:
         self.dest = sync_config.destination_instance
 
         # Initialiser les services
-        self.legends_service = LegendsService(self.source, self.dest)
-        self.legend_sets_service = LegendSetsService(self.source, self.dest)
+        self.legends_service = LegendsService(sync_config)
+        self.legend_sets_service = LegendSetsService(sync_config)
 
         self.logger = logger
 

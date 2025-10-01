@@ -22,7 +22,7 @@ class OptionsService(BaseMetadataService):
 
             options = self.source_instance.get_metadata(
                 resource='options',
-                fields='id,name,code,displayName,sortOrder,optionSet[id]',
+                fields='id,name,shortName,code,displayName,sortOrder,optionSet[id],sharing',
                 paging=True,
                 page_size=100
             )
@@ -72,7 +72,7 @@ class OptionSetsService(BaseMetadataService):
 
             option_sets = self.source_instance.get_metadata(
                 resource='optionSets',
-                fields='id,name,code,displayName,valueType,options[id]',
+                fields='id,name,shortName,code,displayName,valueType,options[id],sharing',
                 paging=False
             )
 
@@ -121,7 +121,7 @@ class OptionGroupsService(BaseMetadataService):
 
             groups = self.source_instance.get_metadata(
                 resource='optionGroups',
-                fields='id,name,code,displayName,shortName,options[id],optionSet[id]',
+                fields='id,name,code,displayName,shortName,options[id],optionSet[id],sharing',
                 paging=False
             )
 
@@ -170,7 +170,7 @@ class OptionGroupSetsService(BaseMetadataService):
 
             group_sets = self.source_instance.get_metadata(
                 resource='optionGroupSets',
-                fields='id,name,code,displayName,description,dataDimension,optionGroups[id]',
+                fields='id,name,code,displayName,description,dataDimension,optionGroups[id],sharing',
                 paging=False
             )
 
@@ -220,10 +220,10 @@ class OptionsSyncService:
         self.dest = sync_config.destination_instance
 
         # Initialiser les services
-        self.options_service = OptionsService(self.source, self.dest)
-        self.option_sets_service = OptionSetsService(self.source, self.dest)
-        self.option_groups_service = OptionGroupsService(self.source, self.dest)
-        self.option_group_sets_service = OptionGroupSetsService(self.source, self.dest)
+        self.options_service = OptionsService(sync_config)
+        self.option_sets_service = OptionSetsService(sync_config)
+        self.option_groups_service = OptionGroupsService(sync_config)
+        self.option_group_sets_service = OptionGroupSetsService(sync_config)
 
         self.logger = logger
 

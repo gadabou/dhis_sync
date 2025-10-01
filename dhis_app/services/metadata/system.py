@@ -22,7 +22,7 @@ class AttributesService(BaseMetadataService):
 
             attributes = self.source_instance.get_metadata(
                 resource='attributes',
-                fields='id,name,displayName,code,valueType,mandatory,unique,dataElementAttribute,indicatorAttribute,organisationUnitAttribute,userAttribute,categoryOptionAttribute,optionSetAttribute,programAttribute,programStageAttribute,trackedEntityAttributeAttribute,dataSetAttribute,documentAttribute,optionSet[id]',
+                fields='id,name,shortName,displayName,code,valueType,mandatory,unique,dataElementAttribute,indicatorAttribute,organisationUnitAttribute,userAttribute,categoryOptionAttribute,optionSetAttribute,programAttribute,programStageAttribute,trackedEntityAttributeAttribute,dataSetAttribute,documentAttribute,optionSet[id],sharing',
                 paging=False
             )
 
@@ -71,7 +71,7 @@ class ConstantsService(BaseMetadataService):
 
             constants = self.source_instance.get_metadata(
                 resource='constants',
-                fields='id,name,displayName,code,description,value',
+                fields='id,name,displayName,code,description,value,sharing',
                 paging=False
             )
 
@@ -121,8 +121,8 @@ class SystemSyncService:
         self.dest = sync_config.destination_instance
 
         # Initialiser les services
-        self.attributes_service = AttributesService(self.source, self.dest)
-        self.constants_service = ConstantsService(self.source, self.dest)
+        self.attributes_service = AttributesService(sync_config)
+        self.constants_service = ConstantsService(sync_config)
 
         self.logger = logger
 

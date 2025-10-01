@@ -22,7 +22,7 @@ class CategoryOptionsService(BaseMetadataService):
 
             options = self.source_instance.get_metadata(
                 resource='categoryOptions',
-                fields='id,name,code,displayName,shortName,description,startDate,endDate,organisationUnits[id]',
+                fields='id,name,code,displayName,shortName,description,startDate,endDate,organisationUnits[id],sharing',
                 paging=False
             )
 
@@ -71,7 +71,7 @@ class CategoriesService(BaseMetadataService):
 
             categories = self.source_instance.get_metadata(
                 resource='categories',
-                fields='id,name,code,displayName,shortName,description,dataDimensionType,categoryOptions[id]',
+                fields='id,name,code,displayName,shortName,description,dataDimensionType,categoryOptions[id],sharing',
                 paging=False
             )
 
@@ -120,7 +120,7 @@ class CategoryCombosService(BaseMetadataService):
 
             combos = self.source_instance.get_metadata(
                 resource='categoryCombos',
-                fields='id,name,code,displayName,dataDimensionType,skipTotal,categories[id]',
+                fields='id,name,code,displayName,dataDimensionType,skipTotal,categories[id],sharing',
                 paging=False
             )
 
@@ -169,7 +169,7 @@ class CategoryOptionCombosService(BaseMetadataService):
 
             option_combos = self.source_instance.get_metadata(
                 resource='categoryOptionCombos',
-                fields='id,name,code,displayName,categoryCombo[id],categoryOptions[id]',
+                fields='id,name,shortName,code,displayName,categoryCombo[id],categoryOptions[id],sharing',
                 paging=True,
                 page_size=100
             )
@@ -219,7 +219,7 @@ class CategoryOptionGroupsService(BaseMetadataService):
 
             groups = self.source_instance.get_metadata(
                 resource='categoryOptionGroups',
-                fields='id,name,code,displayName,shortName,categoryOptions[id]',
+                fields='id,name,code,displayName,shortName,categoryOptions[id],sharing',
                 paging=False
             )
 
@@ -268,7 +268,7 @@ class CategoryOptionGroupSetsService(BaseMetadataService):
 
             group_sets = self.source_instance.get_metadata(
                 resource='categoryOptionGroupSets',
-                fields='id,name,code,displayName,description,dataDimension,categoryOptionGroups[id]',
+                fields='id,name,shortName,code,displayName,description,dataDimension,categoryOptionGroups[id],sharing',
                 paging=False
             )
 
@@ -318,12 +318,12 @@ class CategoriesSyncService:
         self.dest = sync_config.destination_instance
 
         # Initialiser les services
-        self.options_service = CategoryOptionsService(self.source, self.dest)
-        self.categories_service = CategoriesService(self.source, self.dest)
-        self.combos_service = CategoryCombosService(self.source, self.dest)
-        self.option_combos_service = CategoryOptionCombosService(self.source, self.dest)
-        self.option_groups_service = CategoryOptionGroupsService(self.source, self.dest)
-        self.option_group_sets_service = CategoryOptionGroupSetsService(self.source, self.dest)
+        self.options_service = CategoryOptionsService(sync_config)
+        self.categories_service = CategoriesService(sync_config)
+        self.combos_service = CategoryCombosService(sync_config)
+        self.option_combos_service = CategoryOptionCombosService(sync_config)
+        self.option_groups_service = CategoryOptionGroupsService(sync_config)
+        self.option_group_sets_service = CategoryOptionGroupSetsService(sync_config)
 
         self.logger = logger
 

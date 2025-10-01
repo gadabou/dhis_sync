@@ -167,7 +167,12 @@ class DHIS2Instance(models.Model):
             return all_data
 
         except Exception as e:
-            logging.error(f"Erreur lors de la récupération de {resource}: {str(e)}")
+            error_str = str(e)
+            # Les erreurs 404 sont des warnings (ressource non disponible)
+            if "404" in error_str or "Not Found" in error_str:
+                logging.warning(f"Ressource {resource} non disponible (404) - sera ignorée")
+            else:
+                logging.error(f"Erreur lors de la récupération de {resource}: {error_str}")
             raise
 
     def post_metadata(self, resource, data, strategy='CREATE_AND_UPDATE'):
@@ -184,14 +189,14 @@ class DHIS2Instance(models.Model):
                 resource: items
             }
 
-            # Options d’import en query params
+            # Options d'import en query params
             params = {
                 'importStrategy': strategy,
                 'atomicMode': 'NONE',          # pour permettre des succès partiels
                 'mergeMode': 'MERGE',        # ou 'REPLACE'
+                'skipSharing': 'true',        # Importer les informations de partage
                 # 'preheatMode': 'REFERENCE',    # ou 'ALL'
                 # 'skipValidation': 'false',
-                # 'skipSharing': 'false',
             }
             response = api.post('metadata', data=payload, params=params)
 
@@ -199,7 +204,12 @@ class DHIS2Instance(models.Model):
             return response.json()
 
         except Exception as e:
-            logging.error(f"Erreur lors de l'envoi de {resource}: {e}")
+            error_str = str(e)
+            # Les erreurs 404 sont des warnings (endpoint non disponible)
+            if "404" in error_str or "Not Found" in error_str:
+                logging.warning(f"Endpoint {resource} non disponible (404)")
+            else:
+                logging.error(f"Erreur lors de l'envoi de {resource}: {error_str}")
             raise
 
     def get_data_values(self, data_element, org_unit, period, category_option_combo=None, attribute_option_combo=None):

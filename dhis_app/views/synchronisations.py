@@ -85,10 +85,7 @@ class LaunchSynchronizationView(LoginRequiredMixin, View):
             periods = sync_data.getlist('periods') or None
 
             # Créer l'orchestrateur
-            orchestrator = SyncOrchestrator(
-                source_instance=config.source_instance,
-                destination_instance=config.destination_instance
-            )
+            orchestrator = SyncOrchestrator(config)
 
             # Lancer la synchronisation
             job = orchestrator.execute_full_sync(
@@ -128,10 +125,7 @@ class LaunchMetadataSyncView(LaunchSynchronizationView):
             families = request.POST.getlist('metadata_families') or None
 
             # Créer l'orchestrateur et lancer la synchronisation
-            orchestrator = SyncOrchestrator(
-                source_instance=config.source_instance,
-                destination_instance=config.destination_instance
-            )
+            orchestrator = SyncOrchestrator(config)
 
             job = orchestrator.execute_metadata_sync(
                 sync_config=config,
@@ -169,10 +163,7 @@ class LaunchDataSyncView(LaunchSynchronizationView):
             periods = request.POST.getlist('periods') or None
 
             # Créer l'orchestrateur et lancer la synchronisation
-            orchestrator = SyncOrchestrator(
-                source_instance=config.source_instance,
-                destination_instance=config.destination_instance
-            )
+            orchestrator = SyncOrchestrator(config)
 
             job = orchestrator.execute_data_sync(
                 sync_config=config,
@@ -199,10 +190,7 @@ class GetSyncParametersView(LoginRequiredMixin, View):
 
         try:
             # Créer l'orchestrateur pour accéder aux services
-            orchestrator = SyncOrchestrator(
-                source_instance=config.source_instance,
-                destination_instance=config.destination_instance
-            )
+            orchestrator = SyncOrchestrator(config)
 
             parameters = {
                 'metadata_families': [],

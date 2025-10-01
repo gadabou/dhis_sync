@@ -102,10 +102,7 @@ class Command(BaseCommand):
                     self.stdout.write(f'Test 4: Test de la configuration "{config.name}"...')
 
                     # Créer l'orchestrateur
-                    orchestrator = SyncOrchestrator(
-                        source_instance=config.source_instance,
-                        destination_instance=config.destination_instance
-                    )
+                    orchestrator = SyncOrchestrator(config)
 
                     # Test de compatibilité
                     compatibility = orchestrator._check_global_compatibility()

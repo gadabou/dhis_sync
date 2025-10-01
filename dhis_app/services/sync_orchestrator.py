@@ -24,23 +24,23 @@ class SyncOrchestrator:
     Gère l'ordre de synchronisation: métadonnées → tracker → events → agrégées
     """
 
-    def __init__(self, source_instance: DHIS2Instance, destination_instance: DHIS2Instance):
+    def __init__(self, sync_config: SyncConfiguration):
         """
         Initialise l'orchestrateur de synchronisation
 
         Args:
-            source_instance: Instance DHIS2 source
-            destination_instance: Instance DHIS2 destination
+            sync_config: Configuration de synchronisation contenant les instances source et destination
         """
-        self.source_instance = source_instance
-        self.destination_instance = destination_instance
+        self.sync_config = sync_config
+        self.source_instance = sync_config.source_instance
+        self.destination_instance = sync_config.destination_instance
         self.logger = logger
 
         # Initialiser les services
-        self.metadata_service = MetadataSyncService(source_instance, destination_instance)
-        self.tracker_service = TrackerDataService(source_instance, destination_instance)
-        self.events_service = EventsDataService(source_instance, destination_instance)
-        self.aggregate_service = AggregateDataService(source_instance, destination_instance)
+        self.metadata_service = MetadataSyncService(sync_config)
+        self.tracker_service = TrackerDataService(self.source_instance, self.destination_instance)
+        self.events_service = EventsDataService(self.source_instance, self.destination_instance)
+        self.aggregate_service = AggregateDataService(self.source_instance, self.destination_instance)
 
     def execute_full_sync(self, sync_config: SyncConfiguration,
                          sync_types: Optional[List[str]] = None,

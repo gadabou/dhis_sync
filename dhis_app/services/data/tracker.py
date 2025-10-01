@@ -251,42 +251,60 @@ class TrackerDataService(BaseDataService):
             else:
                 # Récupérer toutes les TEI du programme
                 try:
-                    # Utiliser une unité d'organisation racine si disponible
-                    root_orgunits = self.source_instance.get_metadata(
-                        'organisationUnits',
-                        fields='id,level',
+                    # Récupérer les orgUnits assignées à ce programme
+                    program_details = self.source_instance.get_metadata(
+                        'programs',
+                        fields='id,name,organisationUnits[id]',
                         paging=False
                     )
 
-                    # Trouver l'unité de niveau 1 (racine)
-                    root_orgunit = None
-                    for ou in root_orgunits:
-                        if ou.get('level') == 1:
-                            root_orgunit = ou.get('id')
+                    program_orgunits = []
+                    for prog in program_details:
+                        if prog.get('id') == program_uid:
+                            org_units_list = prog.get('organisationUnits', [])
+                            program_orgunits = [ou.get('id') for ou in org_units_list if ou.get('id')]
                             break
 
-                    if root_orgunit:
-                        tei_response = self.source_instance.get_tracked_entity_instances(
-                            program=program_uid,
-                            orgUnit=root_orgunit,
-                            ouMode='DESCENDANTS',
-                            lastUpdatedStartDate=last_updated_start,
-                            lastUpdatedEndDate=last_updated_end,
-                            paging='false'
-                        )
+                    if program_orgunits:
+                        # Utiliser les orgUnits assignées au programme
+                        self.logger.info(f"Programme {program_uid}: {len(program_orgunits)} orgUnits assignées")
 
-                        # Extraire les TEI
-                        teis = tei_response.get('trackedEntityInstances', [])
-                        all_tei_data['trackedEntities'].extend(teis)
+                        # Limiter le nombre d'orgUnits pour éviter une requête trop lourde
+                        max_orgunits = 10
+                        selected_orgunits = program_orgunits[:max_orgunits]
 
-                        # Extraire les enrollments et events des TEI
-                        for tei in teis:
-                            enrollments = tei.get('enrollments', [])
-                            all_tei_data['enrollments'].extend(enrollments)
+                        if len(program_orgunits) > max_orgunits:
+                            self.logger.warning(f"Limitation à {max_orgunits} orgUnits sur {len(program_orgunits)} disponibles")
 
-                            for enrollment in enrollments:
-                                events = enrollment.get('events', [])
-                                all_tei_data['events'].extend(events)
+                        for org_unit in selected_orgunits:
+                            try:
+                                tei_response = self.source_instance.get_tracked_entity_instances(
+                                    program=program_uid,
+                                    orgUnit=org_unit,
+                                    ouMode='DESCENDANTS',
+                                    lastUpdatedStartDate=last_updated_start,
+                                    lastUpdatedEndDate=last_updated_end,
+                                    paging='false'
+                                )
+
+                                # Extraire les TEI
+                                teis = tei_response.get('trackedEntityInstances', [])
+                                all_tei_data['trackedEntities'].extend(teis)
+
+                                # Extraire les enrollments et events des TEI
+                                for tei in teis:
+                                    enrollments = tei.get('enrollments', [])
+                                    all_tei_data['enrollments'].extend(enrollments)
+
+                                    for enrollment in enrollments:
+                                        events = enrollment.get('events', [])
+                                        all_tei_data['events'].extend(events)
+
+                            except Exception as e:
+                                self.logger.warning(f"Erreur récupération TEI pour orgUnit {org_unit}: {e}")
+                                continue
+                    else:
+                        self.logger.warning(f"Aucune orgUnit assignée au programme {program_uid}")
 
                 except Exception as e:
                     self.logger.warning(f"Erreur récupération TEI globale: {e}")

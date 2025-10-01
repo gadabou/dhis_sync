@@ -22,7 +22,7 @@ class IndicatorTypesService(BaseMetadataService):
 
             indicator_types = self.source_instance.get_metadata(
                 resource='indicatorTypes',
-                fields='id,name,displayName,factor,number',
+                fields='id,name,shortName,displayName,factor,number,sharing',
                 paging=False
             )
 
@@ -71,7 +71,7 @@ class IndicatorsService(BaseMetadataService):
 
             indicators = self.source_instance.get_metadata(
                 resource='indicators',
-                fields='id,name,code,displayName,shortName,description,annualized,decimals,indicatorType[id],numerator,numeratorDescription,denominator,denominatorDescription',
+                fields='id,name,code,displayName,shortName,description,annualized,decimals,indicatorType[id],numerator,numeratorDescription,denominator,denominatorDescription,sharing',
                 paging=True,
                 page_size=100
             )
@@ -121,7 +121,7 @@ class IndicatorGroupsService(BaseMetadataService):
 
             groups = self.source_instance.get_metadata(
                 resource='indicatorGroups',
-                fields='id,name,code,displayName,description,indicators[id]',
+                fields='id,name,code,displayName,description,indicators[id],sharing',
                 paging=False
             )
 
@@ -170,7 +170,7 @@ class IndicatorGroupSetsService(BaseMetadataService):
 
             group_sets = self.source_instance.get_metadata(
                 resource='indicatorGroupSets',
-                fields='id,name,code,displayName,description,compulsory,indicatorGroups[id]',
+                fields='id,name,shortName,code,displayName,description,compulsory,indicatorGroups[id],sharing',
                 paging=False
             )
 
@@ -220,10 +220,10 @@ class IndicatorsSyncService:
         self.dest = sync_config.destination_instance
 
         # Initialiser les services
-        self.types_service = IndicatorTypesService(self.source, self.dest)
-        self.indicators_service = IndicatorsService(self.source, self.dest)
-        self.groups_service = IndicatorGroupsService(self.source, self.dest)
-        self.group_sets_service = IndicatorGroupSetsService(self.source, self.dest)
+        self.types_service = IndicatorTypesService(sync_config)
+        self.indicators_service = IndicatorsService(sync_config)
+        self.groups_service = IndicatorGroupsService(sync_config)
+        self.group_sets_service = IndicatorGroupSetsService(sync_config)
 
         self.logger = logger
 

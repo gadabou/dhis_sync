@@ -22,7 +22,7 @@ class DataSetsService(BaseMetadataService):
 
             data_sets = self.source_instance.get_metadata(
                 resource='dataSets',
-                fields='id,name,code,displayName,shortName,description,periodType,categoryCombo[id],mobile,version,expiryDays,timelyDays,notifyCompletingUser,openFuturePeriods,openPeriodsAfterCoEndDate,fieldCombinationRequired,validCompleteOnly,noValueRequiresComment,skipOffline,dataElementDecoration,renderAsTabs,renderHorizontally,compulsoryFieldsCompleteOnly,formType,dataSetElements[dataElement[id],categoryCombo[id]],indicators[id],organisationUnits[id],sections[id]',
+                fields='id,name,code,displayName,shortName,description,periodType,categoryCombo[id],mobile,version,expiryDays,timelyDays,notifyCompletingUser,openFuturePeriods,openPeriodsAfterCoEndDate,fieldCombinationRequired,validCompleteOnly,noValueRequiresComment,skipOffline,dataElementDecoration,renderAsTabs,renderHorizontally,compulsoryFieldsCompleteOnly,formType,dataSetElements[dataElement[id],categoryCombo[id]],indicators[id],organisationUnits[id],sections[id],sharing',
                 paging=False
             )
 
@@ -71,7 +71,7 @@ class SectionsService(BaseMetadataService):
 
             sections = self.source_instance.get_metadata(
                 resource='sections',
-                fields='id,name,displayName,description,sortOrder,dataSet[id],dataElements[id],indicators[id],categoryCombos[id],greyedFields[dataElement[id],categoryOptionCombo[id]]',
+                fields='id,name,displayName,description,sortOrder,dataSet[id],dataElements[id],indicators[id],categoryCombos[id],greyedFields[dataElement[id],categoryOptionCombo[id]],sharing',
                 paging=False
             )
 
@@ -121,8 +121,8 @@ class DataSetsSyncService:
         self.dest = sync_config.destination_instance
 
         # Initialiser les services
-        self.data_sets_service = DataSetsService(self.source, self.dest)
-        self.sections_service = SectionsService(self.source, self.dest)
+        self.data_sets_service = DataSetsService(sync_config)
+        self.sections_service = SectionsService(sync_config)
 
         self.logger = logger
 

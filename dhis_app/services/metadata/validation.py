@@ -22,7 +22,7 @@ class ValidationRulesService(BaseMetadataService):
 
             rules = self.source_instance.get_metadata(
                 resource='validationRules',
-                fields='id,name,displayName,code,description,instruction,importance,operator,periodType,skipFormValidation,leftSide[expression,description,missingValueStrategy],rightSide[expression,description,missingValueStrategy],organisationUnitLevels',
+                fields='id,name,shortName,displayName,code,description,instruction,importance,operator,periodType,skipFormValidation,leftSide[expression,description,missingValueStrategy],rightSide[expression,description,missingValueStrategy],organisationUnitLevels,sharing',
                 paging=False
             )
 
@@ -71,7 +71,7 @@ class ValidationRuleGroupsService(BaseMetadataService):
 
             groups = self.source_instance.get_metadata(
                 resource='validationRuleGroups',
-                fields='id,name,displayName,code,description,validationRules[id]',
+                fields='id,name,displayName,code,description,validationRules[id],sharing',
                 paging=False
             )
 
@@ -121,8 +121,8 @@ class ValidationSyncService:
         self.dest = sync_config.destination_instance
 
         # Initialiser les services
-        self.rules_service = ValidationRulesService(self.source, self.dest)
-        self.groups_service = ValidationRuleGroupsService(self.source, self.dest)
+        self.rules_service = ValidationRulesService(sync_config)
+        self.groups_service = ValidationRuleGroupsService(sync_config)
 
         self.logger = logger
 

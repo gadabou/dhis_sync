@@ -145,6 +145,9 @@ class AggregateDataService(BaseDataService):
             if params.get('dataElements'):
                 api_params['dataElement'] = params['dataElements']
 
+            if params.get('dataSet'):
+                api_params['dataSet'] = params['dataSet']
+
             # Ajouter la pagination
             api_params['paging'] = 'false'  # Récupérer toutes les données
 
@@ -279,8 +282,33 @@ class AggregateDataService(BaseDataService):
             if date_range.get('end_date'):
                 params['endDate'] = date_range['end_date']
 
-        # Éléments de données (optionnel - par défaut tous)
-        # Peut être étendu pour filtrer sur des éléments spécifiques
+        # Éléments de données (obligatoire pour DHIS2)
+        # Récupérer tous les dataSets disponibles
+        try:
+            all_datasets = self.source_instance.get_metadata(
+                resource='dataSets',
+                fields='id',
+                paging=False
+            )
+            if all_datasets:
+                params['dataSet'] = [ds['id'] for ds in all_datasets]
+                self.logger.info(f"Récupération des données pour {len(params['dataSet'])} dataSets")
+            else:
+                # Si aucun dataSet, essayer avec tous les dataElements
+                self.logger.warning("Aucun dataSet trouvé, récupération de tous les dataElements")
+                all_data_elements = self.source_instance.get_metadata(
+                    resource='dataElements',
+                    fields='id',
+                    paging=False
+                )
+                if all_data_elements:
+                    params['dataElements'] = [de['id'] for de in all_data_elements]
+                    self.logger.info(f"Récupération des données pour {len(params['dataElements'])} dataElements")
+                else:
+                    raise DataServiceError("Aucun dataSet ou dataElement trouvé pour synchroniser les données agrégées")
+        except Exception as e:
+            self.logger.error(f"Impossible de récupérer les dataSets/dataElements: {e}")
+            raise DataServiceError(f"Au moins un dataSet ou dataElement doit être disponible pour synchroniser les données agrégées: {str(e)}")
 
         return params
 

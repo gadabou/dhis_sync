@@ -22,7 +22,7 @@ class OrganisationUnitLevelsService(BaseMetadataService):
 
             levels = self.source_instance.get_metadata(
                 resource='organisationUnitLevels',
-                fields='id,name,displayName,level',
+                fields='id,name,displayName,level,offlineLevels',
                 paging=False
             )
 
@@ -130,7 +130,7 @@ class OrganisationUnitGroupsService(BaseMetadataService):
 
             groups = self.source_instance.get_metadata(
                 resource='organisationUnitGroups',
-                fields='id,name,code,displayName,shortName,description,organisationUnits[id],attributeValues',
+                fields='id,name,code,displayName,shortName,description,organisationUnits[id],attributeValues,sharing',
                 paging=False
             )
 
@@ -179,7 +179,7 @@ class OrganisationUnitGroupSetsService(BaseMetadataService):
 
             group_sets = self.source_instance.get_metadata(
                 resource='organisationUnitGroupSets',
-                fields='id,name,code,displayName,description,compulsory,includeSubhierarchyInAnalytics,organisationUnitGroups[id],attributeValues',
+                fields='id,name,shortName,code,displayName,description,compulsory,includeSubhierarchyInAnalytics,organisationUnitGroups[id],attributeValues,sharing',
                 paging=False
             )
 
@@ -229,10 +229,10 @@ class OrganisationUnitsSyncService:
         self.dest = sync_config.destination_instance
 
         # Initialiser les services
-        self.levels_service = OrganisationUnitLevelsService(self.source, self.dest)
-        self.units_service = OrganisationUnitsService(self.source, self.dest)
-        self.groups_service = OrganisationUnitGroupsService(self.source, self.dest)
-        self.group_sets_service = OrganisationUnitGroupSetsService(self.source, self.dest)
+        self.levels_service = OrganisationUnitLevelsService(sync_config)
+        self.units_service = OrganisationUnitsService(sync_config)
+        self.groups_service = OrganisationUnitGroupsService(sync_config)
+        self.group_sets_service = OrganisationUnitGroupSetsService(sync_config)
 
         self.logger = logger
 

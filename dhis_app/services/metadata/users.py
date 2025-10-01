@@ -62,23 +62,22 @@ class UserRolesService(BaseMetadataService):
 class UsersService(BaseMetadataService):
     """Service de synchronisation des utilisateurs"""
 
-    def __init__(self, source_instance, destination_instance):
-        super().__init__(source_instance, destination_instance)
-        self.roles_service = UserRolesService(source_instance, destination_instance)
+    def __init__(self, sync_config):
+        super().__init__(sync_config)
+        self.roles_service = UserRolesService(sync_config)
 
     def sync(self, job: Optional[SyncJob] = None, strategy: str = 'CREATE_AND_UPDATE') -> Dict[str, Any]:
-        """Synchronise les utilisateurs en filtrant ceux sans rôles valides"""
+        """Synchronise les utilisateurs en nettoyant les références aux rôles invalides"""
         try:
             if job:
                 job.log_message += "Synchronisation de users...\n"
                 job.save()
 
-            # Récupérer les utilisateurs
+            # Récupérer les utilisateurs (sans pagination pour avoir TOUS les users)
             users = self.source_instance.get_metadata(
                 resource='users',
                 fields='id,name,code,displayName,username,firstName,surname,email,phoneNumber,userRoles[id],userGroups[id],organisationUnits[id],dataViewOrganisationUnits[id]',
-                paging=True,
-                page_size=100
+                paging=False
             )
 
             if not users:
@@ -87,19 +86,19 @@ class UsersService(BaseMetadataService):
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
-            # Filtrer les utilisateurs sans rôles valides
-            valid_users = self._filter_users_with_valid_roles(users, job)
+            # Nettoyer les références aux rôles invalides
+            cleaned_users = self._clean_user_role_references(users, job)
 
-            if not valid_users:
+            if not cleaned_users:
                 if job:
-                    job.log_message += "Résultat users: 0 importés (tous filtrés), 0 erreurs\n"
+                    job.log_message += "Résultat users: 0 importés, 0 erreurs\n"
                     job.save()
                 return {'success': True, 'imported_count': 0, 'error_count': 0}
 
-            # Importer les utilisateurs valides
+            # Importer tous les utilisateurs (avec rôles nettoyés)
             result = self.destination_instance.post_metadata(
                 resource='users',
-                data=valid_users,
+                data=cleaned_users,
                 strategy=strategy
             )
 
@@ -123,48 +122,73 @@ class UsersService(BaseMetadataService):
                 job.save()
             return {'success': False, 'imported_count': 0, 'error_count': 1}
 
-    def _filter_users_with_valid_roles(self, users: List[Dict[str, Any]], job: Optional[SyncJob]) -> List[Dict[str, Any]]:
-        """Filtre les utilisateurs pour ne garder que ceux avec au moins un rôle valide"""
+    def _clean_user_role_references(self, users: List[Dict[str, Any]], job: Optional[SyncJob]) -> List[Dict[str, Any]]:
+        """Nettoie les références aux rôles invalides et assigne un rôle par défaut si nécessaire"""
         try:
             # Récupérer les rôles disponibles dans la destination
             dest_roles = self.destination_instance.get_metadata(
                 resource='userRoles',
-                fields='id',
+                fields='id,name',
                 paging=False
             )
             dest_role_ids = {role['id'] for role in dest_roles}
 
-            # Filtrer
-            valid_users = []
-            filtered_count = 0
+            # Trouver un rôle par défaut (le premier disponible, de préférence un rôle basique)
+            default_role_id = None
+            if dest_roles:
+                # Chercher un rôle "Data Entry" ou similaire
+                for role in dest_roles:
+                    role_name = role.get('name', '').lower()
+                    if any(keyword in role_name for keyword in ['data entry', 'user', 'basic']):
+                        default_role_id = role['id']
+                        break
+                # Si aucun rôle basique, prendre le premier disponible
+                if not default_role_id:
+                    default_role_id = dest_roles[0]['id']
+
+            cleaned_count = 0
+            users_with_default_role_count = 0
+            users_kept_count = 0
 
             for user in users:
                 user_roles = user.get('userRoles', [])
 
-                # Ignorer si pas de rôles
-                if not user_roles:
-                    filtered_count += 1
-                    continue
+                if user_roles:
+                    # Nettoyer les rôles invalides
+                    original_count = len(user_roles)
+                    cleaned_roles = [
+                        role for role in user_roles
+                        if (role.get('id') if isinstance(role, dict) else role) in dest_role_ids
+                    ]
 
-                # Vérifier si au moins un rôle existe dans la destination
-                has_valid_role = any(
-                    (role.get('id') if isinstance(role, dict) else role) in dest_role_ids
-                    for role in user_roles
-                )
+                    if len(cleaned_roles) < original_count:
+                        cleaned_count += 1
 
-                if has_valid_role:
-                    valid_users.append(user)
+                    # Si aucun rôle valide, assigner le rôle par défaut
+                    if not cleaned_roles and default_role_id:
+                        user['userRoles'] = [{'id': default_role_id}]
+                        users_with_default_role_count += 1
+                    else:
+                        user['userRoles'] = cleaned_roles
+                        users_kept_count += 1
                 else:
-                    filtered_count += 1
+                    # User sans rôles du tout - assigner le rôle par défaut
+                    if default_role_id:
+                        user['userRoles'] = [{'id': default_role_id}]
+                        users_with_default_role_count += 1
 
-            if filtered_count > 0 and job:
-                job.log_message += f"  {filtered_count} utilisateur(s) filtré(s) (pas de rôles valides)\n"
+            if cleaned_count > 0 and job:
+                job.log_message += f"  {cleaned_count} utilisateur(s) avec rôles nettoyés (références invalides retirées)\n"
                 job.save()
 
-            return valid_users
+            if users_with_default_role_count > 0 and job:
+                job.log_message += f"  {users_with_default_role_count} utilisateur(s) avec rôle par défaut assigné\n"
+                job.save()
+
+            return users
 
         except Exception as e:
-            self.logger.warning(f"Erreur lors du filtrage des utilisateurs: {e}")
+            self.logger.warning(f"Erreur lors du nettoyage des rôles utilisateurs: {e}")
             return users  # En cas d'erreur, retourner tous les utilisateurs
 
 
@@ -180,7 +204,7 @@ class UserGroupsService(BaseMetadataService):
 
             groups = self.source_instance.get_metadata(
                 resource='userGroups',
-                fields='id,name,displayName,code,users[id],managedGroups[id]',
+                fields='id,name,displayName,code,managedGroups[id],sharing',
                 paging=False
             )
 
@@ -230,9 +254,9 @@ class UsersSyncService:
         self.dest = sync_config.destination_instance
 
         # Initialiser les services
-        self.roles_service = UserRolesService(self.source, self.dest)
-        self.users_service = UsersService(self.source, self.dest)
-        self.groups_service = UserGroupsService(self.source, self.dest)
+        self.roles_service = UserRolesService(sync_config)
+        self.users_service = UsersService(sync_config)
+        self.groups_service = UserGroupsService(sync_config)
 
         self.logger = logger
 

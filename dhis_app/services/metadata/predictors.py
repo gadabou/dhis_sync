@@ -22,7 +22,7 @@ class PredictorsService(BaseMetadataService):
 
             predictors = self.source_instance.get_metadata(
                 resource='predictors',
-                fields='id,name,displayName,code,description,output[id],periodType,sequentialSampleCount,sequentialSkipCount,annualSampleCount,generator[expression,description,missingValueStrategy],organisationUnitLevels',
+                fields='id,name,shortName,displayName,code,description,output[id],periodType,sequentialSampleCount,sequentialSkipCount,annualSampleCount,generator[expression,description,missingValueStrategy],organisationUnitLevels,organisationUnitDescendants,sharing',
                 paging=False
             )
 
@@ -71,7 +71,7 @@ class PredictorGroupsService(BaseMetadataService):
 
             groups = self.source_instance.get_metadata(
                 resource='predictorGroups',
-                fields='id,name,displayName,code,description,predictors[id]',
+                fields='id,name,displayName,code,description,predictors[id],sharing',
                 paging=False
             )
 
@@ -121,8 +121,8 @@ class PredictorsSyncService:
         self.dest = sync_config.destination_instance
 
         # Initialiser les services
-        self.predictors_service = PredictorsService(self.source, self.dest)
-        self.groups_service = PredictorGroupsService(self.source, self.dest)
+        self.predictors_service = PredictorsService(sync_config)
+        self.groups_service = PredictorGroupsService(sync_config)
 
         self.logger = logger
 

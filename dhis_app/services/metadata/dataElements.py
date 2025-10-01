@@ -22,7 +22,7 @@ class DataElementsService(BaseMetadataService):
 
             data_elements = self.source_instance.get_metadata(
                 resource='dataElements',
-                fields='id,name,code,displayName,shortName,description,valueType,aggregationType,domainType,categoryCombo[id],optionSet[id],zeroIsSignificant',
+                fields='id,name,code,displayName,shortName,description,valueType,aggregationType,domainType,categoryCombo[id],optionSet[id],zeroIsSignificant,sharing',
                 paging=True,
                 page_size=100
             )
@@ -72,7 +72,7 @@ class DataElementGroupsService(BaseMetadataService):
 
             groups = self.source_instance.get_metadata(
                 resource='dataElementGroups',
-                fields='id,name,code,displayName,shortName,description,dataElements[id]',
+                fields='id,name,code,displayName,shortName,description,dataElements[id],sharing',
                 paging=False
             )
 
@@ -121,7 +121,7 @@ class DataElementGroupSetsService(BaseMetadataService):
 
             group_sets = self.source_instance.get_metadata(
                 resource='dataElementGroupSets',
-                fields='id,name,code,displayName,description,compulsory,dataDimension,dataElementGroups[id]',
+                fields='id,name,shortName,code,displayName,description,compulsory,dataDimension,dataElementGroups[id],sharing',
                 paging=False
             )
 
@@ -171,9 +171,9 @@ class DataElementsSyncService:
         self.dest = sync_config.destination_instance
 
         # Initialiser les services
-        self.elements_service = DataElementsService(self.source, self.dest)
-        self.groups_service = DataElementGroupsService(self.source, self.dest)
-        self.group_sets_service = DataElementGroupSetsService(self.source, self.dest)
+        self.elements_service = DataElementsService(sync_config)
+        self.groups_service = DataElementGroupsService(sync_config)
+        self.group_sets_service = DataElementGroupSetsService(sync_config)
 
         self.logger = logger
 
