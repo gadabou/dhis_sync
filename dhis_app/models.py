@@ -194,7 +194,7 @@ class DHIS2Instance(models.Model):
                 'importStrategy': strategy,
                 'atomicMode': 'NONE',          # pour permettre des succès partiels
                 'mergeMode': 'MERGE',        # ou 'REPLACE'
-                'skipSharing': 'true',        # Importer les informations de partage
+                'skipSharing': 'true',         # Ignorer le sharing pour éviter les erreurs de références invalides
                 # 'preheatMode': 'REFERENCE',    # ou 'ALL'
                 # 'skipValidation': 'false',
             }
