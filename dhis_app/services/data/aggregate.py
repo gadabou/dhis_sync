@@ -53,8 +53,6 @@ class AggregateDataService(BaseDataService):
                 config=sync_config
             )
 
-            print("Aggregate params", params)
-
             job.log_message += f"Paramètres: {params}\n"
             job.save()
 
@@ -63,7 +61,9 @@ class AggregateDataService(BaseDataService):
             data_values = self.fetch_aggregate_data(params)
 
             source_count = len(data_values) if data_values else 0
-
+            print("***************************************************************************")
+            print(data_values)
+            print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
             if not data_values:
                 job.status = 'completed'
                 job.log_message += self._format_sync_log('dataValues', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'deleted': 0, 'errors': 0})
@@ -158,11 +158,28 @@ class AggregateDataService(BaseDataService):
                             api_params['endDate'] = params['endDate']
 
                         response = api.get('dataValueSets', params=api_params)
+                        response.raise_for_status()
 
-                        data_values = response.get('dataValues', [])
-                        all_data_values.extend(data_values)
+                        data = response.json()
 
-                        self.logger.info(f"Récupéré {len(data_values)} valeurs pour dataSet {dataset_id}")
+                        # Debug: afficher la structure de la réponse
+                        self.logger.info(f"Structure réponse pour dataSet {dataset_id}: {list(data.keys())}")
+
+                        # L'API DHIS2 peut retourner la structure de différentes manières
+                        data_values = []
+                        if 'dataValues' in data:
+                            # Format direct: {"dataValues": [...]}
+                            data_values = data['dataValues']
+                        elif 'dataValueSets' in data and isinstance(data['dataValueSets'], list):
+                            # Format avec dataValueSets: {"dataValueSets": [{"dataValues": [...]}]}
+                            for dvs in data['dataValueSets']:
+                                data_values.extend(dvs.get('dataValues', []))
+
+                        if data_values:
+                            all_data_values.extend(data_values)
+                            self.logger.info(f"Récupéré {len(data_values)} valeurs pour dataSet {dataset_id}")
+                        else:
+                            self.logger.warning(f"Aucune donnée trouvée pour dataSet {dataset_id} (structure: {data})")
 
                     except Exception as e:
                         error_str = str(e)
@@ -203,9 +220,26 @@ class AggregateDataService(BaseDataService):
                 response.raise_for_status()
 
                 data = response.json()
-                data_values = data.get('dataValues', [])
 
-                self.logger.info(f"Récupérés {len(data_values)} valeurs de données agrégées")
+                # Debug: afficher la structure de la réponse
+                self.logger.info(f"Structure réponse globale: {list(data.keys())}")
+                print(f"Structure réponse globale: {list(data.keys())}")
+
+                # L'API DHIS2 peut retourner la structure de différentes manières
+                data_values = []
+                if 'dataValues' in data:
+                    # Format direct: {"dataValues": [...]}
+                    data_values = data['dataValues']
+                elif 'dataValueSets' in data and isinstance(data['dataValueSets'], list):
+                    # Format avec dataValueSets: {"dataValueSets": [{"dataValues": [...]}]}
+                    for dvs in data['dataValueSets']:
+                        data_values.extend(dvs.get('dataValues', []))
+
+                if data_values:
+                    self.logger.info(f"Récupérés {len(data_values)} valeurs de données agrégées")
+                else:
+                    self.logger.warning(f"Aucune donnée trouvée (structure: {data})")
+
                 return data_values
 
         except Exception as e:
@@ -223,6 +257,9 @@ class AggregateDataService(BaseDataService):
         Returns:
             Résultat de l'import
         """
+        print("***************************************************************************")
+        print(data_values)
+        print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
         try:
             if not data_values:
                 return {'status': 'OK', 'message': 'Aucune donnée à importer'}
