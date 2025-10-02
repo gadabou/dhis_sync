@@ -6,6 +6,7 @@ import logging
 from dhis2 import Api
 from django.utils import timezone
 from datetime import date
+from requests.exceptions import HTTPError
 
 
 
@@ -50,18 +51,12 @@ class DHIS2Instance(models.Model):
             # Nettoyer l'URL pour éviter les doubles slashes
             clean_url = self.base_url.rstrip('/') if self.base_url else ''
 
-            print("base_url cleaned", clean_url)
-            print("username", self.username)
-            print("password", self.password)
-            print("version", self.version)
-
             api = Api(
-                server=clean_url,  # Passer l'URL sans slash final
-                username=self.username,
-                password=self.password
+                server = clean_url,  # Passer l'URL sans slash final
+                username = self.username,
+                password = self.password
             )
 
-            print("API", api.get_version())
             return api
 
         except Exception as e:
@@ -372,7 +367,7 @@ class DHIS2Instance(models.Model):
                                "dataValues": [...]}
 
         Params utiles:
-          - dry_run: n’effectue pas l’écriture (diagnostic)
+          - dry_run: n'effectue pas l'écriture (diagnostic)
           - atomic_mode: 'ALL' | 'NONE'
           - *IdSchemes: 'UID' | 'CODE' (selon tes besoins)
 
@@ -397,6 +392,37 @@ class DHIS2Instance(models.Model):
             r = api.post("dataValueSets", data=payload, params=params)
             r.raise_for_status()
             return r.json()
+
+        except HTTPError as e:
+            # Gérer le cas spécial où DHIS2 retourne 409 avec status WARNING
+            # (import partiel réussi avec quelques conflits de validation)
+            if e.response.status_code == 409:
+                try:
+                    result = e.response.json()
+                    status = result.get('status', 'ERROR')
+
+                    # Si c'est un WARNING (import partiel réussi), retourner le résultat
+                    if status == 'WARNING':
+                        response = result.get('response', {})
+                        import_count = response.get('importCount', {})
+                        imported = import_count.get('imported', 0)
+                        updated = import_count.get('updated', 0)
+
+                        # Si au moins quelques données ont été importées, considérer comme succès partiel
+                        if imported > 0 or updated > 0:
+                            conflicts = response.get('conflicts', [])
+                            logging.warning(
+                                f"Import partiel réussi: {imported} importés, {updated} mis à jour, "
+                                f"{len(conflicts)} conflits de validation"
+                            )
+                            return result
+
+                except Exception:
+                    pass  # Si parsing échoue, lever l'exception originale
+
+            # Pour tous les autres cas, lever l'exception
+            logging.error(f"Erreur import dataValueSets: {e}")
+            raise
 
         except Exception as e:
             logging.error(f"Erreur import dataValueSets: {e}")

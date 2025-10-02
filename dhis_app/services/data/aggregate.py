@@ -123,12 +123,18 @@ class AggregateDataService(BaseDataService):
             # Log détaillé
             job.log_message += self._format_sync_log('dataValues', source_count, stats)
 
+            # Ajouter détails des conflits de validation si présents
+            if stats.get('errors', 0) > 0:
+                job.log_message += f"\nConflits de validation: {stats['errors']} valeur(s) rejetée(s)\n"
+                job.log_message += "Ces conflits sont généralement dus à des incompatibilités de type de données.\n"
+
             if stats.get('errors', 0) == 0:
                 job.status = 'completed'
                 job.log_message += f"=== SYNCHRONISATION RÉUSSIE ===\n"
             else:
                 job.status = 'completed_with_warnings'
                 job.log_message += f"=== SYNCHRONISATION TERMINÉE AVEC AVERTISSEMENTS ===\n"
+                job.log_message += f"{job.success_count}/{len(data_values)} valeurs importées avec succès\n"
 
             job.save()
 
@@ -373,6 +379,32 @@ class AggregateDataService(BaseDataService):
                     )
 
                     total_results.append(result)
+
+                    # Logger les statistiques du chunk
+                    if 'response' in result:
+                        response = result['response']
+                        import_count = response.get('importCount', {})
+                        conflicts = response.get('conflicts', [])
+
+                        imported = import_count.get('imported', 0)
+                        updated = import_count.get('updated', 0)
+                        ignored = import_count.get('ignored', 0)
+
+                        log_msg = f"Chunk {i+1}/{len(chunks)}: {imported} importés, {updated} mis à jour, {ignored} ignorés"
+
+                        if conflicts:
+                            log_msg += f", {len(conflicts)} conflits de validation"
+                            self.logger.warning(log_msg)
+                            # Logger les premiers conflits pour debug
+                            for conflict in conflicts[:3]:  # Afficher max 3 conflits
+                                error_code = conflict.get('errorCode', 'N/A')
+                                value = conflict.get('value', 'N/A')
+                                self.logger.warning(f"  - {error_code}: {value}")
+                        else:
+                            self.logger.info(log_msg)
+
+                        if job:
+                            job.log_message += log_msg + "\n"
 
                     # Mettre à jour le progrès
                     if job:

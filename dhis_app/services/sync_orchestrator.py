@@ -281,32 +281,14 @@ class SyncOrchestrator:
         Returns:
             Job de synchronisation créé
         """
-        job = SyncJob.objects.create(
+        # Ne pas créer de job ici, execute_full_sync s'en charge
+        return self.execute_full_sync(
             sync_config=sync_config,
-            job_type='data',
-            status='pending',
-            log_message="=== SYNCHRONISATION DONNÉES SEULEMENT ===\n"
+            sync_types=sync_types,
+            org_units=org_units,
+            programs=programs,
+            periods=periods
         )
-
-        try:
-            return self.execute_full_sync(
-                sync_config=sync_config,
-                sync_types=sync_types,
-                org_units=org_units,
-                programs=programs,
-                periods=periods
-            )
-
-        except Exception as e:
-            error_msg = f"Erreur critique lors de la synchronisation des données: {str(e)}"
-            self.logger.error(error_msg, exc_info=True)
-
-            job.status = 'failed'
-            job.completed_at = timezone.now()
-            job.log_message += f"\nERREUR CRITIQUE: {error_msg}\n"
-            job.save()
-
-            return job
 
     def _check_global_compatibility(self) -> Dict[str, Any]:
         """
