@@ -3,6 +3,7 @@ Service de synchronisation des données agrégées DHIS2
 """
 import logging
 from typing import Dict, List, Any, Optional
+from datetime import datetime
 from django.utils import timezone
 from .base import BaseDataService, DataServiceError
 from ...models import SyncJob, SyncConfiguration
@@ -12,6 +13,41 @@ logger = logging.getLogger(__name__)
 
 class AggregateDataService(BaseDataService):
     """Service de synchronisation des données agrégées DHIS2"""
+
+    def _convert_dates_to_periods(self, start_date: str, end_date: str) -> List[str]:
+        """
+        Convertit une plage de dates en périodes DHIS2 mensuelles (format YYYYMM)
+
+        Args:
+            start_date: Date de début (format YYYY-MM-DD)
+            end_date: Date de fin (format YYYY-MM-DD)
+
+        Returns:
+            Liste des périodes au format YYYYMM
+        """
+        try:
+            start = datetime.strptime(start_date, '%Y-%m-%d')
+            end = datetime.strptime(end_date, '%Y-%m-%d')
+
+            periods = []
+            current = start.replace(day=1)  # Commencer au début du mois
+
+            while current <= end:
+                period = current.strftime('%Y%m')
+                periods.append(period)
+
+                # Passer au mois suivant
+                if current.month == 12:
+                    current = current.replace(year=current.year + 1, month=1)
+                else:
+                    current = current.replace(month=current.month + 1)
+
+            self.logger.info(f"Converti {start_date} à {end_date} en {len(periods)} périodes mensuelles")
+            return periods
+
+        except Exception as e:
+            self.logger.error(f"Erreur conversion dates en périodes: {e}")
+            return []
 
     def sync_aggregate_data(self, job: SyncJob, org_units: Optional[List[str]] = None,
                            periods: Optional[List[str]] = None) -> Dict[str, Any]:
@@ -61,9 +97,6 @@ class AggregateDataService(BaseDataService):
             data_values = self.fetch_aggregate_data(params)
 
             source_count = len(data_values) if data_values else 0
-            print("***************************************************************************")
-            print(data_values)
-            print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
             if not data_values:
                 job.status = 'completed'
                 job.log_message += self._format_sync_log('dataValues', 0, {'imported': 0, 'updated': 0, 'ignored': 0, 'deleted': 0, 'errors': 0})
@@ -131,6 +164,16 @@ class AggregateDataService(BaseDataService):
         try:
             self.logger.info("Récupération des données agrégées")
 
+            # Convertir les dates en périodes si nécessaire
+            periods_to_use = params.get('periods')
+            if not periods_to_use and params.get('startDate') and params.get('endDate'):
+                periods_to_use = self._convert_dates_to_periods(
+                    params['startDate'],
+                    params['endDate']
+                )
+                if not periods_to_use:
+                    self.logger.warning("Impossible de convertir les dates en périodes")
+
             # Utiliser l'API dataValueSets pour récupérer les données
             api = self.source_instance.get_api_client()
 
@@ -139,91 +182,141 @@ class AggregateDataService(BaseDataService):
             # Si des dataSets sont spécifiés, les récupérer un par un pour gérer les permissions
             if params.get('dataSet') and isinstance(params['dataSet'], list):
                 data_sets = params['dataSet']
+                org_units_list = params.get('orgUnits', [])
 
+                # DHIS2 n'accepte children=true qu'avec UNE SEULE orgUnit
+                # Solution: boucler sur chaque orgUnit avec children=true
                 for dataset_id in data_sets:
-                    try:
-                        # Construire les paramètres pour l'API
-                        api_params = {'dataSet': dataset_id, 'paging': 'false'}
+                    for org_unit in org_units_list:
+                        try:
+                            # Construire les paramètres pour l'API
+                            api_params = {
+                                'dataSet': dataset_id,
+                                'orgUnit': org_unit,
+                                'children': 'true',  # Inclure les enfants de cette orgUnit
+                                'paging': 'false'
+                            }
 
-                        if params.get('orgUnits'):
-                            api_params['orgUnit'] = params['orgUnits']
+                            # Utiliser les périodes converties ou celles fournies
+                            # IMPORTANT: Garder comme liste pour que requests crée period=X&period=Y&period=Z
+                            if periods_to_use:
+                                api_params['period'] = periods_to_use
+                            self.logger.info(f"Récupération dataSet {dataset_id}, orgUnit {org_unit}")
 
-                        if params.get('periods'):
-                            api_params['period'] = params['periods']
+                            response = api.get('dataValueSets', params=api_params)
+                            response.raise_for_status()
+                            data = response.json()
 
-                        if params.get('startDate'):
-                            api_params['startDate'] = params['startDate']
+                            # L'API DHIS2 peut retourner la structure de différentes manières
+                            data_values = []
+                            if 'dataValues' in data:
+                                # Format direct: {"dataValues": [...]}
+                                data_values = data['dataValues']
+                            elif 'dataValueSets' in data and isinstance(data['dataValueSets'], list):
+                                # Format avec dataValueSets: {"dataValueSets": [{"dataValues": [...]}]}
+                                for dvs in data['dataValueSets']:
+                                    data_values.extend(dvs.get('dataValues', []))
 
-                        if params.get('endDate'):
-                            api_params['endDate'] = params['endDate']
+                            if data_values:
+                                all_data_values.extend(data_values)
+                                self.logger.info(f"Récupéré {len(data_values)} valeurs pour dataSet {dataset_id}, orgUnit {org_unit}")
 
-                        response = api.get('dataValueSets', params=api_params)
-                        response.raise_for_status()
+                        except Exception as e:
+                            error_str = str(e)
+                            # Ignorer les erreurs de permission (code 409, E2010)
+                            if "409" in error_str and ("E2010" in error_str or "not allowed" in error_str.lower()):
+                                self.logger.warning(f"Permission refusée pour dataSet {dataset_id}, orgUnit {org_unit} - ignoré")
+                                continue
+                            else:
+                                # Pour les autres erreurs, continuer mais logger
+                                self.logger.warning(f"Erreur récupération dataSet {dataset_id}, orgUnit {org_unit}: {e}")
+                                continue
 
-                        data = response.json()
-
-                        # Debug: afficher la structure de la réponse
-                        self.logger.info(f"Structure réponse pour dataSet {dataset_id}: {list(data.keys())}")
-
-                        # L'API DHIS2 peut retourner la structure de différentes manières
-                        data_values = []
-                        if 'dataValues' in data:
-                            # Format direct: {"dataValues": [...]}
-                            data_values = data['dataValues']
-                        elif 'dataValueSets' in data and isinstance(data['dataValueSets'], list):
-                            # Format avec dataValueSets: {"dataValueSets": [{"dataValues": [...]}]}
-                            for dvs in data['dataValueSets']:
-                                data_values.extend(dvs.get('dataValues', []))
-
-                        if data_values:
-                            all_data_values.extend(data_values)
-                            self.logger.info(f"Récupéré {len(data_values)} valeurs pour dataSet {dataset_id}")
-                        else:
-                            self.logger.warning(f"Aucune donnée trouvée pour dataSet {dataset_id} (structure: {data})")
-
-                    except Exception as e:
-                        error_str = str(e)
-                        # Ignorer les erreurs de permission (code 409, E2010)
-                        if "409" in error_str and ("E2010" in error_str or "not allowed" in error_str.lower()):
-                            self.logger.warning(f"Permission refusée pour dataSet {dataset_id} - ignoré")
-                            continue
-                        else:
-                            # Pour les autres erreurs, continuer mais logger
-                            self.logger.warning(f"Erreur récupération dataSet {dataset_id}: {e}")
-                            continue
-
+                self.logger.info(f"Total récupéré: {len(all_data_values)} valeurs de données")
                 return all_data_values
 
             else:
                 # Récupération classique si pas de dataSets spécifiques
-                api_params = {'paging': 'false'}
+                org_units_list = params.get('orgUnits', [])
 
-                if params.get('orgUnits'):
-                    api_params['orgUnit'] = params['orgUnits']
+                # Si plusieurs orgUnits, boucler sur chacune avec children=true
+                if isinstance(org_units_list, list) and len(org_units_list) > 1:
+                    for org_unit in org_units_list:
+                        try:
+                            api_params = {
+                                'orgUnit': org_unit,
+                                'children': 'true',
+                                'paging': 'false'
+                            }
 
-                if params.get('periods'):
-                    api_params['period'] = params['periods']
+                            # Utiliser les périodes converties ou celles fournies
+                            # IMPORTANT: Garder comme liste pour que requests crée period=X&period=Y&period=Z
+                            if periods_to_use:
+                                api_params['period'] = periods_to_use
 
-                if params.get('startDate'):
-                    api_params['startDate'] = params['startDate']
+                            if params.get('dataElements'):
+                                # Garder comme liste également
+                                api_params['dataElement'] = params['dataElements']
 
-                if params.get('endDate'):
-                    api_params['endDate'] = params['endDate']
+                            if params.get('dataSet'):
+                                api_params['dataSet'] = params['dataSet']
 
-                if params.get('dataElements'):
-                    api_params['dataElement'] = params['dataElements']
+                            self.logger.info(f"Récupération données pour orgUnit {org_unit}")
 
-                if params.get('dataSet'):
-                    api_params['dataSet'] = params['dataSet']
+                            response = api.get('dataValueSets', params=api_params)
+                            response.raise_for_status()
 
-                response = api.get('dataValueSets', params=api_params)
-                response.raise_for_status()
+                            data = response.json()
 
-                data = response.json()
+                            data_values = []
+                            if 'dataValues' in data:
+                                data_values = data['dataValues']
+                            elif 'dataValueSets' in data and isinstance(data['dataValueSets'], list):
+                                for dvs in data['dataValueSets']:
+                                    data_values.extend(dvs.get('dataValues', []))
 
-                # Debug: afficher la structure de la réponse
-                self.logger.info(f"Structure réponse globale: {list(data.keys())}")
-                print(f"Structure réponse globale: {list(data.keys())}")
+                            if data_values:
+                                all_data_values.extend(data_values)
+                                self.logger.info(f"Récupéré {len(data_values)} valeurs pour orgUnit {org_unit}")
+
+                        except Exception as e:
+                            self.logger.warning(f"Erreur récupération orgUnit {org_unit}: {e}")
+                            continue
+
+                    return all_data_values
+
+                else:
+                    # Une seule orgUnit ou aucune
+                    api_params = {
+                        'paging': 'false',
+                        'children': 'true'
+                    }
+
+                    if org_units_list:
+                        org_unit = org_units_list[0] if isinstance(org_units_list, list) else org_units_list
+                        api_params['orgUnit'] = org_unit
+
+                    # Utiliser les périodes converties ou celles fournies
+                    # IMPORTANT: Garder comme liste pour que requests crée period=X&period=Y&period=Z
+                    if periods_to_use:
+                        api_params['period'] = periods_to_use
+
+                    if params.get('dataElements'):
+                        # Garder comme liste également
+                        api_params['dataElement'] = params['dataElements']
+
+                    if params.get('dataSet'):
+                        api_params['dataSet'] = params['dataSet']
+
+                    self.logger.info(f"Récupération données avec paramètres: {api_params}")
+
+                    response = api.get('dataValueSets', params=api_params)
+                    response.raise_for_status()
+
+                    data = response.json()
+
+                    # Debug: afficher la structure de la réponse
+                    self.logger.info(f"Structure réponse globale: {list(data.keys())}")
 
                 # L'API DHIS2 peut retourner la structure de différentes manières
                 data_values = []
@@ -257,9 +350,6 @@ class AggregateDataService(BaseDataService):
         Returns:
             Résultat de l'import
         """
-        print("***************************************************************************")
-        print(data_values)
-        print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
         try:
             if not data_values:
                 return {'status': 'OK', 'message': 'Aucune donnée à importer'}
@@ -346,8 +436,8 @@ class AggregateDataService(BaseDataService):
                     paging=False
                 )
                 if all_org_units:
-                    # Limiter aux 10 premières unités pour éviter une requête trop large
-                    params['orgUnits'] = [ou['id'] for ou in all_org_units[:10]]
+                    #params['orgUnits'] = [ou['id'] for ou in all_org_units]
+                    params['orgUnits'] = ["J6T6ZkEGTo7", "KOEmjPzRmPd", "ozy7P6dwv5X", "MK4n2uGqxs3", "x8f4IKAC7TO", ]
                     self.logger.warning(f"Aucune unité d'organisation spécifiée. Utilisation des {len(params['orgUnits'])} premières unités.")
             except Exception as e:
                 self.logger.error(f"Impossible de récupérer les unités d'organisation: {e}")

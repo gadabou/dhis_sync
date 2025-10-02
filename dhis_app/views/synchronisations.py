@@ -146,7 +146,7 @@ class LaunchDataSyncView(LaunchSynchronizationView):
 
     def post(self, request, config_id):
         config = self.get_config(config_id)
-
+        print("Je suis dans LaunchDataSyncView")
         # Validation
         error_message = self.validate_config(config)
         if error_message:
@@ -154,7 +154,8 @@ class LaunchDataSyncView(LaunchSynchronizationView):
 
         try:
             # Paramètres
-            sync_types = request.POST.getlist('data_types')
+            #sync_types = request.POST.getlist('data_types')
+            sync_types = ['aggregate']
             if not sync_types:
                 sync_types = ['tracker', 'events', 'aggregate']  # Par défaut tous
 
