@@ -146,9 +146,33 @@ class BaseDataService:
                     stats['ignored'] = response.get('importCount', {}).get('ignored', 0)
                     stats['deleted'] = response.get('importCount', {}).get('deleted', 0)
 
-                # Compter les conflits/erreurs
-                conflicts = response.get('conflicts', [])
-                stats['errors'] = len(conflicts)
+                    # Compter les conflits/erreurs
+                    conflicts = response.get('conflicts', [])
+                    stats['errors'] = len(conflicts)
+
+                # Pour les événements (structure ImportSummaries)
+                elif 'importSummaries' in response:
+                    stats['imported'] = response.get('imported', 0)
+                    stats['updated'] = response.get('updated', 0)
+                    stats['ignored'] = response.get('ignored', 0)
+                    stats['deleted'] = response.get('deleted', 0)
+
+                    # Compter les erreurs dans chaque importSummary
+                    import_summaries = response.get('importSummaries', [])
+                    for summary in import_summaries:
+                        conflicts = summary.get('conflicts', [])
+                        stats['errors'] += len(conflicts)
+
+                # Cas général avec imported/updated direct dans response
+                elif 'imported' in response or 'updated' in response:
+                    stats['imported'] = response.get('imported', 0)
+                    stats['updated'] = response.get('updated', 0)
+                    stats['ignored'] = response.get('ignored', 0)
+                    stats['deleted'] = response.get('deleted', 0)
+
+                    # Compter les conflits/erreurs
+                    conflicts = response.get('conflicts', [])
+                    stats['errors'] = len(conflicts)
 
             # Pour les événements et tracker (structure différente)
             elif 'bundleReport' in result:

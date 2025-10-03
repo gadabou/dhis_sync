@@ -393,38 +393,37 @@ class DHIS2Instance(models.Model):
             r.raise_for_status()
             return r.json()
 
-        except HTTPError as e:
+        except Exception as e:
             # Gérer le cas spécial où DHIS2 retourne 409 avec status WARNING
             # (import partiel réussi avec quelques conflits de validation)
-            if e.response.status_code == 409:
-                try:
-                    result = e.response.json()
-                    status = result.get('status', 'ERROR')
+            if hasattr(e, 'response') and e.response is not None:
+                status_code = getattr(e.response, 'status_code', None)
 
-                    # Si c'est un WARNING (import partiel réussi), retourner le résultat
-                    if status == 'WARNING':
-                        response = result.get('response', {})
-                        import_count = response.get('importCount', {})
-                        imported = import_count.get('imported', 0)
-                        updated = import_count.get('updated', 0)
+                if status_code == 409:
+                    try:
+                        result = e.response.json()
+                        status = result.get('status', 'ERROR')
 
-                        # Si au moins quelques données ont été importées, considérer comme succès partiel
-                        if imported > 0 or updated > 0:
-                            conflicts = response.get('conflicts', [])
-                            logging.warning(
-                                f"Import partiel réussi: {imported} importés, {updated} mis à jour, "
-                                f"{len(conflicts)} conflits de validation"
-                            )
-                            return result
+                        # Si c'est un WARNING (import partiel réussi), retourner le résultat
+                        if status == 'WARNING':
+                            response = result.get('response', {})
+                            import_count = response.get('importCount', {})
+                            imported = import_count.get('imported', 0)
+                            updated = import_count.get('updated', 0)
 
-                except Exception:
-                    pass  # Si parsing échoue, lever l'exception originale
+                            # Si au moins quelques données ont été importées, considérer comme succès partiel
+                            if imported > 0 or updated > 0:
+                                conflicts = response.get('conflicts', [])
+                                logging.warning(
+                                    f"Import partiel réussi: {imported} importés, {updated} mis à jour, "
+                                    f"{len(conflicts)} conflits de validation"
+                                )
+                                return result
+
+                    except Exception as parse_error:
+                        logging.warning(f"Impossible de parser la réponse 409: {parse_error}")
 
             # Pour tous les autres cas, lever l'exception
-            logging.error(f"Erreur import dataValueSets: {e}")
-            raise
-
-        except Exception as e:
             logging.error(f"Erreur import dataValueSets: {e}")
             raise
 
@@ -479,6 +478,44 @@ class DHIS2Instance(models.Model):
             return r.json()
 
         except Exception as e:
+            # Gérer le cas spécial où DHIS2 retourne 409 avec status ERROR/WARNING
+            # (import partiel réussi avec quelques conflits de validation)
+            logging.debug(f"Exception capturée: {type(e).__name__}: {e}, response={getattr(e, 'response', None)}")
+
+            if hasattr(e, 'response') and e.response is not None:
+                status_code = getattr(e.response, 'status_code', None)
+                logging.debug(f"Status code: {status_code}")
+
+                if status_code == 409:
+                    try:
+                        result = e.response.json()
+                        logging.debug(f"Résultat parsé, clés: {result.keys() if result else 'None'}")
+
+                        # Pour events, vérifier dans response
+                        if 'response' in result:
+                            response = result.get('response', {})
+                            imported = response.get('imported', 0)
+                            updated = response.get('updated', 0)
+                            logging.debug(f"Stats: imported={imported}, updated={updated}")
+
+                            # Si au moins quelques données ont été importées/mises à jour, c'est un succès partiel
+                            if imported > 0 or updated > 0:
+                                ignored = response.get('ignored', 0)
+                                status = result.get('status', 'UNKNOWN')
+                                logging.warning(
+                                    f"Import partiel (status={status}): {imported} importés, {updated} mis à jour, "
+                                    f"{ignored} ignorés (conflits de validation)"
+                                )
+                                return result
+                            else:
+                                logging.debug(f"Aucun import/update réussi: imported={imported}, updated={updated}")
+                        else:
+                            logging.debug(f"Pas de clé 'response' dans result: {list(result.keys())}")
+
+                    except Exception as parse_error:
+                        logging.warning(f"Impossible de parser la réponse 409: {parse_error}", exc_info=True)
+
+            # Pour tous les autres cas, lever l'exception
             logging.error(f"Erreur import events: {e}")
             raise
 

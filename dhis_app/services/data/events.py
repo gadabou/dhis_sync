@@ -306,6 +306,42 @@ class EventsDataService(BaseDataService):
 
                     total_results.append(result)
 
+                    # Logger les statistiques du chunk
+                    if 'response' in result:
+                        response = result['response']
+                        imported = response.get('imported', 0)
+                        updated = response.get('updated', 0)
+                        ignored = response.get('ignored', 0)
+
+                        log_msg = f"Chunk {i+1}/{len(chunks)}: {imported} importés, {updated} mis à jour, {ignored} ignorés"
+
+                        # Vérifier les conflits dans importSummaries
+                        import_summaries = response.get('importSummaries', [])
+                        total_conflicts = 0
+                        conflict_details = []
+
+                        for summary in import_summaries:
+                            conflicts = summary.get('conflicts', [])
+                            if conflicts:
+                                total_conflicts += len(conflicts)
+                                # Garder les 3 premiers conflits pour le log
+                                if len(conflict_details) < 3:
+                                    for conflict in conflicts[:3 - len(conflict_details)]:
+                                        conflict_details.append(conflict.get('value', 'N/A'))
+
+                        if total_conflicts > 0:
+                            log_msg += f", {total_conflicts} conflits de validation"
+                            self.logger.warning(log_msg)
+                            # Logger les détails des premiers conflits
+                            for idx, detail in enumerate(conflict_details, 1):
+                                self.logger.warning(f"  Conflit {idx}: {detail}")
+                        else:
+                            self.logger.info(log_msg)
+
+                        if job:
+                            job.log_message += log_msg + "\n"
+                            job.save()
+
                 except Exception as e:
                     error_msg = f"Erreur import chunk événements {i+1}: {str(e)}"
                     self.logger.error(error_msg)

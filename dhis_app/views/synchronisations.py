@@ -155,7 +155,7 @@ class LaunchDataSyncView(LaunchSynchronizationView):
         try:
             # Paramètres
             #sync_types = request.POST.getlist('data_types')
-            sync_types = ['aggregate']
+            sync_types = ['events']
             if not sync_types:
                 sync_types = ['tracker', 'events', 'aggregate']  # Par défaut tous
 
