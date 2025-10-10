@@ -1,0 +1,257 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}Dashboard Auto-Sync{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <!-- En-tête -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2><i class="fas fa-tachometer-alt"></i> Dashboard Synchronisation Automatique</h2>
+                    <p class="text-muted">Vue d'ensemble de toutes les synchronisations automatiques</p>
+                </div>
+                <div>
+                    <a href="{% url 'dashboard' %}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Retour
+                    </a>
+                </div>
+            </div>
+
+            <!-- Statistiques globales -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card bg-primary text-white shadow">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="text-white-50 mb-1">Total Configs</h6>
+                                    <h3 class="mb-0">{{ configs_with_status|length }}</h3>
+                                </div>
+                                <div class="text-white-50">
+                                    <i class="fas fa-cogs fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card bg-success text-white shadow">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="text-white-50 mb-1">Actives</h6>
+                                    <h3 class="mb-0">{{ scheduler_status.total_active }}</h3>
+                                </div>
+                                <div class="text-white-50">
+                                    <i class="fas fa-play-circle fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card bg-info text-white shadow">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="text-white-50 mb-1">Threads Actifs</h6>
+                                    <h3 class="mb-0">{{ active_tasks.total_sync_threads }}</h3>
+                                </div>
+                                <div class="text-white-50">
+                                    <i class="fas fa-code-branch fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card bg-warning text-dark shadow">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="text-dark mb-1">En attente</h6>
+                                    <h3 class="mb-0">{{ configs_with_status|length|add:"-"|add:scheduler_status.total_active }}</h3>
+                                </div>
+                                <div class="text-dark">
+                                    <i class="fas fa-pause-circle fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Liste des configurations -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-list"></i> Configurations en Mode Automatique</h5>
+                </div>
+                <div class="card-body">
+                    {% if configs_with_status %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Configuration</th>
+                                        <th>Source → Destination</th>
+                                        <th>Statut</th>
+                                        <th>Paramètres</th>
+                                        <th class="text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in configs_with_status %}
+                                    <tr>
+                                        <td>
+                                            <strong>{{ item.config.name }}</strong><br>
+                                            <small class="text-muted">{{ item.config.get_sync_type_display }}</small>
+                                        </td>
+                                        <td>
+                                            <small>
+                                                {{ item.config.source_instance.name }}<br>
+                                                <i class="fas fa-arrow-down"></i><br>
+                                                {{ item.config.destination_instance.name }}
+                                            </small>
+                                        </td>
+                                        <td>
+                                            {% if item.is_running %}
+                                                <span class="badge bg-success">
+                                                    <i class="fas fa-play"></i> Actif
+                                                </span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">
+                                                    <i class="fas fa-stop"></i> Arrêté
+                                                </span>
+                                            {% endif %}
+
+                                            {% if item.auto_settings %}
+                                                {% if item.auto_settings.is_enabled %}
+                                                    <span class="badge bg-info">Activé</span>
+                                                {% else %}
+                                                    <span class="badge bg-warning text-dark">Désactivé</span>
+                                                {% endif %}
+                                            {% else %}
+                                                <span class="badge bg-danger">Non configuré</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if item.auto_settings %}
+                                                <small>
+                                                    <i class="fas fa-clock"></i> {{ item.auto_settings.check_interval }}s<br>
+                                                    {% if item.auto_settings.monitor_metadata %}
+                                                        <i class="fas fa-database"></i> Métadonnées
+                                                    {% endif %}
+                                                    {% if item.auto_settings.monitor_data_values %}
+                                                        <i class="fas fa-chart-bar"></i> Données
+                                                    {% endif %}
+                                                </small>
+                                            {% else %}
+                                                <small class="text-muted">-</small>
+                                            {% endif %}
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="btn-group btn-group-sm" role="group">
+                                                <a href="{% url 'auto_sync_settings' item.config.id %}"
+                                                   class="btn btn-outline-primary"
+                                                   title="Paramètres">
+                                                    <i class="fas fa-cog"></i>
+                                                </a>
+
+                                                {% if item.is_running %}
+                                                    <form method="post" action="{% url 'stop_auto_sync' item.config.id %}" class="d-inline">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="btn btn-outline-danger" title="Arrêter">
+                                                            <i class="fas fa-stop"></i>
+                                                        </button>
+                                                    </form>
+                                                {% else %}
+                                                    <form method="post" action="{% url 'start_auto_sync' item.config.id %}" class="d-inline">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="btn btn-outline-success" title="Démarrer">
+                                                            <i class="fas fa-play"></i>
+                                                        </button>
+                                                    </form>
+                                                {% endif %}
+
+                                                <form method="post" action="{% url 'trigger_sync_now' item.config.id %}" class="d-inline">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-outline-info" title="Synchroniser maintenant">
+                                                        <i class="fas fa-sync"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i>
+                            Aucune configuration en mode automatique.
+                            <a href="{% url 'sync_config_list' %}">Créer une configuration</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Threads actifs (debug) -->
+            {% if active_tasks.sync_threads %}
+            <div class="card shadow-sm mt-4">
+                <div class="card-header bg-secondary text-white">
+                    <h6 class="mb-0"><i class="fas fa-bug"></i> Threads Actifs (Debug)</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>État</th>
+                                    <th>Daemon</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for thread in active_tasks.sync_threads %}
+                                <tr>
+                                    <td><code>{{ thread.name }}</code></td>
+                                    <td>
+                                        {% if thread.is_alive %}
+                                            <span class="badge bg-success">Alive</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">Dead</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if thread.daemon %}
+                                            <span class="badge bg-info">Yes</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">No</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+// Auto-refresh toutes les 10 secondes
+setTimeout(function() {
+    location.reload();
+}, 10000);
+</script>
+{% endblock %}

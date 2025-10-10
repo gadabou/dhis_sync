@@ -30,6 +30,7 @@ from .views.synchronisations import (
 from .views.sync_jobs import (
     SyncJobDetailView,
 )
+from .views import auto_sync, logs
 
 urlpatterns = [
     # === TABLEAU DE BORD ===
@@ -103,4 +104,54 @@ urlpatterns = [
     # === JOBS DE SYNCHRONISATION ===
     # Détail d'un job de synchronisation
     path('jobs/<int:job_id>/', SyncJobDetailView.as_view(), name='sync_job_detail'),
+
+    # === SYNCHRONISATION AUTOMATIQUE ===
+    # Dashboard de synchronisation automatique
+    path('auto-sync/dashboard/', auto_sync.auto_sync_dashboard, name='auto_sync_dashboard'),
+
+    # Paramètres de synchronisation automatique
+    path('configurations/<int:config_id>/auto-sync/settings/', auto_sync.auto_sync_settings, name='auto_sync_settings'),
+
+    # Démarrer la synchronisation automatique
+    path('configurations/<int:config_id>/auto-sync/start/', auto_sync.start_auto_sync, name='start_auto_sync'),
+
+    # Arrêter la synchronisation automatique
+    path('configurations/<int:config_id>/auto-sync/stop/', auto_sync.stop_auto_sync, name='stop_auto_sync'),
+
+    # Redémarrer la synchronisation automatique
+    path('configurations/<int:config_id>/auto-sync/restart/', auto_sync.restart_auto_sync, name='restart_auto_sync'),
+
+    # Déclencher une synchronisation immédiate
+    path('configurations/<int:config_id>/auto-sync/trigger/', auto_sync.trigger_sync_now, name='trigger_sync_now'),
+
+    # API: Statut d'une configuration
+    path('api/auto-sync/<int:config_id>/status/', auto_sync.api_auto_sync_status, name='api_auto_sync_status'),
+
+    # API: Statut de toutes les configurations
+    path('api/auto-sync/status/', auto_sync.api_all_auto_sync_status, name='api_all_auto_sync_status'),
+
+    # API: Nettoyage des tâches mortes
+    path('api/auto-sync/cleanup/', auto_sync.api_cleanup_tasks, name='api_cleanup_tasks'),
+
+    # === LOGS ===
+    # Visualiseur de logs
+    path('logs/', logs.logs_viewer, name='logs_viewer'),
+
+    # Logs auto-sync
+    path('logs/auto-sync/', logs.auto_sync_logs, name='auto_sync_logs'),
+
+    # Voir un fichier de log
+    path('logs/view/<str:log_filename>/', logs.view_log_file, name='view_log_file'),
+
+    # Stream un fichier de log (tail -f)
+    path('logs/stream/<str:log_filename>/', logs.stream_log_file, name='stream_log_file'),
+
+    # Télécharger un fichier de log
+    path('logs/download/<str:log_filename>/', logs.download_log_file, name='download_log_file'),
+
+    # Vider un fichier de log
+    path('logs/clear/<str:log_filename>/', logs.clear_log_file, name='clear_log_file'),
+
+    # Rechercher dans les logs
+    path('logs/search/', logs.search_logs, name='search_logs'),
 ]

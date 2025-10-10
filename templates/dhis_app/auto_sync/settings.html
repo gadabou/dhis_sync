@@ -1,0 +1,256 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}Paramètres Auto-Sync - {{ sync_config.name }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <!-- En-tête -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2>Synchronisation Automatique</h2>
+                    <p class="text-muted">Configuration: <strong>{{ sync_config.name }}</strong></p>
+                </div>
+                <div>
+                    <a href="{% url 'sync_config_detail' sync_config.id %}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Retour
+                    </a>
+                </div>
+            </div>
+
+            <!-- Messages -->
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {% endfor %}
+            {% endif %}
+
+            <div class="row">
+                <!-- Formulaire de configuration -->
+                <div class="col-lg-8">
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="fas fa-cog"></i> Paramètres de Synchronisation Automatique</h5>
+                        </div>
+                        <div class="card-body">
+                            <form method="post">
+                                {% csrf_token %}
+
+                                <!-- Activation -->
+                                <div class="mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="is_enabled" name="is_enabled"
+                                               {% if auto_settings.is_enabled %}checked{% endif %}>
+                                        <label class="form-check-label" for="is_enabled">
+                                            <strong>Activer la synchronisation automatique</strong>
+                                        </label>
+                                    </div>
+                                    <small class="text-muted">Active ou désactive la synchronisation automatique pour cette configuration</small>
+                                </div>
+
+                                <hr>
+
+                                <!-- Paramètres de monitoring -->
+                                <h6 class="mb-3">Surveillance</h6>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="check_interval" class="form-label">Intervalle de vérification (secondes)</label>
+                                        <input type="number" class="form-control" id="check_interval" name="check_interval"
+                                               value="{{ auto_settings.check_interval }}" min="60" required>
+                                        <small class="text-muted">Minimum: 60 secondes</small>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label for="delay_before_sync" class="form-label">Délai avant sync (secondes)</label>
+                                        <input type="number" class="form-control" id="delay_before_sync" name="delay_before_sync"
+                                               value="{{ auto_settings.delay_before_sync }}" min="0" required>
+                                        <small class="text-muted">Attente avant de démarrer une synchronisation</small>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="immediate_sync" name="immediate_sync"
+                                               {% if auto_settings.immediate_sync %}checked{% endif %}>
+                                        <label class="form-check-label" for="immediate_sync">
+                                            Synchronisation immédiate
+                                        </label>
+                                    </div>
+                                    <small class="text-muted">Démarrer la sync immédiatement après détection de changement</small>
+                                </div>
+
+                                <hr>
+
+                                <!-- Ressources à surveiller -->
+                                <h6 class="mb-3">Ressources surveillées</h6>
+
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="monitor_metadata" name="monitor_metadata"
+                                               {% if auto_settings.monitor_metadata %}checked{% endif %}>
+                                        <label class="form-check-label" for="monitor_metadata">
+                                            Surveiller les métadonnées
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="monitor_data_values" name="monitor_data_values"
+                                               {% if auto_settings.monitor_data_values %}checked{% endif %}>
+                                        <label class="form-check-label" for="monitor_data_values">
+                                            Surveiller les données
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <hr>
+
+                                <!-- Limites de sécurité -->
+                                <h6 class="mb-3">Limites de sécurité</h6>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="max_sync_per_hour" class="form-label">Max synchronisations par heure</label>
+                                        <input type="number" class="form-control" id="max_sync_per_hour" name="max_sync_per_hour"
+                                               value="{{ auto_settings.max_sync_per_hour }}" min="1" required>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label for="cooldown_after_error" class="form-label">Cooldown après erreur (secondes)</label>
+                                        <input type="number" class="form-control" id="cooldown_after_error" name="cooldown_after_error"
+                                               value="{{ auto_settings.cooldown_after_error }}" min="60" required>
+                                    </div>
+                                </div>
+
+                                <hr>
+
+                                <!-- Notifications -->
+                                <h6 class="mb-3">Notifications</h6>
+
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="notify_on_change" name="notify_on_change"
+                                               {% if auto_settings.notify_on_change %}checked{% endif %}>
+                                        <label class="form-check-label" for="notify_on_change">
+                                            Notifier lors de la détection de changements
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="notify_on_sync_complete" name="notify_on_sync_complete"
+                                               {% if auto_settings.notify_on_sync_complete %}checked{% endif %}>
+                                        <label class="form-check-label" for="notify_on_sync_complete">
+                                            Notifier à la fin de la synchronisation
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Boutons -->
+                                <div class="d-grid gap-2 mt-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save"></i> Enregistrer les paramètres
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statut et contrôles -->
+                <div class="col-lg-4">
+                    <!-- Statut actuel -->
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0"><i class="fas fa-info-circle"></i> Statut</h5>
+                        </div>
+                        <div class="card-body">
+                            {% if scheduler_status.is_running %}
+                                <div class="alert alert-success">
+                                    <i class="fas fa-play-circle"></i> <strong>Actif</strong><br>
+                                    <small>Thread: {{ scheduler_status.thread_name }}</small>
+                                </div>
+                            {% else %}
+                                <div class="alert alert-secondary">
+                                    <i class="fas fa-stop-circle"></i> <strong>Arrêté</strong>
+                                </div>
+                            {% endif %}
+
+                            <div class="mb-3">
+                                <strong>Mode d'exécution:</strong><br>
+                                <span class="badge bg-primary">{{ sync_config.get_execution_mode_display }}</span>
+                            </div>
+
+                            <div class="mb-3">
+                                <strong>Configuration:</strong><br>
+                                {% if auto_settings.is_enabled %}
+                                    <span class="badge bg-success">Activé</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Désactivé</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contrôles -->
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-warning text-dark">
+                            <h5 class="mb-0"><i class="fas fa-gamepad"></i> Contrôles</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-grid gap-2">
+                                {% if scheduler_status.is_running %}
+                                    <!-- Arrêter -->
+                                    <form method="post" action="{% url 'stop_auto_sync' sync_config.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger w-100">
+                                            <i class="fas fa-stop"></i> Arrêter
+                                        </button>
+                                    </form>
+
+                                    <!-- Redémarrer -->
+                                    <form method="post" action="{% url 'restart_auto_sync' sync_config.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-warning w-100">
+                                            <i class="fas fa-redo"></i> Redémarrer
+                                        </button>
+                                    </form>
+                                {% else %}
+                                    <!-- Démarrer -->
+                                    <form method="post" action="{% url 'start_auto_sync' sync_config.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-success w-100">
+                                            <i class="fas fa-play"></i> Démarrer
+                                        </button>
+                                    </form>
+                                {% endif %}
+
+                                <!-- Synchroniser maintenant -->
+                                <form method="post" action="{% url 'trigger_sync_now' sync_config.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="fas fa-sync"></i> Synchroniser maintenant
+                                    </button>
+                                </form>
+
+                                <!-- Lien vers dashboard -->
+                                <a href="{% url 'auto_sync_dashboard' %}" class="btn btn-outline-secondary w-100">
+                                    <i class="fas fa-tachometer-alt"></i> Dashboard global
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
