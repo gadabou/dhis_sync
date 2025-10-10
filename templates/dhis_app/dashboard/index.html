@@ -1,0 +1,321 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Tableau de bord - DHIS2 Sync{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-2">
+        <i class="fas fa-tachometer-alt text-blue-600 mr-3"></i>
+        Tableau de bord
+    </h1>
+    <p class="text-gray-600">Vue d'ensemble de l'activité de synchronisation DHIS2</p>
+</div>
+
+<!-- Statistiques principales -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <!-- Instances actives -->
+    <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500 hover:shadow-lg transition-shadow">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-gray-600 mb-1">Instances actives</p>
+                <p class="text-3xl font-bold text-gray-900">{{ active_instances }}</p>
+                <p class="text-xs text-gray-500 mt-1">sur {{ total_instances }} total</p>
+            </div>
+            <div class="bg-blue-100 rounded-full p-4">
+                <i class="fas fa-server text-blue-600 text-2xl"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Configurations -->
+    <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-green-500 hover:shadow-lg transition-shadow">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-gray-600 mb-1">Configurations</p>
+                <p class="text-3xl font-bold text-gray-900">{{ active_configs }}</p>
+                <p class="text-xs text-gray-500 mt-1">sur {{ total_configs }} total</p>
+            </div>
+            <div class="bg-green-100 rounded-full p-4">
+                <i class="fas fa-cogs text-green-600 text-2xl"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jobs aujourd'hui -->
+    <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-purple-500 hover:shadow-lg transition-shadow">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-gray-600 mb-1">Jobs (24h)</p>
+                <p class="text-3xl font-bold text-gray-900">{{ jobs_today }}</p>
+                <p class="text-xs text-green-600 mt-1">
+                    <i class="fas fa-check-circle"></i> {{ jobs_completed }} réussis
+                </p>
+            </div>
+            <div class="bg-purple-100 rounded-full p-4">
+                <i class="fas fa-tasks text-purple-600 text-2xl"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jobs en cours -->
+    <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-orange-500 hover:shadow-lg transition-shadow">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-gray-600 mb-1">Jobs en cours</p>
+                <p class="text-3xl font-bold text-gray-900">{{ jobs_running }}</p>
+                {% if jobs_failed > 0 %}
+                <p class="text-xs text-red-600 mt-1">
+                    <i class="fas fa-exclamation-circle"></i> {{ jobs_failed }} échoués
+                </p>
+                {% else %}
+                <p class="text-xs text-gray-500 mt-1">Aucun échec récent</p>
+                {% endif %}
+            </div>
+            <div class="bg-orange-100 rounded-full p-4">
+                <i class="fas fa-sync-alt text-orange-600 text-2xl {% if jobs_running > 0 %}fa-spin{% endif %}"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Graphique et activité -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+    <!-- Statistiques par type de sync -->
+    <div class="lg:col-span-2 bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-xl font-bold text-gray-900 mb-4">
+            <i class="fas fa-chart-bar text-blue-600 mr-2"></i>
+            Activité par type (7 derniers jours)
+        </h2>
+
+        {% if sync_stats %}
+        <div class="space-y-4">
+            {% for stat in sync_stats %}
+            <div>
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm font-medium text-gray-700">
+                        {{ stat.job_type|capfirst }}
+                    </span>
+                    <span class="text-sm text-gray-600">
+                        {{ stat.total }} jobs
+                    </span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    {% widthratio stat.completed stat.total 100 as success_percent %}
+                    <div class="bg-green-500 h-2 rounded-full" style="width: {{ success_percent }}%"></div>
+                </div>
+                <div class="flex justify-between text-xs text-gray-500 mt-1">
+                    <span class="text-green-600">
+                        <i class="fas fa-check"></i> {{ stat.completed }} réussis
+                    </span>
+                    {% if stat.failed > 0 %}
+                    <span class="text-red-600">
+                        <i class="fas fa-times"></i> {{ stat.failed }} échoués
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-8 text-gray-500">
+            <i class="fas fa-chart-line text-4xl mb-3 text-gray-300"></i>
+            <p>Aucune activité sur les 7 derniers jours</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Statut des instances -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-xl font-bold text-gray-900 mb-4">
+            <i class="fas fa-heartbeat text-green-600 mr-2"></i>
+            Statut instances
+        </h2>
+
+        {% if instances_status %}
+        <div class="space-y-3">
+            {% for instance in instances_status %}
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                <div class="flex-1">
+                    <p class="text-sm font-medium text-gray-900 truncate">
+                        {{ instance.name }}
+                    </p>
+                    <p class="text-xs text-gray-500">
+                        {% if instance.is_source %}Source{% endif %}
+                        {% if instance.is_source and instance.is_destination %}/{% endif %}
+                        {% if instance.is_destination %}Destination{% endif %}
+                    </p>
+                </div>
+                <div class="ml-3">
+                    {% if instance.connection_status %}
+                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        <i class="fas fa-check-circle mr-1"></i> OK
+                    </span>
+                    {% elif instance.connection_status == False %}
+                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                        <i class="fas fa-times-circle mr-1"></i> Erreur
+                    </span>
+                    {% else %}
+                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                        <i class="fas fa-question-circle mr-1"></i> Non testé
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="mt-4">
+            <a href="{% url 'dhis2_instance_list' %}" class="text-sm text-blue-600 hover:text-blue-800 font-medium">
+                Voir toutes les instances <i class="fas fa-arrow-right ml-1"></i>
+            </a>
+        </div>
+        {% else %}
+        <div class="text-center py-8 text-gray-500">
+            <i class="fas fa-server text-4xl mb-3 text-gray-300"></i>
+            <p class="text-sm">Aucune instance active</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Jobs récents et Configurations actives -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Jobs récents -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-xl font-bold text-gray-900 mb-4">
+            <i class="fas fa-history text-blue-600 mr-2"></i>
+            Jobs récents
+        </h2>
+
+        {% if recent_jobs %}
+        <div class="space-y-3">
+            {% for job in recent_jobs %}
+            <a href="{% url 'sync_job_detail' job.id %}"
+               class="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors border-l-4
+                      {% if job.status == 'completed' %}border-green-500
+                      {% elif job.status == 'failed' %}border-red-500
+                      {% elif job.status == 'running' %}border-blue-500
+                      {% else %}border-gray-300{% endif %}">
+                <div class="flex items-start justify-between">
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-gray-900">
+                            {{ job.sync_config.name }}
+                        </p>
+                        <p class="text-xs text-gray-600 mt-1">
+                            <i class="fas fa-arrow-right mr-1"></i>
+                            {{ job.sync_config.source_instance.name }} → {{ job.sync_config.destination_instance.name }}
+                        </p>
+                        <p class="text-xs text-gray-500 mt-1">
+                            <i class="far fa-clock mr-1"></i>
+                            {{ job.created_at|timesince }} ago
+                        </p>
+                    </div>
+                    <div class="ml-3">
+                        {% if job.status == 'completed' %}
+                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            <i class="fas fa-check mr-1"></i> Terminé
+                        </span>
+                        {% elif job.status == 'failed' %}
+                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                            <i class="fas fa-times mr-1"></i> Échoué
+                        </span>
+                        {% elif job.status == 'running' %}
+                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                            <i class="fas fa-spinner fa-spin mr-1"></i> En cours
+                        </span>
+                        {% else %}
+                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                            {{ job.get_status_display }}
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-8 text-gray-500">
+            <i class="fas fa-inbox text-4xl mb-3 text-gray-300"></i>
+            <p>Aucun job récent</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Configurations actives -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-xl font-bold text-gray-900 mb-4">
+            <i class="fas fa-star text-yellow-500 mr-2"></i>
+            Configurations actives
+        </h2>
+
+        {% if active_configurations %}
+        <div class="space-y-3">
+            {% for config in active_configurations %}
+            <div class="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                <div class="flex items-start justify-between">
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-gray-900">
+                            {{ config.name }}
+                        </p>
+                        <p class="text-xs text-gray-600 mt-1">
+                            <i class="fas fa-exchange-alt mr-1"></i>
+                            {{ config.get_sync_type_display }}
+                        </p>
+                        <p class="text-xs text-gray-500 mt-1">
+                            <i class="fas fa-arrow-right mr-1"></i>
+                            {{ config.source_instance.name }} → {{ config.destination_instance.name }}
+                        </p>
+                    </div>
+                    <div class="ml-3">
+                        <a href="{% url 'sync_config_detail' config.id %}"
+                           class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-blue-600 text-white hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-eye mr-1"></i> Détails
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="mt-4">
+            <a href="{% url 'sync_config_list' %}" class="text-sm text-blue-600 hover:text-blue-800 font-medium">
+                Voir toutes les configurations <i class="fas fa-arrow-right ml-1"></i>
+            </a>
+        </div>
+        {% else %}
+        <div class="text-center py-8 text-gray-500">
+            <i class="fas fa-cogs text-4xl mb-3 text-gray-300"></i>
+            <p class="text-sm">Aucune configuration active</p>
+            <a href="{% url 'sync_config_create' %}"
+               class="inline-block mt-3 px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition-colors">
+                <i class="fas fa-plus mr-2"></i>Créer une configuration
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Actions rapides -->
+<div class="mt-8 bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg shadow-lg p-6">
+    <div class="flex items-center justify-between">
+        <div>
+            <h2 class="text-xl font-bold text-white mb-2">
+                <i class="fas fa-bolt mr-2"></i>
+                Actions rapides
+            </h2>
+            <p class="text-blue-100 text-sm">Démarrez une synchronisation ou gérez vos instances</p>
+        </div>
+        <div class="flex space-x-3">
+            <a href="{% url 'dhis2_instance_create' %}"
+               class="inline-flex items-center px-4 py-2 bg-white text-blue-600 rounded-md hover:bg-blue-50 transition-colors shadow-md">
+                <i class="fas fa-server mr-2"></i>
+                Nouvelle instance
+            </a>
+            <a href="{% url 'sync_config_create' %}"
+               class="inline-flex items-center px-4 py-2 bg-white text-blue-600 rounded-md hover:bg-blue-50 transition-colors shadow-md">
+                <i class="fas fa-cogs mr-2"></i>
+                Nouvelle config
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

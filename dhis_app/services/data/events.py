@@ -271,6 +271,49 @@ class EventsDataService(BaseDataService):
             self.logger.error(f"Erreur lors de la récupération des événements du programme {program_uid}: {e}")
             raise DataServiceError(f"Impossible de récupérer les événements du programme {program_uid}: {str(e)}")
 
+    def transform_event_values(self, events: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """
+        Transforme les valeurs des événements pour gérer les incompatibilités d'option sets
+
+        Args:
+            events: Liste des événements à transformer
+
+        Returns:
+            Liste des événements transformés
+        """
+        # Mapping des valeurs problématiques
+        # dataElement -> {old_value: new_value}
+        value_mappings = {
+            'U3c13SP8AQz': {  # Mapper les valeurs invalides pour cet élément
+                '<=24': '24h',  # Exemple: remplacer par un code valide
+                # Ajoutez d'autres mappings si nécessaire
+            }
+        }
+
+        transformed_events = []
+        for event in events:
+            event_copy = event.copy()
+
+            # Transformer les dataValues
+            if 'dataValues' in event_copy:
+                for data_value in event_copy['dataValues']:
+                    data_element = data_value.get('dataElement')
+                    current_value = data_value.get('value')
+
+                    # Vérifier si un mapping existe pour cet élément et cette valeur
+                    if data_element in value_mappings:
+                        if current_value in value_mappings[data_element]:
+                            new_value = value_mappings[data_element][current_value]
+                            self.logger.info(
+                                f"Transformation valeur: DE={data_element}, "
+                                f"{current_value} -> {new_value}"
+                            )
+                            data_value['value'] = new_value
+
+            transformed_events.append(event_copy)
+
+        return transformed_events
+
     def import_events(self, events: List[Dict[str, Any]], job: Optional[SyncJob] = None) -> Dict[str, Any]:
         """
         Importe les événements vers l'instance destination
@@ -285,6 +328,9 @@ class EventsDataService(BaseDataService):
         try:
             if not events:
                 return {'status': 'OK', 'message': 'Aucun événement à importer'}
+
+            # Transformer les événements avant l'import
+            events = self.transform_event_values(events)
 
             self.logger.info(f"Import de {len(events)} événements")
 

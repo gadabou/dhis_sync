@@ -1,4 +1,5 @@
 from django.urls import path
+from .views.dashboard import DashboardView
 from .views.dhis2_instance import (
     DHIS2InstanceListView,
     DHIS2InstanceDetailView,
@@ -31,6 +32,8 @@ from .views.sync_jobs import (
 )
 
 urlpatterns = [
+    # === TABLEAU DE BORD ===
+    path('', DashboardView.as_view(), name='dashboard'),
     # === INSTANCES DHIS2 ===
     # Liste des instances DHIS2
     path('instances/', DHIS2InstanceListView.as_view(), name='dhis2_instance_list'),
