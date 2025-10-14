@@ -133,6 +133,12 @@ urlpatterns = [
     # API: Nettoyage des tâches mortes
     path('api/auto-sync/cleanup/', auto_sync.api_cleanup_tasks, name='api_cleanup_tasks'),
 
+    # API: Progression d'une synchronisation
+    path('api/auto-sync/<int:config_id>/progress/', auto_sync.api_sync_progress, name='api_sync_progress'),
+
+    # API: Statistiques globales du dashboard
+    path('api/auto-sync/dashboard-stats/', auto_sync.api_dashboard_stats, name='api_dashboard_stats'),
+
     # === LOGS ===
     # Visualiseur de logs
     path('logs/', logs.logs_viewer, name='logs_viewer'),

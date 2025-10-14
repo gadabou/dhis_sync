@@ -163,16 +163,29 @@ class SyncConfigurationCreateView(LoginRequiredMixin, CreateView):
                 form.instance.created_by = self.request.user
                 self.object = form.save()
 
+                # Déterminer la redirection selon le mode
+                if self.object.execution_mode == 'automatic':
+                    # Si mode automatique, rediriger vers les paramètres auto-sync
+                    redirect_url = reverse('auto_sync_settings', kwargs={'config_id': self.object.id})
+                    success_message = (
+                        f'Configuration "{self.object.name}" créée avec succès. '
+                        'Veuillez configurer les paramètres de synchronisation automatique.'
+                    )
+                else:
+                    # Sinon, rediriger vers la page de détail
+                    redirect_url = reverse('sync_config_detail', kwargs={'config_id': self.object.id})
+                    success_message = f'Configuration "{self.object.name}" créée avec succès.'
+
                 # Gérer les requêtes AJAX
                 if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                     return JsonResponse({
                         'success': True,
-                        'message': f'Configuration "{self.object.name}" créée avec succès.',
-                        'redirect': reverse('sync_config_detail', kwargs={'config_id': self.object.id})
+                        'message': success_message,
+                        'redirect': redirect_url
                     })
 
-                messages.success(self.request, f'Configuration "{self.object.name}" créée avec succès.')
-                return redirect('sync_config_detail', config_id=self.object.id)
+                messages.success(self.request, success_message)
+                return redirect(redirect_url)
 
         except ValidationError as e:
             error_dict = {}

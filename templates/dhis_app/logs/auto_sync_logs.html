@@ -1,0 +1,354 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}Logs Auto-Sync{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+        background: linear-gradient(to bottom right, #f8f9fa, #e9ecef);
+        min-height: 100vh;
+    }
+
+    .logs-header {
+        background: white;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border-radius: 15px;
+        box-shadow: var(--card-shadow);
+    }
+
+    .logs-title {
+        font-size: 2rem;
+        font-weight: 700;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+    }
+
+    .logs-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: var(--card-shadow);
+        overflow: hidden;
+    }
+
+    .logs-content {
+        background: #1e1e1e;
+        color: #d4d4d4;
+        padding: 1.5rem;
+        font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        font-size: 0.875rem;
+        line-height: 1.6;
+        max-height: 600px;
+        overflow-y: auto;
+        border-radius: 10px;
+    }
+
+    .log-line {
+        margin-bottom: 0.5rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        transition: background 0.2s ease;
+    }
+
+    .log-line:hover {
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .log-level-info { color: #4facfe; }
+    .log-level-warning { color: #f39c12; }
+    .log-level-error { color: #ff6a00; }
+    .log-level-debug { color: #95a5a6; }
+    .log-level-success { color: #38ef7d; }
+
+    .log-timestamp {
+        color: #95a5a6;
+        margin-right: 0.5rem;
+    }
+
+    .log-message {
+        color: #d4d4d4;
+    }
+
+    .filter-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .btn-modern {
+        border-radius: 10px;
+        padding: 0.5rem 1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        border: none;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .btn-modern:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .btn-modern.btn-primary {
+        background: var(--primary-gradient);
+        color: white;
+    }
+
+    .btn-refresh {
+        animation: rotate 2s linear infinite;
+        display: inline-block;
+    }
+
+    @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    .stats-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        background: #f8f9fa;
+        color: #2d3748;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: #718096;
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        color: #cbd5e0;
+        margin-bottom: 1rem;
+    }
+
+    /* Scrollbar personnalisée */
+    .logs-content::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    .logs-content::-webkit-scrollbar-track {
+        background: #2d3748;
+        border-radius: 10px;
+    }
+
+    .logs-content::-webkit-scrollbar-thumb {
+        background: #4a5568;
+        border-radius: 10px;
+    }
+
+    .logs-content::-webkit-scrollbar-thumb:hover {
+        background: #667eea;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- En-tête -->
+    <div class="logs-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h1 class="logs-title">
+                    <i class="fas fa-file-alt"></i> Logs Auto-Sync
+                </h1>
+                <p class="text-muted mb-0">Visualisation des logs de synchronisation automatique</p>
+            </div>
+            <div class="d-flex gap-2">
+                <button onclick="refreshLogs()" class="btn btn-modern btn-primary">
+                    <i class="fas fa-sync-alt btn-refresh" id="refresh-icon"></i> Rafraîchir
+                </button>
+                <a href="{% url 'auto_sync_dashboard' %}" class="btn btn-modern" style="background: #e2e8f0; color: #2d3748;">
+                    <i class="fas fa-arrow-left"></i> Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtres et statistiques -->
+    <div class="filter-card">
+        <div class="row align-items-center">
+            <div class="col-md-3">
+                <span class="stats-badge">
+                    <i class="fas fa-file-code"></i>
+                    <span id="log-count">{{ log_lines|length }} lignes</span>
+                </span>
+            </div>
+            <div class="col-md-3">
+                <span class="stats-badge">
+                    <i class="fas fa-clock"></i>
+                    <span id="last-update">Dernière MAJ: maintenant</span>
+                </span>
+            </div>
+            <div class="col-md-6 text-end">
+                <div class="btn-group" role="group">
+                    <input type="checkbox" class="btn-check" id="show-info" autocomplete="off" checked>
+                    <label class="btn btn-outline-primary btn-sm" for="show-info">INFO</label>
+
+                    <input type="checkbox" class="btn-check" id="show-warning" autocomplete="off" checked>
+                    <label class="btn btn-outline-warning btn-sm" for="show-warning">WARNING</label>
+
+                    <input type="checkbox" class="btn-check" id="show-error" autocomplete="off" checked>
+                    <label class="btn btn-outline-danger btn-sm" for="show-error">ERROR</label>
+
+                    <input type="checkbox" class="btn-check" id="show-debug" autocomplete="off">
+                    <label class="btn btn-outline-secondary btn-sm" for="show-debug">DEBUG</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenu des logs -->
+    <div class="logs-card">
+        <div class="logs-content" id="logs-container">
+            {% if log_lines %}
+                {% for line in log_lines %}
+                    <div class="log-line" data-level="{{ line.level|lower }}">
+                        <span class="log-timestamp">{{ line.timestamp }}</span>
+                        <span class="log-level-{{ line.level|lower }}">[{{ line.level }}]</span>
+                        <span class="log-message">{{ line.message }}</span>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <h4>Aucun log disponible</h4>
+                    <p>Les logs de synchronisation automatique apparaîtront ici.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+let autoRefresh = true;
+let refreshInterval;
+
+function parseLogs(content) {
+    const lines = content.split('\n');
+    const parsed = [];
+
+    const logRegex = /\[(\w+)\]\s+(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2})\s+-\s+(.*)/;
+
+    for (const line of lines) {
+        if (!line.trim()) continue;
+
+        const match = line.match(logRegex);
+        if (match) {
+            parsed.push({
+                level: match[1],
+                timestamp: match[2],
+                message: match[3]
+            });
+        } else {
+            // Ligne sans format standard
+            parsed.push({
+                level: 'INFO',
+                timestamp: '',
+                message: line
+            });
+        }
+    }
+
+    return parsed;
+}
+
+function refreshLogs() {
+    const icon = document.getElementById('refresh-icon');
+    icon.style.animation = 'rotate 1s linear infinite';
+
+    fetch(window.location.href)
+        .then(response => response.text())
+        .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const newContent = doc.getElementById('logs-container');
+
+            if (newContent) {
+                document.getElementById('logs-container').innerHTML = newContent.innerHTML;
+                applyFilters();
+            }
+
+            // Mettre à jour le timestamp
+            const now = new Date();
+            document.getElementById('last-update').textContent =
+                `Dernière MAJ: ${now.toLocaleTimeString('fr-FR')}`;
+
+            setTimeout(() => {
+                icon.style.animation = '';
+            }, 1000);
+        })
+        .catch(error => {
+            console.error('Erreur lors du rafraîchissement:', error);
+            icon.style.animation = '';
+        });
+}
+
+function applyFilters() {
+    const showInfo = document.getElementById('show-info').checked;
+    const showWarning = document.getElementById('show-warning').checked;
+    const showError = document.getElementById('show-error').checked;
+    const showDebug = document.getElementById('show-debug').checked;
+
+    const lines = document.querySelectorAll('.log-line');
+    let visibleCount = 0;
+
+    lines.forEach(line => {
+        const level = line.dataset.level;
+        let show = false;
+
+        if (level === 'info' && showInfo) show = true;
+        if (level === 'warning' && showWarning) show = true;
+        if (level === 'error' && showError) show = true;
+        if (level === 'debug' && showDebug) show = true;
+
+        line.style.display = show ? 'block' : 'none';
+        if (show) visibleCount++;
+    });
+
+    document.getElementById('log-count').textContent = `${visibleCount} lignes`;
+}
+
+// Event listeners pour les filtres
+document.getElementById('show-info').addEventListener('change', applyFilters);
+document.getElementById('show-warning').addEventListener('change', applyFilters);
+document.getElementById('show-error').addEventListener('change', applyFilters);
+document.getElementById('show-debug').addEventListener('change', applyFilters);
+
+// Auto-refresh toutes les 5 secondes
+if (autoRefresh) {
+    refreshInterval = setInterval(refreshLogs, 5000);
+}
+
+// Scroll automatique vers le bas
+const logsContainer = document.getElementById('logs-container');
+if (logsContainer) {
+    logsContainer.scrollTop = logsContainer.scrollHeight;
+}
+
+// Nettoyer l'intervalle
+window.addEventListener('beforeunload', () => {
+    if (refreshInterval) clearInterval(refreshInterval);
+});
+</script>
+{% endblock %}

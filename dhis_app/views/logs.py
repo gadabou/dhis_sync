@@ -170,33 +170,63 @@ def auto_sync_logs(request):
     - changes_detected.log
     - sync_jobs.log
     """
+    import re
+    from datetime import datetime
+
     logs_dir = settings.BASE_DIR / 'logs'
 
     # Fichiers de logs auto-sync
     auto_sync_files = [
         'auto_sync.log',
-        'changes_detected.log',
-        'sync_jobs.log',
+        'dhis2_sync.log',  # Log général qui contient aussi les infos auto-sync
     ]
 
-    # Lire les logs
-    logs_content = {}
+    # Lire et parser les logs
+    log_lines = []
+    log_pattern = re.compile(r'\[(\w+)\]\s+(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2})\s+-\s+(.*)')
+
     for filename in auto_sync_files:
         file_path = logs_dir / filename
         if file_path.exists():
             try:
                 with open(file_path, 'r', encoding='utf-8') as f:
-                    # Lire les 100 dernières lignes
-                    lines = f.readlines()
-                    logs_content[filename] = ''.join(lines[-100:])
+                    # Lire les 200 dernières lignes
+                    lines = f.readlines()[-200:]
+
+                    for line in lines:
+                        line = line.strip()
+                        if not line:
+                            continue
+
+                        match = log_pattern.match(line)
+                        if match:
+                            level = match.group(1)
+                            timestamp = match.group(2)
+                            message = match.group(3)
+
+                            log_lines.append({
+                                'level': level,
+                                'timestamp': timestamp,
+                                'message': message,
+                                'raw': line
+                            })
+                        else:
+                            # Ligne sans format standard
+                            log_lines.append({
+                                'level': 'INFO',
+                                'timestamp': '',
+                                'message': line,
+                                'raw': line
+                            })
             except Exception as e:
-                logs_content[filename] = f"Erreur: {str(e)}"
-        else:
-            logs_content[filename] = "Fichier non trouvé"
+                logger.error(f"Erreur lors de la lecture de {filename}: {e}")
+
+    # Trier par timestamp (les plus récents en dernier)
+    log_lines.sort(key=lambda x: x['timestamp'] if x['timestamp'] else '')
 
     context = {
-        'logs_content': logs_content,
-        'auto_sync_files': auto_sync_files,
+        'log_lines': log_lines,
+        'total_lines': len(log_lines),
     }
 
     return render(request, 'dhis_app/logs/auto_sync_logs.html', context)

@@ -87,3 +87,237 @@
 [AUTO-SYNC] [INFO] 2025-10-14 00:28:30 [dhis_app.services.auto_sync.lifecycle_manager] - Synchronisation incrémentale réussie
 [AUTO-SYNC] [INFO] 2025-10-14 00:28:30 [dhis_app.services.auto_sync.change_detector] - Toutes les ressources marquées comme vérifiées à 2025-10-14 00:28:30.301437+00:00
 [AUTO-SYNC] [INFO] 2025-10-14 00:28:30 [dhis_app.services.auto_sync.scheduler] - Synchronisation réussie pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 00:33:30 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour organisationUnits
+[AUTO-SYNC] [INFO] 2025-10-14 00:33:30 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour dataElements
+[AUTO-SYNC] [INFO] 2025-10-14 00:33:30 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour indicators
+[AUTO-SYNC] [INFO] 2025-10-14 00:33:30 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour programs
+[AUTO-SYNC] [INFO] 2025-10-14 00:33:30 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour dataSets
+[AUTO-SYNC] [INFO] 2025-10-14 00:33:30 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categoryOptions
+[AUTO-SYNC] [INFO] 2025-10-14 00:33:30 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categories
+[AUTO-SYNC] [INFO] 2025-10-14 00:33:30 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categoryCombos
+[AUTO-SYNC] [WARNING] 2025-10-14 00:33:30 [dhis_app.services.auto_sync.change_detector] - Erreur vérification tracker: code: 409, url: http://localhost:8087/api/trackedEntityInstances.json?skipPaging=false&pageSize=1&totalPages=true&lastUpdatedStartDate=2025-10-14, description: {"httpStatus":"Conflict","httpStatusCode":409,"status":"ERROR","message":"Either Program or Tracked entity type should be specified"}
+[AUTO-SYNC] [INFO] 2025-10-14 00:33:30 [dhis_app.services.auto_sync.change_detector] - Détection de changements pour Local 87: Métadonnées=True, Données=True
+[AUTO-SYNC] [INFO] 2025-10-14 00:33:30 [dhis_app.services.auto_sync.scheduler] - Changements détectés pour Local 97-94: Métadonnées=True, Données=True
+[AUTO-SYNC] [INFO] 2025-10-14 00:33:30 [dhis_app.services.auto_sync.lifecycle_manager] - Démarrage de la synchronisation incrémentale pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 00:33:30 [dhis_app.services.auto_sync.lifecycle_manager] - Synchronisation des métadonnées modifiées
+[AUTO-SYNC] [INFO] 2025-10-14 00:34:19 [dhis_app.services.auto_sync.lifecycle_manager] - Synchronisation des données modifiées
+[AUTO-SYNC] [INFO] 2025-10-14 00:34:24 [dhis_app.services.auto_sync.lifecycle_manager] - Synchronisation incrémentale réussie
+[AUTO-SYNC] [INFO] 2025-10-14 00:34:24 [dhis_app.services.auto_sync.change_detector] - Toutes les ressources marquées comme vérifiées à 2025-10-14 00:34:24.643874+00:00
+[AUTO-SYNC] [INFO] 2025-10-14 00:34:24 [dhis_app.services.auto_sync.scheduler] - Synchronisation réussie pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 00:39:24 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour organisationUnits
+[AUTO-SYNC] [INFO] 2025-10-14 00:39:24 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour dataElements
+[AUTO-SYNC] [INFO] 2025-10-14 00:39:24 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour indicators
+[AUTO-SYNC] [INFO] 2025-10-14 00:39:24 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour programs
+[AUTO-SYNC] [INFO] 2025-10-14 00:39:24 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour dataSets
+[AUTO-SYNC] [INFO] 2025-10-14 00:39:24 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categoryOptions
+[AUTO-SYNC] [INFO] 2025-10-14 00:39:24 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categories
+[AUTO-SYNC] [INFO] 2025-10-14 00:39:24 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categoryCombos
+[AUTO-SYNC] [WARNING] 2025-10-14 00:39:24 [dhis_app.services.auto_sync.change_detector] - Erreur vérification tracker: code: 409, url: http://localhost:8087/api/trackedEntityInstances.json?skipPaging=false&pageSize=1&totalPages=true&lastUpdatedStartDate=2025-10-14, description: {"httpStatus":"Conflict","httpStatusCode":409,"status":"ERROR","message":"Either Program or Tracked entity type should be specified"}
+[AUTO-SYNC] [INFO] 2025-10-14 00:39:24 [dhis_app.services.auto_sync.change_detector] - Détection de changements pour Local 87: Métadonnées=True, Données=True
+[AUTO-SYNC] [INFO] 2025-10-14 00:39:24 [dhis_app.services.auto_sync.scheduler] - Changements détectés pour Local 97-94: Métadonnées=True, Données=True
+[AUTO-SYNC] [INFO] 2025-10-14 00:39:24 [dhis_app.services.auto_sync.lifecycle_manager] - Démarrage de la synchronisation incrémentale pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 00:39:24 [dhis_app.services.auto_sync.lifecycle_manager] - Synchronisation des métadonnées modifiées
+[AUTO-SYNC] [INFO] 2025-10-14 00:40:14 [dhis_app.services.auto_sync.lifecycle_manager] - Synchronisation des données modifiées
+[AUTO-SYNC] [INFO] 2025-10-14 00:40:20 [dhis_app.services.auto_sync.lifecycle_manager] - Synchronisation incrémentale réussie
+[AUTO-SYNC] [INFO] 2025-10-14 00:40:20 [dhis_app.services.auto_sync.change_detector] - Toutes les ressources marquées comme vérifiées à 2025-10-14 00:40:20.162231+00:00
+[AUTO-SYNC] [INFO] 2025-10-14 00:40:20 [dhis_app.services.auto_sync.scheduler] - Synchronisation réussie pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 00:42:25 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-14 00:42:27 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 00:42:27 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-14 00:42:27 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-14 00:42:27 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-14 00:42:57 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour organisationUnits
+[AUTO-SYNC] [INFO] 2025-10-14 00:42:57 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour dataElements
+[AUTO-SYNC] [INFO] 2025-10-14 00:42:57 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour indicators
+[AUTO-SYNC] [INFO] 2025-10-14 00:42:57 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour programs
+[AUTO-SYNC] [INFO] 2025-10-14 00:42:57 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour dataSets
+[AUTO-SYNC] [INFO] 2025-10-14 00:42:57 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categoryOptions
+[AUTO-SYNC] [INFO] 2025-10-14 00:42:57 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categories
+[AUTO-SYNC] [INFO] 2025-10-14 00:42:57 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categoryCombos
+[AUTO-SYNC] [WARNING] 2025-10-14 00:42:57 [dhis_app.services.auto_sync.change_detector] - Erreur vérification tracker: code: 409, url: http://localhost:8087/api/trackedEntityInstances.json?skipPaging=false&pageSize=1&totalPages=true, description: {"httpStatus":"Conflict","httpStatusCode":409,"status":"ERROR","message":"Either Program or Tracked entity type should be specified"}
+[AUTO-SYNC] [INFO] 2025-10-14 00:42:57 [dhis_app.services.auto_sync.change_detector] - Détection de changements pour Local 87: Métadonnées=True, Données=False
+[AUTO-SYNC] [INFO] 2025-10-14 00:42:57 [dhis_app.services.auto_sync.scheduler] - Changements détectés pour Local 97-94: Métadonnées=True, Données=False
+[AUTO-SYNC] [INFO] 2025-10-14 00:42:57 [dhis_app.services.auto_sync.lifecycle_manager] - Démarrage de la synchronisation initiale pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 00:42:57 [dhis_app.services.auto_sync.lifecycle_manager] - Étape 1/2: Synchronisation des métadonnées
+[AUTO-SYNC] [INFO] 2025-10-14 00:43:07 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-14 00:43:07 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 00:43:07 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-14 00:43:07 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-14 00:43:07 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-14 00:43:50 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-14 00:43:54 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 00:43:54 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-14 00:43:54 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-14 00:43:54 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-14 00:44:10 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-14 00:44:10 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 00:44:10 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-14 00:44:10 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-14 00:44:10 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-14 00:45:09 [dhis_app.services.auto_sync.scheduler] - Fin de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 00:45:09 [dhis_app.services.auto_sync.scheduler] - Scheduler arrêté pour la configuration 3
+[AUTO-SYNC] [INFO] 2025-10-14 00:46:37 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 00:46:37 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-14 00:46:37 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-14 00:47:20 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-14 00:47:23 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-14 00:47:23 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 00:47:23 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-14 00:47:23 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-14 00:47:23 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-14 00:47:24 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 00:47:24 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-14 00:47:24 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-14 00:47:24 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-14 00:50:02 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-14 00:50:04 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-14 00:50:04 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 00:50:04 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-14 00:50:04 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-14 00:50:04 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-14 00:50:04 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 00:50:04 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-14 00:50:04 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-14 00:50:04 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-14 00:58:52 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-14 00:58:52 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 00:58:52 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-14 00:58:52 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-14 00:58:52 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-14 00:58:53 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-14 00:58:53 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 00:58:53 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-14 00:58:53 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-14 00:58:53 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-14 01:00:17 [dhis_app.services.auto_sync.tasks] - Démarrage synchronisation async pour Local 97-94
+[AUTO-SYNC] [WARNING] 2025-10-14 01:00:17 [dhis_app.services.auto_sync.tasks] - Synchronisation async échouée: Une synchronisation est déjà en cours
+[AUTO-SYNC] [INFO] 2025-10-14 01:01:37 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-14 01:01:37 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 01:01:37 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-14 01:01:37 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-14 01:01:37 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-14 01:07:20 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-14 01:07:24 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 01:07:24 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-14 01:07:24 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-14 01:07:24 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-14 01:08:14 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-14 01:08:16 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 01:08:16 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-14 01:08:16 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-14 01:08:16 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-14 01:08:35 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-14 01:08:40 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 01:08:40 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-14 01:08:40 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-14 01:08:40 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-14 01:09:41 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-14 01:09:45 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 01:09:45 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-14 01:09:45 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-14 01:09:45 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-14 01:15:59 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-14 01:16:02 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-14 01:16:02 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 01:16:02 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-14 01:16:02 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-14 01:16:02 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-14 01:16:03 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 01:16:03 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-14 01:16:03 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-14 01:16:03 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-14 01:16:32 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour organisationUnits
+[AUTO-SYNC] [INFO] 2025-10-14 01:16:32 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour dataElements
+[AUTO-SYNC] [INFO] 2025-10-14 01:16:32 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour indicators
+[AUTO-SYNC] [INFO] 2025-10-14 01:16:32 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour programs
+[AUTO-SYNC] [INFO] 2025-10-14 01:16:32 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour dataSets
+[AUTO-SYNC] [INFO] 2025-10-14 01:16:32 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categoryOptions
+[AUTO-SYNC] [INFO] 2025-10-14 01:16:32 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categories
+[AUTO-SYNC] [INFO] 2025-10-14 01:16:32 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categoryCombos
+[AUTO-SYNC] [WARNING] 2025-10-14 01:16:32 [dhis_app.services.auto_sync.change_detector] - Erreur vérification tracker: code: 409, url: http://localhost:8087/api/trackedEntityInstances.json?skipPaging=false&pageSize=1&totalPages=true, description: {"httpStatus":"Conflict","httpStatusCode":409,"status":"ERROR","message":"Either Program or Tracked entity type should be specified"}
+[AUTO-SYNC] [INFO] 2025-10-14 01:16:32 [dhis_app.services.auto_sync.change_detector] - Détection de changements pour Local 87: Métadonnées=True, Données=False
+[AUTO-SYNC] [INFO] 2025-10-14 01:16:32 [dhis_app.services.auto_sync.scheduler] - Changements détectés pour Local 97-94: Métadonnées=True, Données=False
+[AUTO-SYNC] [INFO] 2025-10-14 01:16:32 [dhis_app.services.auto_sync.lifecycle_manager] - Démarrage de la synchronisation initiale pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 01:16:32 [dhis_app.services.auto_sync.lifecycle_manager] - Étape 1/2: Synchronisation des métadonnées
+[AUTO-SYNC] [INFO] 2025-10-14 01:17:17 [dhis_app.services.auto_sync.lifecycle_manager] - Étape 2/2: Synchronisation des données
+[AUTO-SYNC] [INFO] 2025-10-14 01:17:26 [dhis_app.services.auto_sync.lifecycle_manager] - Synchronisation initiale terminée avec succès
+[AUTO-SYNC] [INFO] 2025-10-14 01:17:26 [dhis_app.services.auto_sync.change_detector] - Toutes les ressources marquées comme vérifiées à 2025-10-14 01:17:26.452339+00:00
+[AUTO-SYNC] [INFO] 2025-10-14 01:17:26 [dhis_app.services.auto_sync.scheduler] - Synchronisation réussie pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 01:17:54 [dhis_app.services.auto_sync.scheduler] - Fin de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 01:17:54 [dhis_app.services.auto_sync.scheduler] - Scheduler arrêté pour la configuration 3
+[AUTO-SYNC] [INFO] 2025-10-14 01:18:47 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 01:18:47 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-14 01:18:47 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-14 01:19:00 [dhis_app.services.auto_sync.tasks] - Démarrage synchronisation async pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 01:19:00 [dhis_app.services.auto_sync.lifecycle_manager] - Démarrage de la synchronisation initiale pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 01:19:00 [dhis_app.services.auto_sync.lifecycle_manager] - Étape 1/2: Synchronisation des métadonnées
+[AUTO-SYNC] [INFO] 2025-10-14 01:19:12 [dhis_app.services.auto_sync.scheduler] - Redémarrage du scheduler pour la configuration 3
+[AUTO-SYNC] [INFO] 2025-10-14 01:19:12 [dhis_app.services.auto_sync.scheduler] - Fin de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 01:19:12 [dhis_app.services.auto_sync.scheduler] - Scheduler arrêté pour la configuration 3
+[AUTO-SYNC] [INFO] 2025-10-14 01:19:13 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 01:19:13 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-14 01:19:13 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-14 01:19:49 [dhis_app.services.auto_sync.lifecycle_manager] - Étape 2/2: Synchronisation des données
+[AUTO-SYNC] [INFO] 2025-10-14 01:19:58 [dhis_app.services.auto_sync.lifecycle_manager] - Synchronisation initiale terminée avec succès
+[AUTO-SYNC] [INFO] 2025-10-14 01:19:58 [dhis_app.services.auto_sync.tasks] - Synchronisation async réussie pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 01:22:26 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour organisationUnits
+[AUTO-SYNC] [INFO] 2025-10-14 01:22:26 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour dataElements
+[AUTO-SYNC] [INFO] 2025-10-14 01:22:26 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour indicators
+[AUTO-SYNC] [INFO] 2025-10-14 01:22:26 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour programs
+[AUTO-SYNC] [INFO] 2025-10-14 01:22:26 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour dataSets
+[AUTO-SYNC] [INFO] 2025-10-14 01:22:26 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categoryOptions
+[AUTO-SYNC] [INFO] 2025-10-14 01:22:26 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categories
+[AUTO-SYNC] [INFO] 2025-10-14 01:22:26 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categoryCombos
+[AUTO-SYNC] [WARNING] 2025-10-14 01:22:26 [dhis_app.services.auto_sync.change_detector] - Erreur vérification tracker: code: 409, url: http://localhost:8087/api/trackedEntityInstances.json?skipPaging=false&pageSize=1&totalPages=true&lastUpdatedStartDate=2025-10-14, description: {"httpStatus":"Conflict","httpStatusCode":409,"status":"ERROR","message":"Either Program or Tracked entity type should be specified"}
+[AUTO-SYNC] [INFO] 2025-10-14 01:22:26 [dhis_app.services.auto_sync.change_detector] - Détection de changements pour Local 87: Métadonnées=True, Données=True
+[AUTO-SYNC] [INFO] 2025-10-14 01:22:26 [dhis_app.services.auto_sync.scheduler] - Changements détectés pour Local 97-94: Métadonnées=True, Données=True
+[AUTO-SYNC] [INFO] 2025-10-14 01:22:26 [dhis_app.services.auto_sync.lifecycle_manager] - Démarrage de la synchronisation incrémentale pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 01:22:26 [dhis_app.services.auto_sync.lifecycle_manager] - Synchronisation des métadonnées modifiées
+[AUTO-SYNC] [INFO] 2025-10-14 01:23:14 [dhis_app.services.auto_sync.lifecycle_manager] - Synchronisation des données modifiées
+[AUTO-SYNC] [INFO] 2025-10-14 01:23:19 [dhis_app.services.auto_sync.lifecycle_manager] - Synchronisation incrémentale réussie
+[AUTO-SYNC] [INFO] 2025-10-14 01:23:19 [dhis_app.services.auto_sync.change_detector] - Toutes les ressources marquées comme vérifiées à 2025-10-14 01:23:19.214512+00:00
+[AUTO-SYNC] [INFO] 2025-10-14 01:23:19 [dhis_app.services.auto_sync.scheduler] - Synchronisation réussie pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 01:24:12 [dhis_app.services.auto_sync.tasks] - Démarrage synchronisation async pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 01:24:12 [dhis_app.services.auto_sync.lifecycle_manager] - Démarrage de la synchronisation incrémentale pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 01:24:12 [dhis_app.services.auto_sync.lifecycle_manager] - Aucun changement spécifique détecté, synchronisation complète
+[AUTO-SYNC] [INFO] 2025-10-14 01:24:19 [dhis_app.services.auto_sync.scheduler] - Redémarrage du scheduler pour la configuration 3
+[AUTO-SYNC] [INFO] 2025-10-14 01:24:19 [dhis_app.services.auto_sync.scheduler] - Fin de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 01:24:19 [dhis_app.services.auto_sync.scheduler] - Scheduler arrêté pour la configuration 3
+[AUTO-SYNC] [INFO] 2025-10-14 01:24:20 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 01:24:20 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-14 01:24:20 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-14 01:26:39 [dhis_app.services.auto_sync.lifecycle_manager] - Synchronisation incrémentale réussie
+[AUTO-SYNC] [INFO] 2025-10-14 01:26:39 [dhis_app.services.auto_sync.tasks] - Synchronisation async réussie pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 01:28:19 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour organisationUnits
+[AUTO-SYNC] [INFO] 2025-10-14 01:28:19 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour dataElements
+[AUTO-SYNC] [INFO] 2025-10-14 01:28:19 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour indicators
+[AUTO-SYNC] [INFO] 2025-10-14 01:28:19 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour programs
+[AUTO-SYNC] [INFO] 2025-10-14 01:28:19 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour dataSets
+[AUTO-SYNC] [INFO] 2025-10-14 01:28:19 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categoryOptions
+[AUTO-SYNC] [INFO] 2025-10-14 01:28:19 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categories
+[AUTO-SYNC] [INFO] 2025-10-14 01:28:19 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categoryCombos
+[AUTO-SYNC] [WARNING] 2025-10-14 01:28:19 [dhis_app.services.auto_sync.change_detector] - Erreur vérification tracker: code: 409, url: http://localhost:8087/api/trackedEntityInstances.json?skipPaging=false&pageSize=1&totalPages=true&lastUpdatedStartDate=2025-10-14, description: {"httpStatus":"Conflict","httpStatusCode":409,"status":"ERROR","message":"Either Program or Tracked entity type should be specified"}
+[AUTO-SYNC] [INFO] 2025-10-14 01:28:19 [dhis_app.services.auto_sync.change_detector] - Détection de changements pour Local 87: Métadonnées=True, Données=True
+[AUTO-SYNC] [INFO] 2025-10-14 01:28:19 [dhis_app.services.auto_sync.scheduler] - Changements détectés pour Local 97-94: Métadonnées=True, Données=True
+[AUTO-SYNC] [INFO] 2025-10-14 01:28:19 [dhis_app.services.auto_sync.lifecycle_manager] - Démarrage de la synchronisation incrémentale pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 01:28:19 [dhis_app.services.auto_sync.lifecycle_manager] - Synchronisation des métadonnées modifiées
+[AUTO-SYNC] [INFO] 2025-10-14 01:29:09 [dhis_app.services.auto_sync.lifecycle_manager] - Synchronisation des données modifiées
+[AUTO-SYNC] [INFO] 2025-10-14 01:29:14 [dhis_app.services.auto_sync.lifecycle_manager] - Synchronisation incrémentale réussie
+[AUTO-SYNC] [INFO] 2025-10-14 01:29:14 [dhis_app.services.auto_sync.change_detector] - Toutes les ressources marquées comme vérifiées à 2025-10-14 01:29:14.934165+00:00
+[AUTO-SYNC] [INFO] 2025-10-14 01:29:14 [dhis_app.services.auto_sync.scheduler] - Synchronisation réussie pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 01:29:50 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour organisationUnits
+[AUTO-SYNC] [INFO] 2025-10-14 01:29:50 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour dataElements
+[AUTO-SYNC] [INFO] 2025-10-14 01:29:50 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour indicators
+[AUTO-SYNC] [INFO] 2025-10-14 01:29:50 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour programs
+[AUTO-SYNC] [INFO] 2025-10-14 01:29:50 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour dataSets
+[AUTO-SYNC] [INFO] 2025-10-14 01:29:50 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categoryOptions
+[AUTO-SYNC] [INFO] 2025-10-14 01:29:50 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categories
+[AUTO-SYNC] [INFO] 2025-10-14 01:29:50 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categoryCombos
+[AUTO-SYNC] [WARNING] 2025-10-14 01:29:51 [dhis_app.services.auto_sync.change_detector] - Erreur vérification tracker: code: 409, url: http://localhost:8087/api/trackedEntityInstances.json?skipPaging=false&pageSize=1&totalPages=true, description: {"httpStatus":"Conflict","httpStatusCode":409,"status":"ERROR","message":"Either Program or Tracked entity type should be specified"}
+[AUTO-SYNC] [INFO] 2025-10-14 01:29:51 [dhis_app.services.auto_sync.change_detector] - Détection de changements pour Local 87: Métadonnées=True, Données=False
+[AUTO-SYNC] [INFO] 2025-10-14 01:29:51 [dhis_app.services.auto_sync.scheduler] - Changements détectés pour Local 97-94: Métadonnées=True, Données=False
+[AUTO-SYNC] [INFO] 2025-10-14 01:29:51 [dhis_app.services.auto_sync.lifecycle_manager] - Démarrage de la synchronisation incrémentale pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-14 01:29:51 [dhis_app.services.auto_sync.lifecycle_manager] - Synchronisation des métadonnées modifiées
+[AUTO-SYNC] [INFO] 2025-10-14 01:30:38 [dhis_app.services.auto_sync.lifecycle_manager] - Synchronisation incrémentale réussie
+[AUTO-SYNC] [INFO] 2025-10-14 01:30:38 [dhis_app.services.auto_sync.change_detector] - Toutes les ressources marquées comme vérifiées à 2025-10-14 01:30:38.219236+00:00
+[AUTO-SYNC] [INFO] 2025-10-14 01:30:38 [dhis_app.services.auto_sync.scheduler] - Synchronisation réussie pour Local 97-94

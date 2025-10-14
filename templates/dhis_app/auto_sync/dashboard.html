@@ -3,255 +3,863 @@
 
 {% block title %}Dashboard Auto-Sync{% endblock %}
 
+{% block extra_css %}
+<style>
+    :root {
+        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        --danger-gradient: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);
+        --warning-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --info-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        --card-hover-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    body {
+        background: linear-gradient(to bottom right, #f8f9fa, #e9ecef);
+        min-height: 100vh;
+    }
+
+    /* En-tête élégant */
+    .dashboard-header {
+        background: white;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border-radius: 15px;
+        box-shadow: var(--card-shadow);
+    }
+
+    .dashboard-title {
+        font-size: 2rem;
+        font-weight: 700;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Cards statistiques */
+    .stat-card {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: var(--card-shadow);
+        transition: all 0.3s ease;
+        border: none;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--primary-gradient);
+        transition: height 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--card-hover-shadow);
+    }
+
+    .stat-card:hover::before {
+        height: 100%;
+        opacity: 0.05;
+    }
+
+    .stat-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .stat-icon.primary { background: var(--primary-gradient); color: white; }
+    .stat-icon.success { background: var(--success-gradient); color: white; }
+    .stat-icon.info { background: var(--info-gradient); color: white; }
+    .stat-icon.warning { background: var(--warning-gradient); color: white; }
+
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #2d3748;
+        line-height: 1;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.875rem;
+        color: #718096;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 600;
+    }
+
+    /* Card configuration */
+    .config-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: var(--card-shadow);
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        border: 1px solid #e2e8f0;
+    }
+
+    .config-card:hover {
+        box-shadow: var(--card-hover-shadow);
+        transform: translateY(-2px);
+    }
+
+    .config-header {
+        padding: 1.5rem;
+        background: linear-gradient(to right, #f8f9fa, white);
+        border-bottom: 2px solid #e2e8f0;
+    }
+
+    .config-name {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #2d3748;
+        margin-bottom: 0.5rem;
+    }
+
+    .config-route {
+        font-size: 0.875rem;
+        color: #718096;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .config-body {
+        padding: 1.5rem;
+    }
+
+    /* Badges modernes */
+    .badge-modern {
+        padding: 0.375rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .badge-running {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        color: white;
+        animation: pulse 2s ease-in-out infinite;
+    }
+
+    .badge-stopped {
+        background: #e2e8f0;
+        color: #718096;
+    }
+
+    .badge-enabled {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+    }
+
+    .badge-disabled {
+        background: #fef5e7;
+        color: #f39c12;
+        border: 1px solid #f39c12;
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+    }
+
+    /* Barre de progression moderne */
+    .progress-modern {
+        height: 30px;
+        border-radius: 15px;
+        background: #f1f5f9;
+        overflow: hidden;
+        position: relative;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .progress-bar-modern {
+        height: 100%;
+        border-radius: 15px;
+        background: var(--primary-gradient);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 700;
+        font-size: 0.875rem;
+        transition: width 0.5s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .progress-bar-modern::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg,
+            transparent,
+            rgba(255,255,255,0.3),
+            transparent
+        );
+        animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+    }
+
+    /* Cards métriques */
+    .metric-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1rem;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        border: 1px solid #e2e8f0;
+        transition: all 0.3s ease;
+    }
+
+    .metric-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .metric-label {
+        font-size: 0.75rem;
+        color: #718096;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+    }
+
+    .metric-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #2d3748;
+    }
+
+    .metric-value.success { color: #38ef7d; }
+    .metric-value.danger { color: #ff6a00; }
+    .metric-value.info { color: #4facfe; }
+    .metric-value.warning { color: #f5576c; }
+
+    /* Table moderne */
+    .table-modern {
+        border-collapse: separate;
+        border-spacing: 0;
+        width: 100%;
+    }
+
+    .table-modern thead th {
+        background: linear-gradient(to right, #667eea, #764ba2);
+        color: white;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+        padding: 1rem;
+        border: none;
+    }
+
+    .table-modern thead th:first-child {
+        border-top-left-radius: 10px;
+    }
+
+    .table-modern thead th:last-child {
+        border-top-right-radius: 10px;
+    }
+
+    .table-modern tbody tr {
+        transition: all 0.2s ease;
+    }
+
+    .table-modern tbody tr:hover {
+        background: #f8f9fa;
+        transform: scale(1.01);
+    }
+
+    .table-modern tbody td {
+        padding: 1rem;
+        border-bottom: 1px solid #e2e8f0;
+        vertical-align: middle;
+    }
+
+    /* Boutons modernes */
+    .btn-modern {
+        border-radius: 10px;
+        padding: 0.5rem 1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        border: none;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .btn-modern:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .btn-modern.btn-primary {
+        background: var(--primary-gradient);
+        color: white;
+    }
+
+    .btn-modern.btn-success {
+        background: var(--success-gradient);
+        color: white;
+    }
+
+    .btn-modern.btn-danger {
+        background: var(--danger-gradient);
+        color: white;
+    }
+
+    .btn-modern.btn-info {
+        background: var(--info-gradient);
+        color: white;
+    }
+
+    /* Alert moderne */
+    .alert-modern {
+        border-radius: 12px;
+        padding: 1rem 1.5rem;
+        border: none;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .alert-modern.alert-success {
+        background: linear-gradient(135deg, rgba(17, 153, 142, 0.1) 0%, rgba(56, 239, 125, 0.1) 100%);
+        color: #11998e;
+        border-left: 4px solid #38ef7d;
+    }
+
+    .alert-modern.alert-danger {
+        background: linear-gradient(135deg, rgba(238, 9, 121, 0.1) 0%, rgba(255, 106, 0, 0.1) 100%);
+        color: #ee0979;
+        border-left: 4px solid #ff6a00;
+    }
+
+    .alert-modern.alert-info {
+        background: linear-gradient(135deg, rgba(79, 172, 254, 0.1) 0%, rgba(0, 242, 254, 0.1) 100%);
+        color: #4facfe;
+        border-left: 4px solid #00f2fe;
+    }
+
+    .alert-modern.alert-secondary {
+        background: #f8f9fa;
+        color: #718096;
+        border-left: 4px solid #cbd5e0;
+    }
+
+    /* Badge de mise à jour */
+    .update-badge {
+        background: white;
+        color: #667eea;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    /* Section titre */
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #2d3748;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .section-title i {
+        color: #667eea;
+    }
+
+    /* Info cards */
+    .info-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .info-label {
+        font-size: 0.75rem;
+        color: #718096;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 600;
+    }
+
+    .info-value {
+        font-size: 0.95rem;
+        color: #2d3748;
+        font-weight: 600;
+    }
+
+    /* Actions buttons */
+    .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .action-buttons .btn {
+        border-radius: 8px;
+        font-size: 0.875rem;
+        padding: 0.4rem 0.8rem;
+        transition: all 0.2s ease;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .stat-card {
+            margin-bottom: 1rem;
+        }
+
+        .dashboard-header {
+            padding: 1.5rem;
+        }
+
+        .dashboard-title {
+            font-size: 1.5rem;
+        }
+
+        .config-card {
+            margin-bottom: 1rem;
+        }
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .config-card {
+        animation: fadeIn 0.5s ease forwards;
+    }
+
+    .config-card:nth-child(1) { animation-delay: 0.1s; }
+    .config-card:nth-child(2) { animation-delay: 0.2s; }
+    .config-card:nth-child(3) { animation-delay: 0.3s; }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="container-fluid py-4">
-    <div class="row">
-        <div class="col-12">
-            <!-- En-tête -->
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <div>
-                    <h2><i class="fas fa-tachometer-alt"></i> Dashboard Synchronisation Automatique</h2>
-                    <p class="text-muted">Vue d'ensemble de toutes les synchronisations automatiques</p>
-                </div>
-                <div>
-                    <a href="{% url 'dashboard' %}" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left"></i> Retour
-                    </a>
-                </div>
+    <!-- En-tête élégant -->
+    <div class="dashboard-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h1 class="dashboard-title">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard Auto-Sync
+                </h1>
+                <p class="text-muted mb-0">Monitoring en temps réel des synchronisations automatiques</p>
             </div>
-
-            <!-- Statistiques globales -->
-            <div class="row mb-4">
-                <div class="col-md-3">
-                    <div class="card bg-primary text-white shadow">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="text-white-50 mb-1">Total Configs</h6>
-                                    <h3 class="mb-0">{{ configs_with_status|length }}</h3>
-                                </div>
-                                <div class="text-white-50">
-                                    <i class="fas fa-cogs fa-2x"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <div class="card bg-success text-white shadow">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="text-white-50 mb-1">Actives</h6>
-                                    <h3 class="mb-0">{{ scheduler_status.total_active }}</h3>
-                                </div>
-                                <div class="text-white-50">
-                                    <i class="fas fa-play-circle fa-2x"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <div class="card bg-info text-white shadow">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="text-white-50 mb-1">Threads Actifs</h6>
-                                    <h3 class="mb-0">{{ active_tasks.total_sync_threads }}</h3>
-                                </div>
-                                <div class="text-white-50">
-                                    <i class="fas fa-code-branch fa-2x"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <div class="card bg-warning text-dark shadow">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="text-dark mb-1">En attente</h6>
-                                    <h3 class="mb-0">{{ configs_with_status|length|add:"-"|add:scheduler_status.total_active }}</h3>
-                                </div>
-                                <div class="text-dark">
-                                    <i class="fas fa-pause-circle fa-2x"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="d-flex gap-2">
+                <a href="{% url 'auto_sync_logs' %}" class="btn btn-modern btn-info">
+                    <i class="fas fa-file-alt"></i> Logs
+                </a>
+                <a href="{% url 'dashboard' %}" class="btn btn-modern" style="background: #e2e8f0; color: #2d3748;">
+                    <i class="fas fa-arrow-left"></i> Retour
+                </a>
             </div>
-
-            <!-- Liste des configurations -->
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0"><i class="fas fa-list"></i> Configurations en Mode Automatique</h5>
-                </div>
-                <div class="card-body">
-                    {% if configs_with_status %}
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Configuration</th>
-                                        <th>Source → Destination</th>
-                                        <th>Statut</th>
-                                        <th>Paramètres</th>
-                                        <th class="text-center">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for item in configs_with_status %}
-                                    <tr>
-                                        <td>
-                                            <strong>{{ item.config.name }}</strong><br>
-                                            <small class="text-muted">{{ item.config.get_sync_type_display }}</small>
-                                        </td>
-                                        <td>
-                                            <small>
-                                                {{ item.config.source_instance.name }}<br>
-                                                <i class="fas fa-arrow-down"></i><br>
-                                                {{ item.config.destination_instance.name }}
-                                            </small>
-                                        </td>
-                                        <td>
-                                            {% if item.is_running %}
-                                                <span class="badge bg-success">
-                                                    <i class="fas fa-play"></i> Actif
-                                                </span>
-                                            {% else %}
-                                                <span class="badge bg-secondary">
-                                                    <i class="fas fa-stop"></i> Arrêté
-                                                </span>
-                                            {% endif %}
-
-                                            {% if item.auto_settings %}
-                                                {% if item.auto_settings.is_enabled %}
-                                                    <span class="badge bg-info">Activé</span>
-                                                {% else %}
-                                                    <span class="badge bg-warning text-dark">Désactivé</span>
-                                                {% endif %}
-                                            {% else %}
-                                                <span class="badge bg-danger">Non configuré</span>
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            {% if item.auto_settings %}
-                                                <small>
-                                                    <i class="fas fa-clock"></i> {{ item.auto_settings.check_interval }}s<br>
-                                                    {% if item.auto_settings.monitor_metadata %}
-                                                        <i class="fas fa-database"></i> Métadonnées
-                                                    {% endif %}
-                                                    {% if item.auto_settings.monitor_data_values %}
-                                                        <i class="fas fa-chart-bar"></i> Données
-                                                    {% endif %}
-                                                </small>
-                                            {% else %}
-                                                <small class="text-muted">-</small>
-                                            {% endif %}
-                                        </td>
-                                        <td class="text-center">
-                                            <div class="btn-group btn-group-sm" role="group">
-                                                <a href="{% url 'auto_sync_settings' item.config.id %}"
-                                                   class="btn btn-outline-primary"
-                                                   title="Paramètres">
-                                                    <i class="fas fa-cog"></i>
-                                                </a>
-
-                                                {% if item.is_running %}
-                                                    <form method="post" action="{% url 'stop_auto_sync' item.config.id %}" class="d-inline">
-                                                        {% csrf_token %}
-                                                        <button type="submit" class="btn btn-outline-danger" title="Arrêter">
-                                                            <i class="fas fa-stop"></i>
-                                                        </button>
-                                                    </form>
-                                                {% else %}
-                                                    <form method="post" action="{% url 'start_auto_sync' item.config.id %}" class="d-inline">
-                                                        {% csrf_token %}
-                                                        <button type="submit" class="btn btn-outline-success" title="Démarrer">
-                                                            <i class="fas fa-play"></i>
-                                                        </button>
-                                                    </form>
-                                                {% endif %}
-
-                                                <form method="post" action="{% url 'trigger_sync_now' item.config.id %}" class="d-inline">
-                                                    {% csrf_token %}
-                                                    <button type="submit" class="btn btn-outline-info" title="Synchroniser maintenant">
-                                                        <i class="fas fa-sync"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    {% else %}
-                        <div class="alert alert-info">
-                            <i class="fas fa-info-circle"></i>
-                            Aucune configuration en mode automatique.
-                            <a href="{% url 'sync_config_list' %}">Créer une configuration</a>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-
-            <!-- Threads actifs (debug) -->
-            {% if active_tasks.sync_threads %}
-            <div class="card shadow-sm mt-4">
-                <div class="card-header bg-secondary text-white">
-                    <h6 class="mb-0"><i class="fas fa-bug"></i> Threads Actifs (Debug)</h6>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Nom</th>
-                                    <th>État</th>
-                                    <th>Daemon</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for thread in active_tasks.sync_threads %}
-                                <tr>
-                                    <td><code>{{ thread.name }}</code></td>
-                                    <td>
-                                        {% if thread.is_alive %}
-                                            <span class="badge bg-success">Alive</span>
-                                        {% else %}
-                                            <span class="badge bg-danger">Dead</span>
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        {% if thread.daemon %}
-                                            <span class="badge bg-info">Yes</span>
-                                        {% else %}
-                                            <span class="badge bg-secondary">No</span>
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            {% endif %}
         </div>
     </div>
+
+    <!-- Statistiques globales -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon primary">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <div class="stat-value" id="stat-total-configs">{{ configs_with_status|length }}</div>
+                <div class="stat-label">Configurations</div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon success">
+                    <i class="fas fa-play-circle"></i>
+                </div>
+                <div class="stat-value" id="stat-active">{{ scheduler_status.total_active }}</div>
+                <div class="stat-label">Actives</div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon info">
+                    <i class="fas fa-sync-alt fa-spin"></i>
+                </div>
+                <div class="stat-value" id="stat-running-jobs">0</div>
+                <div class="stat-label">Syncs en cours</div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon warning">
+                    <i class="fas fa-database"></i>
+                </div>
+                <div class="stat-value" id="stat-total-synced">0</div>
+                <div class="stat-label">Objets synchronisés</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Configurations -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="section-title mb-0">
+            <i class="fas fa-list"></i>
+            Configurations automatiques
+        </h2>
+        <span class="update-badge" id="last-update">
+            <i class="fas fa-clock"></i> Mise à jour: maintenant
+        </span>
+    </div>
+
+    {% if configs_with_status %}
+        <div id="configs-list">
+            {% for item in configs_with_status %}
+            <div class="config-card" data-config-id="{{ item.config.id }}">
+                <div class="config-header">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <div class="config-name">{{ item.config.name }}</div>
+                            <div class="config-route">
+                                <span>{{ item.config.source_instance.name }}</span>
+                                <i class="fas fa-arrow-right"></i>
+                                <span>{{ item.config.destination_instance.name }}</span>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2 flex-wrap">
+                            {% if item.is_running %}
+                                <span class="badge-modern badge-running">
+                                    <i class="fas fa-play"></i> Actif
+                                </span>
+                            {% else %}
+                                <span class="badge-modern badge-stopped">
+                                    <i class="fas fa-stop"></i> Arrêté
+                                </span>
+                            {% endif %}
+
+                            {% if item.auto_settings %}
+                                {% if item.auto_settings.is_enabled %}
+                                    <span class="badge-modern badge-enabled">Activé</span>
+                                {% else %}
+                                    <span class="badge-modern badge-disabled">Désactivé</span>
+                                {% endif %}
+                            {% else %}
+                                <span class="badge-modern" style="background: #fee; color: #c00; border: 1px solid #c00;">
+                                    Non configuré
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="config-body">
+                    <!-- Zone de progression -->
+                    <div class="progress-container-{{ item.config.id }} mb-4">
+                        <div class="alert-modern alert-secondary">
+                            <i class="fas fa-info-circle"></i> En attente de synchronisation...
+                        </div>
+                    </div>
+
+                    <!-- Statistiques et actions -->
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <div class="info-item">
+                                <div class="info-label">Type</div>
+                                <div class="info-value">{{ item.config.get_sync_type_display }}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="info-item">
+                                <div class="info-label">Intervalle</div>
+                                <div class="info-value">
+                                    {% if item.auto_settings %}
+                                        {{ item.auto_settings.check_interval }}s
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="info-item">
+                                <div class="info-label">Surveillance</div>
+                                <div class="info-value">
+                                    {% if item.auto_settings %}
+                                        {% if item.auto_settings.monitor_metadata %}
+                                            <i class="fas fa-database text-primary" title="Métadonnées"></i>
+                                        {% endif %}
+                                        {% if item.auto_settings.monitor_data_values %}
+                                            <i class="fas fa-chart-bar text-success" title="Données"></i>
+                                        {% endif %}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="info-item">
+                                <div class="info-label">Actions</div>
+                                <div class="action-buttons">
+                                    <a href="{% url 'auto_sync_settings' item.config.id %}"
+                                       class="btn btn-sm btn-outline-primary" title="Paramètres">
+                                        <i class="fas fa-cog"></i>
+                                    </a>
+
+                                    {% if item.is_running %}
+                                        <form method="post" action="{% url 'stop_auto_sync' item.config.id %}" class="d-inline">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Arrêter">
+                                                <i class="fas fa-stop"></i>
+                                            </button>
+                                        </form>
+                                    {% else %}
+                                        <form method="post" action="{% url 'start_auto_sync' item.config.id %}" class="d-inline">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-sm btn-outline-success" title="Démarrer">
+                                                <i class="fas fa-play"></i>
+                                            </button>
+                                        </form>
+                                    {% endif %}
+
+                                    <form method="post" action="{% url 'trigger_sync_now' item.config.id %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-sm btn-outline-info" title="Sync maintenant">
+                                            <i class="fas fa-sync"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert-modern alert-info">
+            <i class="fas fa-info-circle"></i>
+            <strong>Aucune configuration en mode automatique.</strong>
+            <a href="{% url 'sync_config_list' %}" class="alert-link">Créer une configuration</a>
+        </div>
+    {% endif %}
 </div>
 
 <script>
-// Auto-refresh toutes les 10 secondes
-setTimeout(function() {
-    location.reload();
-}, 10000);
+// Code JavaScript identique à avant
+let updateInterval;
+
+function formatTime(seconds) {
+    if (seconds < 60) return `${seconds}s`;
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    if (minutes < 60) return `${minutes}m ${secs}s`;
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return `${hours}h ${mins}m`;
+}
+
+function formatNumber(num) {
+    return new Intl.NumberFormat('fr-FR').format(num);
+}
+
+async function updateDashboard() {
+    try {
+        const response = await fetch('{% url "api_dashboard_stats" %}');
+        const data = await response.json();
+
+        if (!data.success) {
+            console.error('Erreur lors de la récupération des stats:', data.error);
+            return;
+        }
+
+        document.getElementById('stat-total-configs').textContent = data.configs.length;
+        document.getElementById('stat-active').textContent = data.scheduler.total_active || 0;
+
+        let runningJobs = 0;
+        let totalSynced = 0;
+
+        for (const config of data.configs) {
+            if (config.has_running_job) {
+                runningJobs++;
+                await updateConfigProgress(config.config_id);
+            } else {
+                updateConfigIdle(config);
+            }
+
+            if (config.last_job) {
+                totalSynced += config.last_job.total_synced || 0;
+            }
+        }
+
+        document.getElementById('stat-running-jobs').textContent = runningJobs;
+        document.getElementById('stat-total-synced').textContent = formatNumber(totalSynced);
+
+        const now = new Date();
+        document.getElementById('last-update').innerHTML =
+            `<i class="fas fa-clock"></i> Mise à jour: ${now.toLocaleTimeString('fr-FR')}`;
+
+    } catch (error) {
+        console.error('Erreur lors de la mise à jour du dashboard:', error);
+    }
+}
+
+async function updateConfigProgress(configId) {
+    try {
+        const response = await fetch(`/api/auto-sync/${configId}/progress/`);
+        const data = await response.json();
+
+        if (!data.success) return;
+
+        const container = document.querySelector(`.progress-container-${configId}`);
+        if (!container) return;
+
+        if (data.is_running) {
+            const progress = data.progress;
+            const timing = data.timing;
+
+            let html = `
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span style="color: #667eea; font-weight: 600;">
+                            <i class="fas fa-sync fa-spin"></i> ${data.current_step}
+                        </span>
+                        <span class="badge-modern badge-enabled">${progress.percent}%</span>
+                    </div>
+                    <div class="progress-modern">
+                        <div class="progress-bar-modern" style="width: ${progress.percent}%">
+                            ${progress.percent}%
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <div class="metric-card">
+                            <div class="metric-label">Synchronisés</div>
+                            <div class="metric-value success">${formatNumber(progress.total_synced)}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="metric-card">
+                            <div class="metric-label">Erreurs</div>
+                            <div class="metric-value danger">${formatNumber(progress.total_errors)}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="metric-card">
+                            <div class="metric-label">Vitesse</div>
+                            <div class="metric-value info">${timing.speed_per_second}/s</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="metric-card">
+                            <div class="metric-label">Temps restant</div>
+                            <div class="metric-value warning">${formatTime(timing.estimated_remaining_seconds)}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML = html;
+        } else if (data.last_job) {
+            const job = data.last_job;
+            const alertClass = job.status === 'completed' ? 'success' : 'danger';
+
+            container.innerHTML = `
+                <div class="alert-modern alert-${alertClass}">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>Dernier sync:</strong> ${formatNumber(job.total_synced)} objets synchronisés
+                            ${job.total_errors > 0 ? ` - <span style="color: #ff6a00;">${job.total_errors} erreurs</span>` : ''}
+                        </div>
+                        <small style="opacity: 0.8;">
+                            ${new Date(job.completed_at).toLocaleString('fr-FR')}
+                        </small>
+                    </div>
+                </div>
+            `;
+        }
+    } catch (error) {
+        console.error(`Erreur config ${configId}:`, error);
+    }
+}
+
+function updateConfigIdle(config) {
+    const container = document.querySelector(`.progress-container-${config.config_id}`);
+    if (!container) return;
+
+    if (config.last_job) {
+        const job = config.last_job;
+        const alertClass = job.status === 'completed' ? 'success' : 'danger';
+
+        container.innerHTML = `
+            <div class="alert-modern alert-${alertClass}">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>Dernier sync:</strong> ${formatNumber(job.total_synced)} objets synchronisés
+                        ${job.total_errors > 0 ? ` - <span style="color: #ff6a00;">${job.total_errors} erreurs</span>` : ''}
+                    </div>
+                    <small style="opacity: 0.8;">
+                        ${job.completed_at ? new Date(job.completed_at).toLocaleString('fr-FR') : 'N/A'}
+                    </small>
+                </div>
+            </div>
+        `;
+    } else {
+        container.innerHTML = `
+            <div class="alert-modern alert-secondary">
+                <i class="fas fa-info-circle"></i> Aucune synchronisation effectuée
+            </div>
+        `;
+    }
+}
+
+updateDashboard();
+updateInterval = setInterval(updateDashboard, 3000);
+
+window.addEventListener('beforeunload', () => {
+    if (updateInterval) clearInterval(updateInterval);
+});
 </script>
 {% endblock %}

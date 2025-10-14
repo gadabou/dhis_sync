@@ -73,7 +73,7 @@ class Command(BaseCommand):
             self.stdout.write(f'\nConfig ID: {config.id}')
             self.stdout.write(f'  Name: {config.name}')
             self.stdout.write(f'  Source: {config.source_instance.name}')
-            self.stdout.write(f'  Target: {config.target_instance.name}')
+            self.stdout.write(f'  Target: {config.destination_instance.name}')
             self.stdout.write(f'  Active: {config.is_active}')
 
             try:
