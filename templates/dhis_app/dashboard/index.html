@@ -305,6 +305,11 @@
             <p class="text-blue-100 text-sm">Démarrez une synchronisation ou gérez vos instances</p>
         </div>
         <div class="flex space-x-3">
+            <a href="{% url 'auto_sync_dashboard' %}"
+               class="inline-flex items-center px-4 py-2 bg-white text-blue-600 rounded-md hover:bg-blue-50 transition-colors shadow-md">
+                <i class="fas fa-sync-alt mr-2"></i>
+                Auto-Sync
+            </a>
             <a href="{% url 'dhis2_instance_create' %}"
                class="inline-flex items-center px-4 py-2 bg-white text-blue-600 rounded-md hover:bg-blue-50 transition-colors shadow-md">
                 <i class="fas fa-server mr-2"></i>

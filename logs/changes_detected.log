@@ -1,0 +1,44 @@
+[AUTO-SYNC] [INFO] 2025-10-14 00:10:32 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour organisationUnits
+[AUTO-SYNC] [INFO] 2025-10-14 00:10:32 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour dataElements
+[AUTO-SYNC] [INFO] 2025-10-14 00:10:32 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour indicators
+[AUTO-SYNC] [INFO] 2025-10-14 00:10:32 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour programs
+[AUTO-SYNC] [INFO] 2025-10-14 00:10:32 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour dataSets
+[AUTO-SYNC] [INFO] 2025-10-14 00:10:33 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categoryOptions
+[AUTO-SYNC] [INFO] 2025-10-14 00:10:33 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categories
+[AUTO-SYNC] [INFO] 2025-10-14 00:10:33 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categoryCombos
+[AUTO-SYNC] [WARNING] 2025-10-14 00:10:34 [dhis_app.services.auto_sync.change_detector] - Erreur vérification tracker: code: 409, url: http://localhost:8087/api/trackedEntityInstances.json?skipPaging=false&pageSize=1&totalPages=true, description: {"httpStatus":"Conflict","httpStatusCode":409,"status":"ERROR","message":"Either Program or Tracked entity type should be specified"}
+[AUTO-SYNC] [INFO] 2025-10-14 00:10:34 [dhis_app.services.auto_sync.change_detector] - Détection de changements pour Local 87: Métadonnées=True, Données=False
+[AUTO-SYNC] [INFO] 2025-10-14 00:11:21 [dhis_app.services.auto_sync.change_detector] - Toutes les ressources marquées comme vérifiées à 2025-10-14 00:11:21.989529+00:00
+[AUTO-SYNC] [INFO] 2025-10-14 00:16:22 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour organisationUnits
+[AUTO-SYNC] [INFO] 2025-10-14 00:16:22 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour dataElements
+[AUTO-SYNC] [INFO] 2025-10-14 00:16:22 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour indicators
+[AUTO-SYNC] [INFO] 2025-10-14 00:16:22 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour programs
+[AUTO-SYNC] [INFO] 2025-10-14 00:16:22 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour dataSets
+[AUTO-SYNC] [INFO] 2025-10-14 00:16:22 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categoryOptions
+[AUTO-SYNC] [INFO] 2025-10-14 00:16:22 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categories
+[AUTO-SYNC] [INFO] 2025-10-14 00:16:22 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categoryCombos
+[AUTO-SYNC] [WARNING] 2025-10-14 00:16:22 [dhis_app.services.auto_sync.change_detector] - Erreur vérification tracker: code: 409, url: http://localhost:8087/api/trackedEntityInstances.json?skipPaging=false&pageSize=1&totalPages=true&lastUpdatedStartDate=2025-10-14, description: {"httpStatus":"Conflict","httpStatusCode":409,"status":"ERROR","message":"Either Program or Tracked entity type should be specified"}
+[AUTO-SYNC] [INFO] 2025-10-14 00:16:22 [dhis_app.services.auto_sync.change_detector] - Détection de changements pour Local 87: Métadonnées=True, Données=True
+[AUTO-SYNC] [INFO] 2025-10-14 00:17:00 [dhis_app.services.auto_sync.change_detector] - Toutes les ressources marquées comme vérifiées à 2025-10-14 00:17:00.466069+00:00
+[AUTO-SYNC] [INFO] 2025-10-14 00:22:00 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour organisationUnits
+[AUTO-SYNC] [INFO] 2025-10-14 00:22:00 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour dataElements
+[AUTO-SYNC] [INFO] 2025-10-14 00:22:00 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour indicators
+[AUTO-SYNC] [INFO] 2025-10-14 00:22:00 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour programs
+[AUTO-SYNC] [INFO] 2025-10-14 00:22:00 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour dataSets
+[AUTO-SYNC] [INFO] 2025-10-14 00:22:00 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categoryOptions
+[AUTO-SYNC] [INFO] 2025-10-14 00:22:00 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categories
+[AUTO-SYNC] [INFO] 2025-10-14 00:22:00 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categoryCombos
+[AUTO-SYNC] [WARNING] 2025-10-14 00:22:00 [dhis_app.services.auto_sync.change_detector] - Erreur vérification tracker: code: 409, url: http://localhost:8087/api/trackedEntityInstances.json?skipPaging=false&pageSize=1&totalPages=true&lastUpdatedStartDate=2025-10-14, description: {"httpStatus":"Conflict","httpStatusCode":409,"status":"ERROR","message":"Either Program or Tracked entity type should be specified"}
+[AUTO-SYNC] [INFO] 2025-10-14 00:22:00 [dhis_app.services.auto_sync.change_detector] - Détection de changements pour Local 87: Métadonnées=True, Données=True
+[AUTO-SYNC] [INFO] 2025-10-14 00:22:36 [dhis_app.services.auto_sync.change_detector] - Toutes les ressources marquées comme vérifiées à 2025-10-14 00:22:36.265832+00:00
+[AUTO-SYNC] [INFO] 2025-10-14 00:27:36 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour organisationUnits
+[AUTO-SYNC] [INFO] 2025-10-14 00:27:36 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour dataElements
+[AUTO-SYNC] [INFO] 2025-10-14 00:27:36 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour indicators
+[AUTO-SYNC] [INFO] 2025-10-14 00:27:36 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour programs
+[AUTO-SYNC] [INFO] 2025-10-14 00:27:36 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour dataSets
+[AUTO-SYNC] [INFO] 2025-10-14 00:27:36 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categoryOptions
+[AUTO-SYNC] [INFO] 2025-10-14 00:27:36 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categories
+[AUTO-SYNC] [INFO] 2025-10-14 00:27:36 [dhis_app.services.auto_sync.change_detector] - Changements détectés pour categoryCombos
+[AUTO-SYNC] [WARNING] 2025-10-14 00:27:36 [dhis_app.services.auto_sync.change_detector] - Erreur vérification tracker: code: 409, url: http://localhost:8087/api/trackedEntityInstances.json?skipPaging=false&pageSize=1&totalPages=true&lastUpdatedStartDate=2025-10-14, description: {"httpStatus":"Conflict","httpStatusCode":409,"status":"ERROR","message":"Either Program or Tracked entity type should be specified"}
+[AUTO-SYNC] [INFO] 2025-10-14 00:27:36 [dhis_app.services.auto_sync.change_detector] - Détection de changements pour Local 87: Métadonnées=True, Données=True
+[AUTO-SYNC] [INFO] 2025-10-14 00:28:30 [dhis_app.services.auto_sync.change_detector] - Toutes les ressources marquées comme vérifiées à 2025-10-14 00:28:30.301437+00:00

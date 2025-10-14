@@ -1,0 +1,16 @@
+[INFO] 2025-10-14 00:10:34 dhis_app.services.auto_sync.lifecycle_manager lifecycle_manager._execute_initial_sync:159 - Démarrage de la synchronisation initiale pour Local 97-94
+[INFO] 2025-10-14 00:10:34 dhis_app.services.auto_sync.lifecycle_manager lifecycle_manager._execute_initial_sync:169 - Étape 1/2: Synchronisation des métadonnées
+[INFO] 2025-10-14 00:11:12 dhis_app.services.auto_sync.lifecycle_manager lifecycle_manager._execute_initial_sync:189 - Étape 2/2: Synchronisation des données
+[INFO] 2025-10-14 00:11:21 dhis_app.services.auto_sync.lifecycle_manager lifecycle_manager._execute_initial_sync:210 - Synchronisation initiale terminée avec succès
+[INFO] 2025-10-14 00:16:22 dhis_app.services.auto_sync.lifecycle_manager lifecycle_manager._execute_incremental_sync:245 - Démarrage de la synchronisation incrémentale pour Local 97-94
+[INFO] 2025-10-14 00:16:22 dhis_app.services.auto_sync.lifecycle_manager lifecycle_manager._execute_incremental_sync:256 - Synchronisation des métadonnées modifiées
+[INFO] 2025-10-14 00:16:56 dhis_app.services.auto_sync.lifecycle_manager lifecycle_manager._execute_incremental_sync:264 - Synchronisation des données modifiées
+[INFO] 2025-10-14 00:17:00 dhis_app.services.auto_sync.lifecycle_manager lifecycle_manager._execute_incremental_sync:301 - Synchronisation incrémentale réussie
+[INFO] 2025-10-14 00:22:00 dhis_app.services.auto_sync.lifecycle_manager lifecycle_manager._execute_incremental_sync:245 - Démarrage de la synchronisation incrémentale pour Local 97-94
+[INFO] 2025-10-14 00:22:00 dhis_app.services.auto_sync.lifecycle_manager lifecycle_manager._execute_incremental_sync:256 - Synchronisation des métadonnées modifiées
+[INFO] 2025-10-14 00:22:31 dhis_app.services.auto_sync.lifecycle_manager lifecycle_manager._execute_incremental_sync:264 - Synchronisation des données modifiées
+[INFO] 2025-10-14 00:22:36 dhis_app.services.auto_sync.lifecycle_manager lifecycle_manager._execute_incremental_sync:301 - Synchronisation incrémentale réussie
+[INFO] 2025-10-14 00:27:36 dhis_app.services.auto_sync.lifecycle_manager lifecycle_manager._execute_incremental_sync:245 - Démarrage de la synchronisation incrémentale pour Local 97-94
+[INFO] 2025-10-14 00:27:36 dhis_app.services.auto_sync.lifecycle_manager lifecycle_manager._execute_incremental_sync:256 - Synchronisation des métadonnées modifiées
+[INFO] 2025-10-14 00:28:25 dhis_app.services.auto_sync.lifecycle_manager lifecycle_manager._execute_incremental_sync:264 - Synchronisation des données modifiées
+[INFO] 2025-10-14 00:28:30 dhis_app.services.auto_sync.lifecycle_manager lifecycle_manager._execute_incremental_sync:301 - Synchronisation incrémentale réussie

@@ -1,0 +1,28 @@
+[Unit]
+Description=DHIS2 Sync Application
+After=network.target redis.service
+
+[Service]
+Type=forking
+User=gado
+Group=gado
+WorkingDirectory=/home/gado/Integrate Health Dropbox/Djakpo GADO/projets/Dhis2/dhis_sync
+
+# Variables d'environnement
+Environment="DJANGO_SETTINGS_MODULE=dhis_sync.settings"
+Environment="PYTHONUNBUFFERED=1"
+
+# Script de démarrage
+ExecStart=/bin/bash /home/gado/Integrate Health Dropbox/Djakpo GADO/projets/Dhis2/dhis_sync/start.sh
+
+# Redémarrer en cas d'échec
+Restart=on-failure
+RestartSec=10
+
+# Logs
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=dhis2-sync
+
+[Install]
+WantedBy=multi-user.target
