@@ -17932,3 +17932,36 @@ django.template.exceptions.TemplateDoesNotExist: dhis_app/logs/auto_sync_logs.ht
 [INFO] 2025-10-14 17:53:08 django.server basehttp.log_message:212 - "GET /logs/auto-sync/ HTTP/1.1" 200 201483
 [INFO] 2025-10-14 17:54:08 django.server basehttp.log_message:212 - "GET /logs/auto-sync/ HTTP/1.1" 200 201483
 [INFO] 2025-10-14 17:55:08 django.server basehttp.log_message:212 - "GET /logs/auto-sync/ HTTP/1.1" 200 201483
+[INFO] 2025-10-15 06:54:56 django.utils.autoreload autoreload.run_with_reloader:668 - Watching for file changes with StatReloader
+[INFO] 2025-10-15 06:55:00 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-15 06:55:00 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-15 06:55:01 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-15 06:55:01 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-15 06:55:20 django.server basehttp.log_message:212 - "GET / HTTP/1.1" 302 0
+[INFO] 2025-10-15 06:55:27 django.server basehttp.log_message:212 - "HEAD / HTTP/1.1" 302 0
+[INFO] 2025-10-15 06:55:39 django.server basehttp.log_message:212 - "GET /login/ HTTP/1.1" 200 6378
+[INFO] 2025-10-15 06:56:00 django.server basehttp.log_message:212 - "GET /login/ HTTP/1.1" 200 6378
+[INFO] 2025-10-15 06:57:41 django.utils.autoreload autoreload.run_with_reloader:668 - Watching for file changes with StatReloader
+[INFO] 2025-10-15 06:57:46 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-15 06:57:46 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-15 06:57:46 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-15 06:57:46 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-15 06:57:47 django.server basehttp.log_message:212 - "GET / HTTP/1.1" 302 0
+[INFO] 2025-10-15 06:57:47 django.server basehttp.log_message:212 - "GET /login/?next=/ HTTP/1.1" 200 6379
+[WARNING] 2025-10-15 06:57:48 django.request log.log_response:241 - Not Found: /favicon.ico
+[WARNING] 2025-10-15 06:57:48 django.server basehttp.log_message:212 - "GET /favicon.ico HTTP/1.1" 404 11255
+[INFO] 2025-10-15 06:58:13 django.server basehttp.log_message:212 - "POST /login/ HTTP/1.1" 302 0
+[INFO] 2025-10-15 06:58:13 django.server basehttp.log_message:212 - "GET / HTTP/1.1" 200 51887
+[WARNING] 2025-10-15 06:58:14 django.server basehttp.log_message:212 - "GET /static/images/favicon.ico HTTP/1.1" 404 1914
+[INFO] 2025-10-15 06:58:22 django.server basehttp.log_message:212 - "GET /logout/ HTTP/1.1" 302 0
+[INFO] 2025-10-15 06:58:22 django.server basehttp.log_message:212 - "GET /login/ HTTP/1.1" 200 7185
+[INFO] 2025-10-15 06:58:30 django.server basehttp.log_message:212 - "POST /login/ HTTP/1.1" 200 7191
+[INFO] 2025-10-15 06:58:37 django.server basehttp.log_message:212 - "POST /login/ HTTP/1.1" 200 7191
+[INFO] 2025-10-15 06:58:43 django.server basehttp.log_message:212 - "POST /login/ HTTP/1.1" 200 7191
+[INFO] 2025-10-15 06:58:46 django.server basehttp.log_message:212 - "POST /login/ HTTP/1.1" 302 0
+[INFO] 2025-10-15 06:58:46 django.server basehttp.log_message:212 - "GET / HTTP/1.1" 200 51887
+[INFO] 2025-10-15 06:58:56 django.server basehttp.log_message:212 - "GET / HTTP/1.1" 200 50007
+[INFO] 2025-10-15 06:59:01 django.server basehttp.log_message:212 - "GET / HTTP/1.1" 200 50007
+[INFO] 2025-10-15 06:59:10 django.server basehttp.log_message:212 - "GET /logout/ HTTP/1.1" 302 0
+[INFO] 2025-10-15 06:59:10 django.server basehttp.log_message:212 - "GET /login/ HTTP/1.1" 200 7185
+[INFO] 2025-10-15 06:59:21 django.server basehttp.log_message:212 - "GET /login/ HTTP/1.1" 200 6378

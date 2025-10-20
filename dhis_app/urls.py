@@ -30,9 +30,13 @@ from .views.synchronisations import (
 from .views.sync_jobs import (
     SyncJobDetailView,
 )
-from .views import auto_sync, logs
+from .views import auto_sync, logs, auth
 
 urlpatterns = [
+    # === AUTHENTIFICATION ===
+    path('login/', auth.login_view, name='login'),
+    path('logout/', auth.logout_view, name='logout'),
+
     # === TABLEAU DE BORD ===
     path('', DashboardView.as_view(), name='dashboard'),
     # === INSTANCES DHIS2 ===
