@@ -17965,3 +17965,8 @@ django.template.exceptions.TemplateDoesNotExist: dhis_app/logs/auto_sync_logs.ht
 [INFO] 2025-10-15 06:59:10 django.server basehttp.log_message:212 - "GET /logout/ HTTP/1.1" 302 0
 [INFO] 2025-10-15 06:59:10 django.server basehttp.log_message:212 - "GET /login/ HTTP/1.1" 200 7185
 [INFO] 2025-10-15 06:59:21 django.server basehttp.log_message:212 - "GET /login/ HTTP/1.1" 200 6378
+[INFO] 2025-10-20 11:28:36 django.utils.autoreload autoreload.run_with_reloader:668 - Watching for file changes with StatReloader
+[INFO] 2025-10-20 11:28:40 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-20 11:28:40 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-20 11:28:41 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-20 11:28:41 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
