@@ -1,0 +1,39 @@
+services:
+  db_cible94:
+    image: postgis/postgis:15-3.3
+    container_name: dhis2_db_cible94
+    environment:
+      POSTGRES_DB: dhis2
+      POSTGRES_USER: dhis
+      POSTGRES_PASSWORD: dhis
+    ports:
+      - "5494:5432"   # port hôte:contener
+    volumes:
+      - dhis2_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dhis -d dhis2"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  dhis2_cible94:
+    image: dhis2/core:2.40.7.0
+    container_name: dhis2_app_cible94
+    depends_on:
+      db_cible94:
+        condition: service_healthy
+    environment:
+      DHIS2_HOME: /opt/dhis2
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db_cible1:5432/dhis2
+      SPRING_DATASOURCE_USERNAME: dhis
+      SPRING_DATASOURCE_PASSWORD: dhis
+    ports:
+      - "8094:8080"
+    volumes:
+      - dhis2_home_data:/opt/dhis2
+      - ./logs:/opt/dhis2/logs
+      - ./dhis.conf:/opt/dhis2/dhis.conf:ro
+
+volumes:
+  dhis2_db_data:
+  dhis2_home_data:
