@@ -297,13 +297,30 @@ class DHIS2Instance(models.Model):
         self._require(startDate, "startDate (YYYY-MM-DD)")
         self._require(endDate, "endDate (YYYY-MM-DD)")
 
+        config = [
+            {
+                "programId": 'siupB4uk4O2',
+                "programName": 'Fiche récapitulative des visites des ASC',
+                "reportDate": 'RlquY86kI66'
+            }
+        ]
+
+        selected = next((c for c in config if c["programId"] == program), None) # { "programId": 'siupB4uk4O2', "programName": 'Fiche récapitulative des visites des ASC',"reportDate": 'RlquY86kI66'}
+
+        rDate = selected["reportDate"]
+        dateToConsider = rDate if (rDate != None and rDate != '')  else 'created'
+
         params = {
+            "paging": paging,
             "program": program,
             "orgUnit": orgUnit,
             "ouMode": ouMode,
-            "startDate": startDate,
-            "endDate": endDate,
-            "paging": paging,
+            #"startDate": startDate,
+            #"endDate": endDate,
+            "filter": [
+                dateToConsider + ':GE:' + startDate,
+                dateToConsider + ':LE:' + endDate
+            ]
         }
         if programStage:
             params["programStage"] = programStage

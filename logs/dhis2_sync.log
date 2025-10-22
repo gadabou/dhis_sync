@@ -17970,3 +17970,21 @@ django.template.exceptions.TemplateDoesNotExist: dhis_app/logs/auto_sync_logs.ht
 [INFO] 2025-10-20 11:28:40 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
 [INFO] 2025-10-20 11:28:41 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
 [INFO] 2025-10-20 11:28:41 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-22 14:39:11 django.utils.autoreload autoreload.run_with_reloader:668 - Watching for file changes with StatReloader
+[INFO] 2025-10-22 14:39:15 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-22 14:39:15 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-22 14:39:16 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-22 14:39:16 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-22 14:39:25 django.server basehttp.log_message:212 - "GET / HTTP/1.1" 302 0
+[INFO] 2025-10-22 14:39:25 django.server basehttp.log_message:212 - "GET /login/?next=/ HTTP/1.1" 200 6379
+[WARNING] 2025-10-22 14:39:27 django.request log.log_response:241 - Not Found: /favicon.ico
+[WARNING] 2025-10-22 14:39:27 django.server basehttp.log_message:212 - "GET /favicon.ico HTTP/1.1" 404 11255
+[INFO] 2025-10-22 14:39:29 django.server basehttp.log_message:212 - "POST /login/ HTTP/1.1" 200 7191
+[INFO] 2025-10-22 14:39:41 django.server basehttp.log_message:212 - "POST /login/ HTTP/1.1" 200 7191
+[INFO] 2025-10-22 14:39:56 django.server basehttp.log_message:212 - "POST /login/ HTTP/1.1" 200 7191
+[INFO] 2025-10-22 14:40:35 django.server basehttp.log_message:212 - "POST /login/ HTTP/1.1" 200 7191
+[INFO] 2025-10-22 14:40:51 django.server basehttp.log_message:212 - "POST /login/ HTTP/1.1" 302 0
+[INFO] 2025-10-22 14:40:51 django.server basehttp.log_message:212 - "GET / HTTP/1.1" 200 50203
+[INFO] 2025-10-22 14:40:51 django.server basehttp.log_message:212 - "GET /static/css/main.css HTTP/1.1" 304 0
+[INFO] 2025-10-22 14:40:51 django.server basehttp.log_message:212 - "GET /static/js/main.js HTTP/1.1" 304 0
+[WARNING] 2025-10-22 14:40:52 django.server basehttp.log_message:212 - "GET /static/images/favicon.ico HTTP/1.1" 404 1914
