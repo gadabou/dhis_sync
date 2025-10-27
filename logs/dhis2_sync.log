@@ -18415,3 +18415,6 @@ django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. Y
 [INFO] 2025-10-27 15:48:01 django.server basehttp.log_message:212 - "GET /static/js/main.js HTTP/1.1" 200 14104
 [INFO] 2025-10-27 15:48:01 django.server basehttp.log_message:212 - "GET /static/css/main.css HTTP/1.1" 200 8477
 [WARNING] 2025-10-27 15:48:03 django.server basehttp.log_message:212 - "GET /static/images/favicon.ico HTTP/1.1" 404 1914
+[INFO] 2025-10-27 16:10:06 django.utils.autoreload autoreload.run_with_reloader:668 - Watching for file changes with StatReloader
+[INFO] 2025-10-27 16:10:11 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-27 16:10:11 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
