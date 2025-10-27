@@ -18418,3 +18418,81 @@ django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. Y
 [INFO] 2025-10-27 16:10:06 django.utils.autoreload autoreload.run_with_reloader:668 - Watching for file changes with StatReloader
 [INFO] 2025-10-27 16:10:11 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
 [INFO] 2025-10-27 16:10:11 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-27 16:37:02 django.server basehttp.log_message:212 - "GET /instances/ HTTP/1.1" 200 54091
+[INFO] 2025-10-27 16:37:02 django.server basehttp.log_message:212 - "GET /static/css/main.css HTTP/1.1" 200 8477
+[INFO] 2025-10-27 16:37:02 django.server basehttp.log_message:212 - "GET /static/js/main.js HTTP/1.1" 200 14104
+[INFO] 2025-10-27 16:37:07 django.server basehttp.log_message:212 - "POST /instances/bulk-status-check/ HTTP/1.1" 200 1668
+[INFO] 2025-10-27 16:37:19 django.server basehttp.log_message:212 - "GET /instances/4/edit/ HTTP/1.1" 200 34672
+[INFO] 2025-10-27 16:37:27 django.server basehttp.log_message:212 - "GET /configurations/ HTTP/1.1" 200 56966
+[INFO] 2025-10-27 16:37:45 django.server basehttp.log_message:212 - "GET /configurations/1/edit/ HTTP/1.1" 200 47811
+[INFO] 2025-10-27 16:37:59 django.server basehttp.log_message:212 - "POST /configurations/1/edit/ HTTP/1.1" 302 0
+[ERROR] 2025-10-27 16:37:59 dhis_app.views.configurations configurations.get_compatibility_info:132 - Erreur lors de la vérification de compatibilité: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/system/info.json (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7c18b01a7800>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[INFO] 2025-10-27 16:38:00 django.server basehttp.log_message:212 - "GET /configurations/1/ HTTP/1.1" 200 79510
+[INFO] 2025-10-27 16:38:06 django.server basehttp.log_message:212 - "GET /configurations/ HTTP/1.1" 200 56963
+[INFO] 2025-10-27 16:38:12 django.server basehttp.log_message:212 - "GET /configurations/3/edit/ HTTP/1.1" 200 47810
+[INFO] 2025-10-27 16:38:22 django.server basehttp.log_message:212 - "POST /configurations/3/edit/ HTTP/1.1" 302 0
+[ERROR] 2025-10-27 16:38:22 dhis_app.views.configurations configurations.get_compatibility_info:132 - Erreur lors de la vérification de compatibilité: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/system/info.json (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7c18b02a2570>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[INFO] 2025-10-27 16:38:22 django.server basehttp.log_message:212 - "GET /configurations/3/ HTTP/1.1" 200 80181
+[ERROR] 2025-10-27 16:38:37 dhis_app.views.configurations configurations.get_compatibility_info:132 - Erreur lors de la vérification de compatibilité: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/system/info.json (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7c18b014c050>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[INFO] 2025-10-27 16:38:37 django.server basehttp.log_message:212 - "GET /configurations/3/ HTTP/1.1" 200 78256
+[INFO] 2025-10-27 16:38:48 django.server basehttp.log_message:212 - "GET /admin/ HTTP/1.1" 200 12336
+[INFO] 2025-10-27 16:38:48 django.server basehttp.log_message:212 - "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+[INFO] 2025-10-27 16:38:48 django.server basehttp.log_message:212 - "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+[INFO] 2025-10-27 16:38:48 django.server basehttp.log_message:212 - "GET /static/admin/css/dashboard.css HTTP/1.1" 304 0
+[INFO] 2025-10-27 16:38:48 django.server basehttp.log_message:212 - "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+[INFO] 2025-10-27 16:38:48 django.server basehttp.log_message:212 - "GET /static/admin/css/base.css HTTP/1.1" 304 0
+[INFO] 2025-10-27 16:38:48 django.server basehttp.log_message:212 - "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+[INFO] 2025-10-27 16:38:48 django.server basehttp.log_message:212 - "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+[INFO] 2025-10-27 16:38:48 django.server basehttp.log_message:212 - "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+[INFO] 2025-10-27 16:38:48 django.server basehttp.log_message:212 - "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 304 0
+[INFO] 2025-10-27 16:38:48 django.server basehttp.log_message:212 - "GET /static/admin/img/icon-deletelink.svg HTTP/1.1" 304 0
+[INFO] 2025-10-27 16:39:22 django.server basehttp.log_message:212 - "GET /admin/dhis_app/syncjob/ HTTP/1.1" 200 75668
+[INFO] 2025-10-27 16:39:22 django.server basehttp.log_message:212 - "GET /static/admin/css/changelists.css HTTP/1.1" 304 0
+[INFO] 2025-10-27 16:39:22 django.server basehttp.log_message:212 - "GET /admin/jsi18n/ HTTP/1.1" 200 3343
+[INFO] 2025-10-27 16:39:22 django.server basehttp.log_message:212 - "GET /static/admin/js/actions.js HTTP/1.1" 304 0
+[INFO] 2025-10-27 16:39:22 django.server basehttp.log_message:212 - "GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+[INFO] 2025-10-27 16:39:22 django.server basehttp.log_message:212 - "GET /static/admin/js/core.js HTTP/1.1" 304 0
+[INFO] 2025-10-27 16:39:22 django.server basehttp.log_message:212 - "GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+[INFO] 2025-10-27 16:39:22 django.server basehttp.log_message:212 - "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+[INFO] 2025-10-27 16:39:22 django.server basehttp.log_message:212 - "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 292458
+[INFO] 2025-10-27 16:39:22 django.server basehttp.log_message:212 - "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 232381
+[INFO] 2025-10-27 16:39:22 django.server basehttp.log_message:212 - "GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+[INFO] 2025-10-27 16:39:22 django.server basehttp.log_message:212 - "GET /static/admin/img/search.svg HTTP/1.1" 304 0
+[INFO] 2025-10-27 16:39:22 django.server basehttp.log_message:212 - "GET /static/admin/js/filters.js HTTP/1.1" 304 0
+[INFO] 2025-10-27 16:39:22 django.server basehttp.log_message:212 - "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 304 0
+[INFO] 2025-10-27 16:39:40 django.server basehttp.log_message:212 - "POST /admin/dhis_app/syncjob/ HTTP/1.1" 200 9916
+[INFO] 2025-10-27 16:39:40 django.server basehttp.log_message:212 - "GET /static/admin/js/cancel.js HTTP/1.1" 304 0
+[INFO] 2025-10-27 16:39:42 django.server basehttp.log_message:212 - "POST /admin/dhis_app/syncjob/ HTTP/1.1" 302 0
+[INFO] 2025-10-27 16:39:42 django.server basehttp.log_message:212 - "GET /admin/dhis_app/syncjob/ HTTP/1.1" 200 75829
+[INFO] 2025-10-27 16:39:42 django.server basehttp.log_message:212 - "GET /admin/jsi18n/ HTTP/1.1" 200 3343
+[INFO] 2025-10-27 16:39:42 django.server basehttp.log_message:212 - "GET /static/admin/img/icon-yes.svg HTTP/1.1" 304 0
+[ERROR] 2025-10-27 16:39:55 dhis_app.views.configurations configurations.get_compatibility_info:132 - Erreur lors de la vérification de compatibilité: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/system/info.json (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7c18b0088b00>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[INFO] 2025-10-27 16:39:55 django.server basehttp.log_message:212 - "GET /configurations/3/ HTTP/1.1" 200 78369
+[INFO] 2025-10-27 16:39:55 django.server basehttp.log_message:212 - "GET /static/css/main.css HTTP/1.1" 304 0
+[INFO] 2025-10-27 16:39:55 django.server basehttp.log_message:212 - "GET /static/js/main.js HTTP/1.1" 304 0
+[INFO] 2025-10-27 16:40:14 django.server basehttp.log_message:212 - "GET /instances/ HTTP/1.1" 200 54091
+[INFO] 2025-10-27 16:40:19 django.server basehttp.log_message:212 - "POST /instances/bulk-status-check/ HTTP/1.1" 200 1668
+[INFO] 2025-10-27 16:40:55 django.server basehttp.log_message:212 - "GET /instances/1/edit/ HTTP/1.1" 200 34657
+[INFO] 2025-10-27 16:42:01 django.server basehttp.log_message:212 - "POST /instances/1/edit/ HTTP/1.1" 302 0
+[INFO] 2025-10-27 16:42:01 django.server basehttp.log_message:212 - "GET /instances/1/ HTTP/1.1" 200 32505
+[INFO] 2025-10-27 16:46:53 django.utils.autoreload autoreload.run_with_reloader:668 - Watching for file changes with StatReloader
+[INFO] 2025-10-27 16:46:57 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-27 16:46:57 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-27 16:46:57 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-27 16:46:58 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-27 16:47:06 django.server basehttp.log_message:212 - "GET /configurations/ HTTP/1.1" 200 56960
+[INFO] 2025-10-27 16:47:06 django.server basehttp.log_message:212 - "GET /static/css/main.css HTTP/1.1" 304 0
+[INFO] 2025-10-27 16:47:06 django.server basehttp.log_message:212 - "GET /static/js/main.js HTTP/1.1" 304 0
+[INFO] 2025-10-27 16:47:12 django.server basehttp.log_message:212 - "GET /configurations/2/edit/ HTTP/1.1" 200 47799
+[INFO] 2025-10-27 16:47:34 django.server basehttp.log_message:212 - "POST /configurations/2/edit/ HTTP/1.1" 302 0
+[INFO] 2025-10-27 16:47:36 django.server basehttp.log_message:212 - "GET /configurations/2/ HTTP/1.1" 200 80779
+[INFO] 2025-10-27 16:47:59 django.server basehttp.log_message:212 - "GET / HTTP/1.1" 200 45892
+[INFO] 2025-10-27 16:48:02 django.server basehttp.log_message:212 - "GET /auto-sync/dashboard/ HTTP/1.1" 200 46999
+[INFO] 2025-10-27 16:48:02 django.server basehttp.log_message:212 - "GET /api/auto-sync/dashboard-stats/ HTTP/1.1" 200 558
+[INFO] 2025-10-27 16:48:05 django.server basehttp.log_message:212 - "GET /api/auto-sync/dashboard-stats/ HTTP/1.1" 200 558
+[INFO] 2025-10-27 16:48:08 django.server basehttp.log_message:212 - "GET /api/auto-sync/dashboard-stats/ HTTP/1.1" 200 558
+[INFO] 2025-10-27 16:48:11 django.server basehttp.log_message:212 - "GET /api/auto-sync/dashboard-stats/ HTTP/1.1" 200 558
+[INFO] 2025-10-27 16:48:13 django.server basehttp.log_message:212 - "GET /configurations/3/auto-sync/settings/ HTTP/1.1" 200 46377
+[INFO] 2025-10-27 16:48:26 dhis_app.views.auto_sync auto_sync.trigger_sync_now:207 - Sync manuelle déclenchée pour config 3 par gado
+[INFO] 2025-10-27 16:48:26 django.server basehttp.log_message:212 - "POST /configurations/3/auto-sync/trigger/ HTTP/1.1" 302 0
+[INFO] 2025-10-27 16:48:26 django.server basehttp.log_message:212 - "GET /configurations/3/auto-sync/settings/ HTTP/1.1" 200 48653
