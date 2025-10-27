@@ -268,3 +268,10 @@
 [INFO] 2025-10-14 07:36:05 dhis_app.services.auto_sync.lifecycle_manager lifecycle_manager._execute_incremental_sync:301 - Synchronisation incrémentale réussie
 [INFO] 2025-10-14 07:41:05 dhis_app.services.auto_sync.lifecycle_manager lifecycle_manager._execute_incremental_sync:245 - Démarrage de la synchronisation incrémentale pour Local 97-94
 [INFO] 2025-10-14 07:41:05 dhis_app.services.auto_sync.lifecycle_manager lifecycle_manager._execute_incremental_sync:256 - Synchronisation des métadonnées modifiées
+[INFO] 2025-10-27 11:59:28 dhis_app.services.auto_sync.lifecycle_manager lifecycle_manager._execute_initial_sync:159 - Démarrage de la synchronisation initiale pour Local 97-94
+[INFO] 2025-10-27 11:59:28 dhis_app.services.auto_sync.lifecycle_manager lifecycle_manager._execute_initial_sync:169 - Étape 1/2: Synchronisation des métadonnées
+[INFO] 2025-10-27 11:59:29 dhis_app.services.auto_sync.lifecycle_manager lifecycle_manager._enter_cooldown:396 - Cooldown activé jusqu'à 2025-10-27 12:29:29.405838+00:00
+[INFO] 2025-10-27 14:15:19 dhis_app.services.auto_sync.lifecycle_manager lifecycle_manager._execute_initial_sync:159 - Démarrage de la synchronisation initiale pour PROD-20
+[INFO] 2025-10-27 14:15:19 dhis_app.services.auto_sync.lifecycle_manager lifecycle_manager._execute_initial_sync:169 - Étape 1/2: Synchronisation des métadonnées
+[INFO] 2025-10-27 14:19:05 dhis_app.services.auto_sync.lifecycle_manager lifecycle_manager._execute_initial_sync:189 - Étape 2/2: Synchronisation des données
+[INFO] 2025-10-27 14:36:29 dhis_app.services.auto_sync.lifecycle_manager lifecycle_manager._execute_initial_sync:210 - Synchronisation initiale terminée avec succès

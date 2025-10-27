@@ -2,25 +2,23 @@
 
 echo "Démarrage des conteneurs DHIS2..."
 
-# Démarrer le conteneur dhis2_2_40_7_cible5
-echo "Démarrage de dhis2 87"
+# Démarrer le conteneur dhis2_20
+echo "Démarrage de dhis2 20"
 cd ~/Applications/Dhis2/dhis2_20
-docker-compose down
-docker-compose up -d
+docker compose down -v
+docker compose up -d
 
-# Démarrer le conteneur dhis292
-echo "Démarrage de dhis2 92..."
+# Démarrer le conteneur dhis2_21
+echo "Démarrage de dhis2 21..."
 cd ~/Applications/Dhis2/dhis2_21
-docker-compose down
-docker-compose up -d
+docker compose down -v
+docker compose up -d
 
-# Démarrer le conteneur dhis293
-echo "Démarrage de dhis2 93..."
+# Démarrer le conteneur dhis2_22
+echo "Démarrage de dhis2 22..."
 cd ~/Applications/Dhis2/dhis2_22
-docker-compose down
-docker-compose up -d
-
-
+docker compose down -v
+docker compose up -d
 
 echo "Tous les conteneurs DHIS2 ont été démarrés."
 

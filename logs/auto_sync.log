@@ -1471,3 +1471,40 @@
 [AUTO-SYNC] [INFO] 2025-10-27 09:26:11 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
 [AUTO-SYNC] [INFO] 2025-10-27 09:26:11 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
 [AUTO-SYNC] [INFO] 2025-10-27 09:26:11 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-27 11:49:32 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-27 11:49:32 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-27 11:49:32 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-27 11:49:32 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-27 11:49:32 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-27 11:49:32 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-27 11:49:32 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-27 11:49:32 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-27 11:49:32 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-27 11:49:32 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-27 11:52:07 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-27 11:52:07 [dhis_app.services.auto_sync.scheduler] - 0 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-27 11:52:07 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-27 11:52:07 [dhis_app.services.auto_sync.scheduler] - 0 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-27 11:55:33 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-27 11:55:33 [dhis_app.services.auto_sync.scheduler] - 0 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-27 11:55:34 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-27 11:55:34 [dhis_app.services.auto_sync.scheduler] - 0 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-27 11:58:58 [dhis_app.services.auto_sync.scheduler] - Redémarrage du scheduler pour la configuration 3
+[AUTO-SYNC] [INFO] 2025-10-27 11:58:59 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-27 11:58:59 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-27 11:58:59 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-27 11:59:28 [dhis_app.services.auto_sync.tasks] - Démarrage synchronisation async pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-27 11:59:28 [dhis_app.services.auto_sync.lifecycle_manager] - Démarrage de la synchronisation initiale pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-27 11:59:28 [dhis_app.services.auto_sync.lifecycle_manager] - Étape 1/2: Synchronisation des métadonnées
+[AUTO-SYNC] [INFO] 2025-10-27 11:59:29 [dhis_app.services.auto_sync.lifecycle_manager] - Cooldown activé jusqu'à 2025-10-27 12:29:29.405838+00:00
+[AUTO-SYNC] [WARNING] 2025-10-27 11:59:29 [dhis_app.services.auto_sync.tasks] - Synchronisation async échouée: Échec de la synchronisation des métadonnées
+[AUTO-SYNC] [INFO] 2025-10-27 12:21:20 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-27 12:21:20 [dhis_app.services.auto_sync.scheduler] - 0 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-27 12:21:21 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-27 12:21:21 [dhis_app.services.auto_sync.scheduler] - 0 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-27 14:15:19 [dhis_app.services.auto_sync.tasks] - Démarrage synchronisation async pour PROD-20
+[AUTO-SYNC] [INFO] 2025-10-27 14:15:19 [dhis_app.services.auto_sync.lifecycle_manager] - Démarrage de la synchronisation initiale pour PROD-20
+[AUTO-SYNC] [INFO] 2025-10-27 14:15:19 [dhis_app.services.auto_sync.lifecycle_manager] - Étape 1/2: Synchronisation des métadonnées
+[AUTO-SYNC] [INFO] 2025-10-27 14:19:05 [dhis_app.services.auto_sync.lifecycle_manager] - Étape 2/2: Synchronisation des données
+[AUTO-SYNC] [INFO] 2025-10-27 14:36:29 [dhis_app.services.auto_sync.lifecycle_manager] - Synchronisation initiale terminée avec succès
+[AUTO-SYNC] [INFO] 2025-10-27 14:36:29 [dhis_app.services.auto_sync.tasks] - Synchronisation async réussie pour PROD-20
