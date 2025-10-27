@@ -17988,3 +17988,420 @@ django.template.exceptions.TemplateDoesNotExist: dhis_app/logs/auto_sync_logs.ht
 [INFO] 2025-10-22 14:40:51 django.server basehttp.log_message:212 - "GET /static/css/main.css HTTP/1.1" 304 0
 [INFO] 2025-10-22 14:40:51 django.server basehttp.log_message:212 - "GET /static/js/main.js HTTP/1.1" 304 0
 [WARNING] 2025-10-22 14:40:52 django.server basehttp.log_message:212 - "GET /static/images/favicon.ico HTTP/1.1" 404 1914
+[INFO] 2025-10-22 14:50:20 django.utils.autoreload autoreload.trigger_reload:266 - /home/gado/Integrate Health Dropbox/Djakpo GADO/projets/Dhis2/dhis_sync/dhis_app/models.py changed, reloading.
+[INFO] 2025-10-22 14:50:21 django.utils.autoreload autoreload.run_with_reloader:668 - Watching for file changes with StatReloader
+[INFO] 2025-10-22 14:50:26 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-22 14:50:26 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-22 15:10:15 django.utils.autoreload autoreload.trigger_reload:266 - /home/gado/Integrate Health Dropbox/Djakpo GADO/projets/Dhis2/dhis_sync/dhis_app/models.py changed, reloading.
+[INFO] 2025-10-22 15:10:16 django.utils.autoreload autoreload.run_with_reloader:668 - Watching for file changes with StatReloader
+[INFO] 2025-10-22 15:10:21 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-22 15:10:21 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-22 15:10:51 django.utils.autoreload autoreload.trigger_reload:266 - /home/gado/Integrate Health Dropbox/Djakpo GADO/projets/Dhis2/dhis_sync/dhis_app/models.py changed, reloading.
+[INFO] 2025-10-22 15:10:51 django.utils.autoreload autoreload.run_with_reloader:668 - Watching for file changes with StatReloader
+[INFO] 2025-10-22 15:10:56 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-22 15:10:56 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-22 15:11:31 django.utils.autoreload autoreload.trigger_reload:266 - /home/gado/Integrate Health Dropbox/Djakpo GADO/projets/Dhis2/dhis_sync/dhis_app/models.py changed, reloading.
+[INFO] 2025-10-22 15:11:32 django.utils.autoreload autoreload.run_with_reloader:668 - Watching for file changes with StatReloader
+[INFO] 2025-10-22 15:11:37 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-22 15:11:37 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-22 15:12:24 django.utils.autoreload autoreload.trigger_reload:266 - /home/gado/Integrate Health Dropbox/Djakpo GADO/projets/Dhis2/dhis_sync/dhis_app/models.py changed, reloading.
+[INFO] 2025-10-22 15:12:25 django.utils.autoreload autoreload.run_with_reloader:668 - Watching for file changes with StatReloader
+[INFO] 2025-10-22 15:12:30 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-22 15:12:30 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-22 15:14:01 django.utils.autoreload autoreload.trigger_reload:266 - /home/gado/Integrate Health Dropbox/Djakpo GADO/projets/Dhis2/dhis_sync/dhis_app/admin.py changed, reloading.
+[INFO] 2025-10-22 15:14:01 django.utils.autoreload autoreload.run_with_reloader:668 - Watching for file changes with StatReloader
+[INFO] 2025-10-22 15:14:06 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-22 15:14:06 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-22 15:14:30 django.utils.autoreload autoreload.trigger_reload:266 - /home/gado/Integrate Health Dropbox/Djakpo GADO/projets/Dhis2/dhis_sync/dhis_app/admin.py changed, reloading.
+[INFO] 2025-10-22 15:14:30 django.utils.autoreload autoreload.run_with_reloader:668 - Watching for file changes with StatReloader
+[INFO] 2025-10-22 15:14:35 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-22 15:14:35 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-22 15:17:21 root models.get_date_filter_attribute:425 - Aucune configuration de filtre de date trouvée pour le programme unknown123 (type: event). Utilisation de 'created' par défaut.
+[INFO] 2025-10-22 15:44:00 django.utils.autoreload autoreload.trigger_reload:266 - /home/gado/Integrate Health Dropbox/Djakpo GADO/projets/Dhis2/dhis_sync/dhis_app/models.py changed, reloading.
+[INFO] 2025-10-22 15:44:00 django.utils.autoreload autoreload.run_with_reloader:668 - Watching for file changes with StatReloader
+[INFO] 2025-10-22 15:44:05 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-22 15:44:05 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-22 15:53:46 django.utils.autoreload autoreload.trigger_reload:266 - /home/gado/Integrate Health Dropbox/Djakpo GADO/projets/Dhis2/dhis_sync/dhis_app/models.py changed, reloading.
+[INFO] 2025-10-22 15:53:47 django.utils.autoreload autoreload.run_with_reloader:668 - Watching for file changes with StatReloader
+[INFO] 2025-10-22 15:53:52 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-22 15:53:52 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-22 15:54:04 django.utils.autoreload autoreload.trigger_reload:266 - /home/gado/Integrate Health Dropbox/Djakpo GADO/projets/Dhis2/dhis_sync/dhis_app/models.py changed, reloading.
+[INFO] 2025-10-22 15:54:05 django.utils.autoreload autoreload.run_with_reloader:668 - Watching for file changes with StatReloader
+[INFO] 2025-10-22 15:54:10 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-22 15:54:10 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-22 15:58:19 django.utils.autoreload autoreload.trigger_reload:266 - /home/gado/Integrate Health Dropbox/Djakpo GADO/projets/Dhis2/dhis_sync/dhis_app/urls.py changed, reloading.
+[INFO] 2025-10-22 15:58:20 django.utils.autoreload autoreload.run_with_reloader:668 - Watching for file changes with StatReloader
+[INFO] 2025-10-22 15:58:25 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-22 15:58:25 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-22 15:58:40 django.utils.autoreload autoreload.trigger_reload:266 - /home/gado/Integrate Health Dropbox/Djakpo GADO/projets/Dhis2/dhis_sync/dhis_app/urls.py changed, reloading.
+[INFO] 2025-10-22 15:58:41 django.utils.autoreload autoreload.run_with_reloader:668 - Watching for file changes with StatReloader
+[INFO] 2025-10-22 15:58:46 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-22 15:58:46 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-22 15:59:58 django.utils.autoreload autoreload.trigger_reload:266 - /home/gado/Integrate Health Dropbox/Djakpo GADO/projets/Dhis2/dhis_sync/dhis_app/urls.py changed, reloading.
+[INFO] 2025-10-22 15:59:58 django.utils.autoreload autoreload.run_with_reloader:668 - Watching for file changes with StatReloader
+[INFO] 2025-10-22 16:00:03 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-22 16:00:03 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-22 16:00:57 django.utils.autoreload autoreload.trigger_reload:266 - /home/gado/Integrate Health Dropbox/Djakpo GADO/projets/Dhis2/dhis_sync/dhis_app/models.py changed, reloading.
+[INFO] 2025-10-22 16:00:57 django.utils.autoreload autoreload.run_with_reloader:668 - Watching for file changes with StatReloader
+[INFO] 2025-10-22 16:01:02 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-22 16:01:02 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-22 16:01:16 django.utils.autoreload autoreload.trigger_reload:266 - /home/gado/Integrate Health Dropbox/Djakpo GADO/projets/Dhis2/dhis_sync/dhis_app/models.py changed, reloading.
+[INFO] 2025-10-22 16:01:17 django.utils.autoreload autoreload.run_with_reloader:668 - Watching for file changes with StatReloader
+[INFO] 2025-10-22 16:01:22 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-22 16:01:22 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-22 16:02:01 django.utils.autoreload autoreload.trigger_reload:266 - /home/gado/Integrate Health Dropbox/Djakpo GADO/projets/Dhis2/dhis_sync/dhis_app/models.py changed, reloading.
+[INFO] 2025-10-22 16:02:01 django.utils.autoreload autoreload.run_with_reloader:668 - Watching for file changes with StatReloader
+[INFO] 2025-10-22 16:08:22 django.utils.autoreload autoreload.run_with_reloader:668 - Watching for file changes with StatReloader
+[INFO] 2025-10-22 16:08:26 django.server basehttp.log_message:212 - "GET / HTTP/1.1" 200 48323
+[INFO] 2025-10-22 16:08:27 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-22 16:08:27 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-22 16:08:27 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-22 16:08:27 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-22 16:08:38 django.server basehttp.log_message:212 - "GET /instances/ HTTP/1.1" 200 54071
+[INFO] 2025-10-22 16:08:41 django.server basehttp.log_message:212 - "POST /instances/bulk-status-check/ HTTP/1.1" 200 1950
+[INFO] 2025-10-22 16:08:47 django.server basehttp.log_message:212 - "GET /configurations/ HTTP/1.1" 200 56966
+[INFO] 2025-10-22 16:08:57 django.server basehttp.log_message:212 - "GET /configurations/ HTTP/1.1" 200 56966
+[INFO] 2025-10-22 16:09:31 django.server basehttp.log_message:212 - "GET /instances/ HTTP/1.1" 200 54091
+[INFO] 2025-10-22 16:09:33 django.server basehttp.log_message:212 - "POST /instances/bulk-status-check/ HTTP/1.1" 200 1668
+[INFO] 2025-10-22 16:09:41 django.server basehttp.log_message:212 - "GET /instances/5/ HTTP/1.1" 200 30505
+[INFO] 2025-10-22 16:09:49 django.server basehttp.log_message:212 - "GET /configurations/create/ HTTP/1.1" 200 47753
+[INFO] 2025-10-22 16:12:45 django.server basehttp.log_message:212 - "GET /instances/5/ HTTP/1.1" 200 30588
+[INFO] 2025-10-22 16:13:07 django.server basehttp.log_message:212 - "GET /configurations/create/ HTTP/1.1" 200 47753
+[INFO] 2025-10-22 16:13:38 django.server basehttp.log_message:212 - "GET / HTTP/1.1" 200 48323
+[INFO] 2025-10-22 16:13:41 django.server basehttp.log_message:212 - "GET /instances/ HTTP/1.1" 200 54091
+[INFO] 2025-10-22 16:13:43 django.server basehttp.log_message:212 - "POST /instances/bulk-status-check/ HTTP/1.1" 200 1668
+[INFO] 2025-10-22 16:13:46 django.server basehttp.log_message:212 - "GET /instances/4/ HTTP/1.1" 200 31163
+[INFO] 2025-10-22 16:14:06 django.server basehttp.log_message:212 - "GET /configurations/create/ HTTP/1.1" 200 47753
+[INFO] 2025-10-22 16:14:28 django.server basehttp.log_message:212 - "GET /date-filter-config/?instance_id=4 HTTP/1.1" 200 16083
+[WARNING] 2025-10-22 16:14:28 django.request log.log_response:241 - Not Found: /dhis/api/programs/
+[WARNING] 2025-10-22 16:14:28 django.server basehttp.log_message:212 - "GET /dhis/api/programs/?instance_id=4 HTTP/1.1" 404 12076
+[ERROR] 2025-10-22 16:14:43 django.security.DisallowedHost exception.response_for_exception:124 - Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/http/request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+[WARNING] 2025-10-22 16:14:43 django.request log.log_response:241 - Bad Request: /dhis/date-filter-config/
+[ERROR] 2025-10-22 16:14:43 django.security.DisallowedHost exception.response_for_exception:124 - Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/http/request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+[WARNING] 2025-10-22 16:14:43 django.request log.log_response:241 - Bad Request: /dhis/date-filter-config/
+[ERROR] 2025-10-22 16:14:43 django.security.DisallowedHost exception.response_for_exception:124 - Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/http/request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+[WARNING] 2025-10-22 16:14:43 django.request log.log_response:241 - Bad Request: /dhis/api/programs/
+[INFO] 2025-10-22 16:14:43 root models.get_date_filter_attribute:424 - Aucune configuration de filtre de date trouvée pour le programme unknown123 (type: event). Utilisation de 'created' par défaut.
+[ERROR] 2025-10-22 16:14:43 django.security.DisallowedHost exception.response_for_exception:124 - Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/http/request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+[WARNING] 2025-10-22 16:14:43 django.request log.log_response:241 - Bad Request: /instances/1/
+[INFO] 2025-10-22 16:14:54 django.server basehttp.log_message:212 - "GET /date-filter-config/?instance_id=1 HTTP/1.1" 200 16084
+[WARNING] 2025-10-22 16:14:54 django.request log.log_response:241 - Not Found: /dhis/api/programs/
+[WARNING] 2025-10-22 16:14:54 django.server basehttp.log_message:212 - "GET /dhis/api/programs/?instance_id=1 HTTP/1.1" 404 12076
+[INFO] 2025-10-22 16:14:58 django.server basehttp.log_message:212 - "GET /date-filter-config/?instance_id=1 HTTP/1.1" 200 16084
+[WARNING] 2025-10-22 16:14:58 django.request log.log_response:241 - Not Found: /dhis/api/programs/
+[WARNING] 2025-10-22 16:14:58 django.server basehttp.log_message:212 - "GET /dhis/api/programs/?instance_id=1 HTTP/1.1" 404 12076
+[INFO] 2025-10-22 16:14:59 django.server basehttp.log_message:212 - "GET /date-filter-config/?instance_id=1 HTTP/1.1" 200 16084
+[WARNING] 2025-10-22 16:14:59 django.request log.log_response:241 - Not Found: /dhis/api/programs/
+[WARNING] 2025-10-22 16:14:59 django.server basehttp.log_message:212 - "GET /dhis/api/programs/?instance_id=1 HTTP/1.1" 404 12076
+[INFO] 2025-10-22 16:15:15 django.server basehttp.log_message:212 - "GET /date-filter-config/?instance_id=1 HTTP/1.1" 200 16084
+[WARNING] 2025-10-22 16:15:16 django.request log.log_response:241 - Not Found: /dhis/api/programs/
+[WARNING] 2025-10-22 16:15:16 django.server basehttp.log_message:212 - "GET /dhis/api/programs/?instance_id=1 HTTP/1.1" 404 12076
+[INFO] 2025-10-22 16:15:16 django.server basehttp.log_message:212 - "GET /date-filter-config/?instance_id=1 HTTP/1.1" 200 16084
+[WARNING] 2025-10-22 16:15:16 django.request log.log_response:241 - Not Found: /dhis/api/programs/
+[WARNING] 2025-10-22 16:15:16 django.server basehttp.log_message:212 - "GET /dhis/api/programs/?instance_id=1 HTTP/1.1" 404 12076
+[INFO] 2025-10-22 16:20:32 django.server basehttp.log_message:212 - "GET /date-filter-config/?instance_id=1 HTTP/1.1" 200 16069
+[ERROR] 2025-10-22 16:20:32 root models.get_metadata:170 - Erreur lors de la récupération de programs: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7ec2ae390>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:20:32 dhis_app.views.date_filter_config date_filter_config.get_programs_api:151 - Erreur lors de la récupération des programmes: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7ec2ae390>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:20:32 django.request log.log_response:241 - Internal Server Error: /api/programs/
+[ERROR] 2025-10-22 16:20:32 django.server basehttp.log_message:212 - "GET /api/programs/?instance_id=1 HTTP/1.1" 500 409
+[INFO] 2025-10-22 16:20:34 django.server basehttp.log_message:212 - "GET /date-filter-config/?instance_id=1 HTTP/1.1" 200 16069
+[ERROR] 2025-10-22 16:20:34 root models.get_metadata:170 - Erreur lors de la récupération de programs: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7ec2ac2c0>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:20:34 dhis_app.views.date_filter_config date_filter_config.get_programs_api:151 - Erreur lors de la récupération des programmes: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7ec2ac2c0>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:20:34 django.request log.log_response:241 - Internal Server Error: /api/programs/
+[ERROR] 2025-10-22 16:20:34 django.server basehttp.log_message:212 - "GET /api/programs/?instance_id=1 HTTP/1.1" 500 409
+[INFO] 2025-10-22 16:20:46 django.server basehttp.log_message:212 - "GET /date-filter-config/?instance_id=1 HTTP/1.1" 200 16069
+[ERROR] 2025-10-22 16:20:46 root models.get_metadata:170 - Erreur lors de la récupération de programs: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7ec2af230>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:20:46 dhis_app.views.date_filter_config date_filter_config.get_programs_api:151 - Erreur lors de la récupération des programmes: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7ec2af230>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:20:46 django.request log.log_response:241 - Internal Server Error: /api/programs/
+[ERROR] 2025-10-22 16:20:46 django.server basehttp.log_message:212 - "GET /api/programs/?instance_id=1 HTTP/1.1" 500 409
+[ERROR] 2025-10-22 16:20:57 django.security.DisallowedHost exception.response_for_exception:124 - Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/http/request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+[WARNING] 2025-10-22 16:20:57 django.request log.log_response:241 - Bad Request: /date-filter-config/
+[ERROR] 2025-10-22 16:20:57 django.security.DisallowedHost exception.response_for_exception:124 - Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/http/request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+[WARNING] 2025-10-22 16:20:57 django.request log.log_response:241 - Bad Request: /api/programs/
+[ERROR] 2025-10-22 16:20:57 django.security.DisallowedHost exception.response_for_exception:124 - Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/http/request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+[WARNING] 2025-10-22 16:20:57 django.request log.log_response:241 - Bad Request: /api/date-attributes/
+[ERROR] 2025-10-22 16:20:57 django.security.DisallowedHost exception.response_for_exception:124 - Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/gado/projets/Dhis2/Importation des données/Scripts/.venv/lib/python3.12/site-packages/django/http/request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+[WARNING] 2025-10-22 16:20:57 django.request log.log_response:241 - Bad Request: /api/save-date-filter-configs/
+[INFO] 2025-10-22 16:22:36 django.server basehttp.log_message:212 - "GET /date-filter-config/?instance_id=1 HTTP/1.1" 200 16069
+[ERROR] 2025-10-22 16:22:36 root models.get_metadata:170 - Erreur lors de la récupération de programs: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7ec2ae030>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:22:36 dhis_app.views.date_filter_config date_filter_config.get_programs_api:151 - Erreur lors de la récupération des programmes: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7ec2ae030>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:22:36 django.request log.log_response:241 - Internal Server Error: /api/programs/
+[ERROR] 2025-10-22 16:22:36 django.server basehttp.log_message:212 - "GET /api/programs/?instance_id=1 HTTP/1.1" 500 409
+[INFO] 2025-10-22 16:22:37 django.server basehttp.log_message:212 - "GET /date-filter-config/?instance_id=1 HTTP/1.1" 200 16069
+[ERROR] 2025-10-22 16:22:37 root models.get_metadata:170 - Erreur lors de la récupération de programs: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7ec2ae570>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:22:37 dhis_app.views.date_filter_config date_filter_config.get_programs_api:151 - Erreur lors de la récupération des programmes: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7ec2ae570>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:22:37 django.request log.log_response:241 - Internal Server Error: /api/programs/
+[ERROR] 2025-10-22 16:22:37 django.server basehttp.log_message:212 - "GET /api/programs/?instance_id=1 HTTP/1.1" 500 409
+[INFO] 2025-10-22 16:22:37 django.server basehttp.log_message:212 - "GET /date-filter-config/?instance_id=1 HTTP/1.1" 200 16069
+[ERROR] 2025-10-22 16:22:37 root models.get_metadata:170 - Erreur lors de la récupération de programs: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7ec2acce0>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:22:37 dhis_app.views.date_filter_config date_filter_config.get_programs_api:151 - Erreur lors de la récupération des programmes: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7ec2acce0>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:22:37 django.request log.log_response:241 - Internal Server Error: /api/programs/
+[ERROR] 2025-10-22 16:22:37 django.server basehttp.log_message:212 - "GET /api/programs/?instance_id=1 HTTP/1.1" 500 409
+[INFO] 2025-10-22 16:22:37 django.server basehttp.log_message:212 - "GET /date-filter-config/?instance_id=1 HTTP/1.1" 200 16069
+[ERROR] 2025-10-22 16:22:38 root models.get_metadata:170 - Erreur lors de la récupération de programs: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7ec2ad940>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:22:38 dhis_app.views.date_filter_config date_filter_config.get_programs_api:151 - Erreur lors de la récupération des programmes: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7ec2ad940>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:22:38 django.request log.log_response:241 - Internal Server Error: /api/programs/
+[ERROR] 2025-10-22 16:22:38 django.server basehttp.log_message:212 - "GET /api/programs/?instance_id=1 HTTP/1.1" 500 409
+[INFO] 2025-10-22 16:22:38 django.server basehttp.log_message:212 - "GET /date-filter-config/?instance_id=1 HTTP/1.1" 200 16069
+[ERROR] 2025-10-22 16:22:38 root models.get_metadata:170 - Erreur lors de la récupération de programs: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7ec2acd10>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:22:38 dhis_app.views.date_filter_config date_filter_config.get_programs_api:151 - Erreur lors de la récupération des programmes: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7ec2acd10>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:22:38 django.request log.log_response:241 - Internal Server Error: /api/programs/
+[ERROR] 2025-10-22 16:22:38 django.server basehttp.log_message:212 - "GET /api/programs/?instance_id=1 HTTP/1.1" 500 409
+[INFO] 2025-10-22 16:22:38 django.server basehttp.log_message:212 - "GET /date-filter-config/?instance_id=1 HTTP/1.1" 200 16069
+[ERROR] 2025-10-22 16:22:38 root models.get_metadata:170 - Erreur lors de la récupération de programs: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7ecd41c10>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:22:38 dhis_app.views.date_filter_config date_filter_config.get_programs_api:151 - Erreur lors de la récupération des programmes: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7ecd41c10>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:22:38 django.request log.log_response:241 - Internal Server Error: /api/programs/
+[ERROR] 2025-10-22 16:22:38 django.server basehttp.log_message:212 - "GET /api/programs/?instance_id=1 HTTP/1.1" 500 409
+[INFO] 2025-10-22 16:22:38 django.server basehttp.log_message:212 - "GET /date-filter-config/?instance_id=1 HTTP/1.1" 200 16069
+[ERROR] 2025-10-22 16:22:38 root models.get_metadata:170 - Erreur lors de la récupération de programs: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7ec2ac200>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:22:38 dhis_app.views.date_filter_config date_filter_config.get_programs_api:151 - Erreur lors de la récupération des programmes: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7ec2ac200>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:22:38 django.request log.log_response:241 - Internal Server Error: /api/programs/
+[ERROR] 2025-10-22 16:22:38 django.server basehttp.log_message:212 - "GET /api/programs/?instance_id=1 HTTP/1.1" 500 409
+[INFO] 2025-10-22 16:22:43 django.server basehttp.log_message:212 - "GET /date-filter-config/?instance_id=1 HTTP/1.1" 200 16069
+[ERROR] 2025-10-22 16:22:44 root models.get_metadata:170 - Erreur lors de la récupération de programs: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7ec2ac1d0>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:22:44 dhis_app.views.date_filter_config date_filter_config.get_programs_api:151 - Erreur lors de la récupération des programmes: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7ec2ac1d0>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:22:44 django.request log.log_response:241 - Internal Server Error: /api/programs/
+[ERROR] 2025-10-22 16:22:44 django.server basehttp.log_message:212 - "GET /api/programs/?instance_id=1 HTTP/1.1" 500 409
+[INFO] 2025-10-22 16:22:44 django.server basehttp.log_message:212 - "GET /date-filter-config/?instance_id=1 HTTP/1.1" 200 16069
+[ERROR] 2025-10-22 16:22:44 root models.get_metadata:170 - Erreur lors de la récupération de programs: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7ec2ae900>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:22:44 dhis_app.views.date_filter_config date_filter_config.get_programs_api:151 - Erreur lors de la récupération des programmes: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7ec2ae900>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:22:44 django.request log.log_response:241 - Internal Server Error: /api/programs/
+[ERROR] 2025-10-22 16:22:44 django.server basehttp.log_message:212 - "GET /api/programs/?instance_id=1 HTTP/1.1" 500 409
+[INFO] 2025-10-22 16:22:44 django.server basehttp.log_message:212 - "GET /date-filter-config/?instance_id=1 HTTP/1.1" 200 16069
+[ERROR] 2025-10-22 16:22:44 root models.get_metadata:170 - Erreur lors de la récupération de programs: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7ec2ad7f0>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:22:44 dhis_app.views.date_filter_config date_filter_config.get_programs_api:151 - Erreur lors de la récupération des programmes: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7ec2ad7f0>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:22:44 django.request log.log_response:241 - Internal Server Error: /api/programs/
+[ERROR] 2025-10-22 16:22:44 django.server basehttp.log_message:212 - "GET /api/programs/?instance_id=1 HTTP/1.1" 500 409
+[INFO] 2025-10-22 16:22:44 django.server basehttp.log_message:212 - "GET /date-filter-config/?instance_id=1 HTTP/1.1" 200 16069
+[ERROR] 2025-10-22 16:22:44 root models.get_metadata:170 - Erreur lors de la récupération de programs: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7ec2af530>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:22:44 dhis_app.views.date_filter_config date_filter_config.get_programs_api:151 - Erreur lors de la récupération des programmes: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7ec2af530>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:22:44 django.request log.log_response:241 - Internal Server Error: /api/programs/
+[ERROR] 2025-10-22 16:22:44 django.server basehttp.log_message:212 - "GET /api/programs/?instance_id=1 HTTP/1.1" 500 409
+[INFO] 2025-10-22 16:22:44 django.server basehttp.log_message:212 - "GET /date-filter-config/?instance_id=1 HTTP/1.1" 200 16069
+[ERROR] 2025-10-22 16:22:44 root models.get_metadata:170 - Erreur lors de la récupération de programs: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7ec2ae000>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:22:44 dhis_app.views.date_filter_config date_filter_config.get_programs_api:151 - Erreur lors de la récupération des programmes: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7ec2ae000>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:22:44 django.request log.log_response:241 - Internal Server Error: /api/programs/
+[ERROR] 2025-10-22 16:22:44 django.server basehttp.log_message:212 - "GET /api/programs/?instance_id=1 HTTP/1.1" 500 409
+[INFO] 2025-10-22 16:22:59 django.server basehttp.log_message:212 - "POST /instances/bulk-status-check/ HTTP/1.1" 200 1668
+[INFO] 2025-10-22 16:23:12 django.server basehttp.log_message:212 - "GET /instances/5/ HTTP/1.1" 200 30588
+[INFO] 2025-10-22 16:23:23 django.server basehttp.log_message:212 - "GET /instances/4/ HTTP/1.1" 200 31163
+[INFO] 2025-10-22 16:23:31 django.server basehttp.log_message:212 - "GET /date-filter-config/?instance_id=4 HTTP/1.1" 200 16068
+[INFO] 2025-10-22 16:23:32 django.server basehttp.log_message:212 - "GET /api/programs/?instance_id=4 HTTP/1.1" 200 1964
+[INFO] 2025-10-22 16:23:33 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=k9UHpWKDnLC&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:23:33 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=kwQByezKGrl&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:23:33 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=siupB4uk4O2&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:23:33 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=yH74lp4U5yY&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:23:33 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=UMOEBy6Sp7s&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:23:33 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=o4X9Jhw1LOf&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:23:34 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=n8sjxbWuJJg&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:23:34 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=CqSzZ0foe5w&filter_type=tracker HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:23:34 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=ENACXbU5wMY&filter_type=tracker HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:23:34 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=K1gC9uSJcJ8&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:23:34 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=aaw8nwnmmcC&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:23:34 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=p1El3vnhXVE&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:23:35 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=GardDdKqKy7&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:23:35 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=LOHCXZMzADu&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:23:35 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=tuc5htf4BlE&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:24:35 django.server basehttp.log_message:212 - "GET /date-filter-config/?instance_id=1 HTTP/1.1" 200 16069
+[ERROR] 2025-10-22 16:24:35 root models.get_metadata:170 - Erreur lors de la récupération de programs: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7eccee5d0>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:24:35 dhis_app.views.date_filter_config date_filter_config.get_programs_api:151 - Erreur lors de la récupération des programmes: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/programs.json?fields=id%2Cname%2CdisplayName%2CprogramType&paging=false (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x78e7eccee5d0>: Failed to establish a new connection: [Errno 111] Connection refused'))
+[ERROR] 2025-10-22 16:24:35 django.request log.log_response:241 - Internal Server Error: /api/programs/
+[ERROR] 2025-10-22 16:24:35 django.server basehttp.log_message:212 - "GET /api/programs/?instance_id=1 HTTP/1.1" 500 409
+[INFO] 2025-10-22 16:24:40 django.server basehttp.log_message:212 - "GET /date-filter-config/?instance_id=4 HTTP/1.1" 200 16068
+[INFO] 2025-10-22 16:24:41 django.server basehttp.log_message:212 - "GET /api/programs/?instance_id=4 HTTP/1.1" 200 1964
+[INFO] 2025-10-22 16:24:42 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=k9UHpWKDnLC&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:24:42 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=UMOEBy6Sp7s&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:24:42 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=kwQByezKGrl&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:24:42 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=siupB4uk4O2&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:24:42 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=yH74lp4U5yY&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:24:42 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=o4X9Jhw1LOf&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:24:43 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=n8sjxbWuJJg&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:24:43 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=CqSzZ0foe5w&filter_type=tracker HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:24:43 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=aaw8nwnmmcC&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:24:43 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=p1El3vnhXVE&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:24:43 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=K1gC9uSJcJ8&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:24:43 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=ENACXbU5wMY&filter_type=tracker HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:24:43 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=GardDdKqKy7&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:24:44 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=LOHCXZMzADu&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:24:44 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=tuc5htf4BlE&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:38:23 django.utils.autoreload autoreload.trigger_reload:266 - /home/gado/Integrate Health Dropbox/Djakpo GADO/projets/Dhis2/dhis_sync/dhis_app/views/date_filter_config.py changed, reloading.
+[INFO] 2025-10-22 16:38:24 django.utils.autoreload autoreload.run_with_reloader:668 - Watching for file changes with StatReloader
+[INFO] 2025-10-22 16:38:29 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-22 16:38:29 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-22 16:38:42 django.server basehttp.log_message:212 - "GET /date-filter-config/?instance_id=4 HTTP/1.1" 200 16068
+[INFO] 2025-10-22 16:38:43 django.server basehttp.log_message:212 - "GET /api/programs/?instance_id=4 HTTP/1.1" 200 1964
+[INFO] 2025-10-22 16:38:44 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=k9UHpWKDnLC&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:38:44 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=kwQByezKGrl&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:38:44 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=UMOEBy6Sp7s&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:38:44 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=o4X9Jhw1LOf&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:38:44 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=siupB4uk4O2&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:38:44 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=yH74lp4U5yY&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:38:45 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=CqSzZ0foe5w&filter_type=tracker HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:38:45 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=n8sjxbWuJJg&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:38:45 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=K1gC9uSJcJ8&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:38:45 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=ENACXbU5wMY&filter_type=tracker HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:38:45 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=p1El3vnhXVE&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:38:45 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=aaw8nwnmmcC&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:38:46 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=LOHCXZMzADu&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:38:46 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=GardDdKqKy7&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:38:46 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=tuc5htf4BlE&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:42:54 django.utils.autoreload autoreload.trigger_reload:266 - /home/gado/Integrate Health Dropbox/Djakpo GADO/projets/Dhis2/dhis_sync/dhis_app/views/date_filter_config.py changed, reloading.
+[INFO] 2025-10-22 16:42:54 django.utils.autoreload autoreload.run_with_reloader:668 - Watching for file changes with StatReloader
+[INFO] 2025-10-22 16:42:59 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-22 16:42:59 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-22 16:45:20 django.server basehttp.log_message:212 - "GET /date-filter-config/?instance_id=4 HTTP/1.1" 200 16068
+[INFO] 2025-10-22 16:45:21 django.server basehttp.log_message:212 - "GET /api/programs/?instance_id=4 HTTP/1.1" 200 1964
+[INFO] 2025-10-22 16:45:22 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=UMOEBy6Sp7s&filter_type=event HTTP/1.1" 200 110
+[INFO] 2025-10-22 16:45:22 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=yH74lp4U5yY&filter_type=event HTTP/1.1" 200 180
+[INFO] 2025-10-22 16:45:22 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=kwQByezKGrl&filter_type=event HTTP/1.1" 200 108
+[INFO] 2025-10-22 16:45:22 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=o4X9Jhw1LOf&filter_type=event HTTP/1.1" 200 114
+[INFO] 2025-10-22 16:45:22 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=siupB4uk4O2&filter_type=event HTTP/1.1" 200 172
+[INFO] 2025-10-22 16:45:22 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=k9UHpWKDnLC&filter_type=event HTTP/1.1" 200 100
+[INFO] 2025-10-22 16:45:23 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=n8sjxbWuJJg&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:45:23 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=CqSzZ0foe5w&filter_type=tracker HTTP/1.1" 200 110
+[INFO] 2025-10-22 16:45:23 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=p1El3vnhXVE&filter_type=event HTTP/1.1" 200 108
+[INFO] 2025-10-22 16:45:23 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=ENACXbU5wMY&filter_type=tracker HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:45:23 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=K1gC9uSJcJ8&filter_type=event HTTP/1.1" 200 117
+[INFO] 2025-10-22 16:45:23 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=aaw8nwnmmcC&filter_type=event HTTP/1.1" 200 108
+[INFO] 2025-10-22 16:45:24 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=GardDdKqKy7&filter_type=event HTTP/1.1" 200 188
+[INFO] 2025-10-22 16:45:24 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=LOHCXZMzADu&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:45:24 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=tuc5htf4BlE&filter_type=event HTTP/1.1" 200 185
+[ERROR] 2025-10-22 16:48:31 dhis_app.views.date_filter_config date_filter_config.save_date_filter_configs:104 - Erreur lors de la sauvegarde des configurations: NOT NULL constraint failed: dhis_app_datefilterattribute.is_active
+[ERROR] 2025-10-22 16:48:31 django.request log.log_response:241 - Internal Server Error: /api/save-date-filter-configs/
+[ERROR] 2025-10-22 16:48:31 django.server basehttp.log_message:212 - "POST /api/save-date-filter-configs/ HTTP/1.1" 500 97
+[ERROR] 2025-10-22 16:48:37 dhis_app.views.date_filter_config date_filter_config.save_date_filter_configs:104 - Erreur lors de la sauvegarde des configurations: NOT NULL constraint failed: dhis_app_datefilterattribute.is_active
+[ERROR] 2025-10-22 16:48:37 django.request log.log_response:241 - Internal Server Error: /api/save-date-filter-configs/
+[ERROR] 2025-10-22 16:48:37 django.server basehttp.log_message:212 - "POST /api/save-date-filter-configs/ HTTP/1.1" 500 97
+[INFO] 2025-10-22 16:51:34 root models.get_date_filter_attribute:424 - Aucune configuration de filtre de date trouvée pour le programme UNKNOWN (type: event). Utilisation de 'created' par défaut.
+[INFO] 2025-10-22 16:51:37 django.server basehttp.log_message:212 - "POST /api/save-date-filter-configs/ HTTP/1.1" 200 88
+[INFO] 2025-10-22 16:52:11 django.server basehttp.log_message:212 - "GET /date-filter-config/?instance_id=4 HTTP/1.1" 200 18569
+[INFO] 2025-10-22 16:52:12 django.server basehttp.log_message:212 - "GET /api/programs/?instance_id=4 HTTP/1.1" 200 1964
+[INFO] 2025-10-22 16:52:13 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=k9UHpWKDnLC&filter_type=event HTTP/1.1" 200 100
+[INFO] 2025-10-22 16:52:13 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=yH74lp4U5yY&filter_type=event HTTP/1.1" 200 180
+[INFO] 2025-10-22 16:52:13 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=UMOEBy6Sp7s&filter_type=event HTTP/1.1" 200 110
+[INFO] 2025-10-22 16:52:13 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=kwQByezKGrl&filter_type=event HTTP/1.1" 200 108
+[INFO] 2025-10-22 16:52:13 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=o4X9Jhw1LOf&filter_type=event HTTP/1.1" 200 114
+[INFO] 2025-10-22 16:52:13 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=siupB4uk4O2&filter_type=event HTTP/1.1" 200 172
+[INFO] 2025-10-22 16:52:14 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=n8sjxbWuJJg&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:52:14 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=CqSzZ0foe5w&filter_type=tracker HTTP/1.1" 200 110
+[INFO] 2025-10-22 16:52:14 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=K1gC9uSJcJ8&filter_type=event HTTP/1.1" 200 117
+[INFO] 2025-10-22 16:52:14 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=ENACXbU5wMY&filter_type=tracker HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:52:14 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=aaw8nwnmmcC&filter_type=event HTTP/1.1" 200 108
+[INFO] 2025-10-22 16:52:14 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=p1El3vnhXVE&filter_type=event HTTP/1.1" 200 108
+[INFO] 2025-10-22 16:52:15 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=GardDdKqKy7&filter_type=event HTTP/1.1" 200 188
+[INFO] 2025-10-22 16:52:15 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=LOHCXZMzADu&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-22 16:52:15 django.server basehttp.log_message:212 - "GET /api/date-attributes/?instance_id=4&program_uid=tuc5htf4BlE&filter_type=event HTTP/1.1" 200 185
+[INFO] 2025-10-22 16:53:43 django.utils.autoreload autoreload.run_with_reloader:668 - Watching for file changes with StatReloader
+[INFO] 2025-10-22 16:53:48 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-22 16:53:48 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-22 16:53:48 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-22 16:53:48 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-24 13:17:45 django.utils.autoreload autoreload.run_with_reloader:667 - Watching for file changes with StatReloader
+[INFO] 2025-10-24 13:17:50 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-24 13:17:50 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-24 13:17:50 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-24 13:17:50 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès

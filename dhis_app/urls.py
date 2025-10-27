@@ -31,6 +31,12 @@ from .views.sync_jobs import (
     SyncJobDetailView,
 )
 from .views import auto_sync, logs, auth
+from .views.date_filter_config import (
+    date_filter_config_view,
+    save_date_filter_configs,
+    get_programs_api,
+    get_date_attributes_api,
+)
 
 urlpatterns = [
     # === AUTHENTIFICATION ===
@@ -164,4 +170,17 @@ urlpatterns = [
 
     # Rechercher dans les logs
     path('logs/search/', logs.search_logs, name='search_logs'),
+
+    # === CONFIGURATION DES FILTRES DE DATE ===
+    # Page de configuration des filtres de date
+    path('date-filter-config/', date_filter_config_view, name='date_filter_config'),
+
+    # API: Sauvegarder les configurations de filtres de date
+    path('api/save-date-filter-configs/', save_date_filter_configs, name='save_date_filter_configs'),
+
+    # API: Récupérer les programmes d'une instance
+    path('api/programs/', get_programs_api, name='get_programs_api'),
+
+    # API: Récupérer les attributs/dataElements de type date d'un programme
+    path('api/date-attributes/', get_date_attributes_api, name='get_date_attributes_api'),
 ]

@@ -8,7 +8,7 @@ import json
 from datetime import datetime
 from .models import (
     DHIS2Instance, SyncConfiguration, MetadataType, SyncJob,
-    AutoSyncSettings, DHIS2Entity, DHIS2EntityVersion
+    AutoSyncSettings, DHIS2Entity, DHIS2EntityVersion, DateFilterAttribute
 )
 
 
@@ -268,6 +268,30 @@ class DHIS2EntityVersionAdmin(ExportMixin, admin.ModelAdmin):
         count = queryset.update(is_active=False)
         self.message_user(request, f'{count} versions désactivées.')
     deactivate_versions.short_description = "Désactiver les versions"
+
+
+@admin.register(DateFilterAttribute)
+class DateFilterAttributeAdmin(ExportMixin, admin.ModelAdmin):
+    list_display = ['program_name', 'program_uid', 'filter_type', 'date_attribute_name', 'date_attribute_uid', 'dhis2_instance']
+    list_filter = ['filter_type', 'dhis2_instance', 'created_at']
+    search_fields = ['program_name', 'program_uid', 'date_attribute_name', 'date_attribute_uid']
+    readonly_fields = ['created_at', 'updated_at']
+    actions = ['export_csv', 'export_json']
+
+    fieldsets = [
+        ('Instance DHIS2', {
+            'fields': ['dhis2_instance']
+        }),
+        ('Configuration du programme', {
+            'fields': ['filter_type', 'program_uid', 'program_name']
+        }),
+        ('Attribut de date', {
+            'fields': ['date_attribute_uid', 'date_attribute_name', 'default_to_created']
+        }),
+        ('Métadonnées', {
+            'fields': ['created_at', 'updated_at']
+        }),
+    ]
 
 
 @admin.register(AutoSyncSettings)

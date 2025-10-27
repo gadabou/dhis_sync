@@ -1341,3 +1341,118 @@
 [AUTO-SYNC] [INFO] 2025-10-22 14:39:16 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
 [AUTO-SYNC] [INFO] 2025-10-22 14:39:16 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
 [AUTO-SYNC] [INFO] 2025-10-22 14:39:16 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-22 14:50:26 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-22 14:50:26 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-22 14:50:26 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-22 14:50:26 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-22 14:50:26 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-22 15:10:21 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-22 15:10:21 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-22 15:10:21 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-22 15:10:21 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-22 15:10:21 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-22 15:10:56 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-22 15:10:56 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-22 15:10:56 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-22 15:10:56 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-22 15:10:56 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-22 15:11:37 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-22 15:11:37 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-22 15:11:37 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-22 15:11:37 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-22 15:11:37 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-22 15:12:30 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-22 15:12:30 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-22 15:12:30 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-22 15:12:30 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-22 15:12:30 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-22 15:14:06 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-22 15:14:06 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-22 15:14:06 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-22 15:14:06 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-22 15:14:06 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-22 15:14:35 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-22 15:14:35 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-22 15:14:35 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-22 15:14:35 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-22 15:14:35 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-22 15:44:05 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-22 15:44:05 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-22 15:44:05 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-22 15:44:05 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-22 15:44:05 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-22 15:53:52 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-22 15:53:52 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-22 15:53:52 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-22 15:53:52 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-22 15:53:52 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-22 15:54:10 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-22 15:54:10 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-22 15:54:10 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-22 15:54:10 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-22 15:54:10 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-22 15:58:25 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-22 15:58:25 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-22 15:58:25 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-22 15:58:25 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-22 15:58:25 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-22 15:58:46 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-22 15:58:46 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-22 15:58:46 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-22 15:58:46 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-22 15:58:46 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-22 16:00:03 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-22 16:00:03 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-22 16:00:03 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-22 16:00:03 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-22 16:00:03 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-22 16:01:02 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-22 16:01:02 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-22 16:01:02 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-22 16:01:02 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-22 16:01:02 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-22 16:01:22 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-22 16:01:22 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-22 16:01:22 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-22 16:01:22 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-22 16:01:22 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-22 16:08:27 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-22 16:08:27 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-22 16:08:27 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-22 16:08:27 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-22 16:08:27 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-22 16:08:27 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-22 16:08:27 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-22 16:08:27 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-22 16:08:27 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-22 16:08:27 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-22 16:38:29 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-22 16:38:29 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-22 16:38:29 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-22 16:38:29 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-22 16:38:29 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-22 16:42:59 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-22 16:42:59 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-22 16:42:59 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-22 16:42:59 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-22 16:42:59 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-22 16:53:48 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-22 16:53:48 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-22 16:53:48 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-22 16:53:48 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-22 16:53:48 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-22 16:53:48 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-22 16:53:48 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-22 16:53:48 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-22 16:53:48 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-22 16:53:48 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-24 13:17:50 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-24 13:17:50 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-24 13:17:50 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-24 13:17:50 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-24 13:17:50 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-24 13:17:50 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-24 13:17:50 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour Local 97-94
+[AUTO-SYNC] [INFO] 2025-10-24 13:17:50 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour Local 97-94 (ID: 3)
+[AUTO-SYNC] [INFO] 2025-10-24 13:17:50 [dhis_app.services.auto_sync.scheduler] - 1 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-24 13:17:50 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
