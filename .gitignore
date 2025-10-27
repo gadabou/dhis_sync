@@ -1,0 +1,6 @@
+**/__pycache__
+.claude
+.idea
+run_dockers.sh
+__pycache__
+.venv

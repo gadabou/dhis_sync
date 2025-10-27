@@ -1592,7 +1592,7 @@ class DateFilterAttribute(models.Model):
         max_length=255,
         blank=True,
         null=True,
-        help_text="Nom du programme ou de l'entité suivie (optionnel, pour information)"
+        help_text="Nom du programme ou de l'entité suivie "
     )
 
     # UID de l'attribut/dataElement à utiliser pour le filtre de date
@@ -1606,7 +1606,7 @@ class DateFilterAttribute(models.Model):
         max_length=255,
         blank=True,
         null=True,
-        help_text="Nom de l'attribut/dataElement (optionnel, pour information)"
+        help_text="Nom de l'attribut/dataElement"
     )
 
     # Valeur par défaut si l'attribut n'est pas spécifié ou vide

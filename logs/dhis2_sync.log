@@ -18405,3 +18405,57 @@ django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. Y
 [INFO] 2025-10-24 13:17:50 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
 [INFO] 2025-10-24 13:17:50 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
 [INFO] 2025-10-24 13:17:50 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-27 08:54:51 django.utils.autoreload autoreload.run_with_reloader:667 - Watching for file changes with StatReloader
+[INFO] 2025-10-27 08:54:56 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-27 08:54:56 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-27 08:54:56 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-27 08:54:56 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-10-27 08:55:07 django.server basehttp.log_message:213 - "GET / HTTP/1.1" 302 0
+[INFO] 2025-10-27 08:55:07 django.server basehttp.log_message:213 - "GET /login/?next=/ HTTP/1.1" 200 6379
+[WARNING] 2025-10-27 08:55:10 django.request log.log_response:253 - Not Found: /favicon.ico
+[WARNING] 2025-10-27 08:55:10 django.server basehttp.log_message:213 - "GET /favicon.ico HTTP/1.1" 404 16224
+[INFO] 2025-10-27 08:55:43 django.server basehttp.log_message:213 - "POST /login/ HTTP/1.1" 302 0
+[INFO] 2025-10-27 08:55:43 django.server basehttp.log_message:213 - "GET / HTTP/1.1" 200 50213
+[INFO] 2025-10-27 08:55:44 django.server basehttp.log_message:213 - "GET /static/js/main.js HTTP/1.1" 304 0
+[INFO] 2025-10-27 08:55:44 django.server basehttp.log_message:213 - "GET /static/css/main.css HTTP/1.1" 304 0
+[WARNING] 2025-10-27 08:55:44 django.server basehttp.log_message:213 - "GET /static/images/favicon.ico HTTP/1.1" 404 1981
+[INFO] 2025-10-27 08:55:53 django.server basehttp.log_message:213 - "GET /configurations/ HTTP/1.1" 200 56966
+[INFO] 2025-10-27 08:55:55 django.server basehttp.log_message:213 - "GET /instances/ HTTP/1.1" 200 54091
+[INFO] 2025-10-27 08:55:57 django.server basehttp.log_message:213 - "POST /instances/bulk-status-check/ HTTP/1.1" 200 1668
+[INFO] 2025-10-27 08:56:03 django.server basehttp.log_message:213 - "GET /instances/5/ HTTP/1.1" 200 30588
+[INFO] 2025-10-27 08:56:26 django.server basehttp.log_message:213 - "GET /instances/ HTTP/1.1" 200 54091
+[INFO] 2025-10-27 08:56:28 django.server basehttp.log_message:213 - "POST /instances/bulk-status-check/ HTTP/1.1" 200 1668
+[INFO] 2025-10-27 08:56:30 django.server basehttp.log_message:213 - "GET /instances/5/ HTTP/1.1" 200 30588
+[INFO] 2025-10-27 08:56:32 django.server basehttp.log_message:213 - "GET /instances/ HTTP/1.1" 200 54091
+[INFO] 2025-10-27 08:56:34 django.server basehttp.log_message:213 - "POST /instances/bulk-status-check/ HTTP/1.1" 200 1668
+[INFO] 2025-10-27 08:56:35 django.server basehttp.log_message:213 - "GET /instances/4/ HTTP/1.1" 200 31163
+[INFO] 2025-10-27 08:56:47 django.server basehttp.log_message:213 - "GET /instances/ HTTP/1.1" 200 54091
+[INFO] 2025-10-27 08:56:49 django.server basehttp.log_message:213 - "POST /instances/bulk-status-check/ HTTP/1.1" 200 1668
+[INFO] 2025-10-27 08:56:51 django.server basehttp.log_message:213 - "GET /instances/5/ HTTP/1.1" 200 30588
+[INFO] 2025-10-27 08:57:03 django.server basehttp.log_message:213 - "GET /instances/ HTTP/1.1" 200 54091
+[INFO] 2025-10-27 08:57:05 django.server basehttp.log_message:213 - "POST /instances/bulk-status-check/ HTTP/1.1" 200 1668
+[INFO] 2025-10-27 08:57:12 django.server basehttp.log_message:213 - "GET /instances/1/ HTTP/1.1" 200 31115
+[INFO] 2025-10-27 08:57:18 django.server basehttp.log_message:213 - "GET /instances/ HTTP/1.1" 200 54091
+[INFO] 2025-10-27 08:57:20 django.server basehttp.log_message:213 - "POST /instances/bulk-status-check/ HTTP/1.1" 200 1668
+[INFO] 2025-10-27 08:57:24 django.server basehttp.log_message:213 - "GET /instances/4/ HTTP/1.1" 200 31163
+[INFO] 2025-10-27 08:57:28 django.server basehttp.log_message:213 - "GET /date-filter-config/?instance_id=4 HTTP/1.1" 200 18569
+[INFO] 2025-10-27 08:57:30 django.server basehttp.log_message:213 - "GET /api/programs/?instance_id=4 HTTP/1.1" 200 1964
+[INFO] 2025-10-27 08:57:31 django.server basehttp.log_message:213 - "GET /api/date-attributes/?instance_id=4&program_uid=k9UHpWKDnLC&filter_type=event HTTP/1.1" 200 100
+[INFO] 2025-10-27 08:57:31 django.server basehttp.log_message:213 - "GET /api/date-attributes/?instance_id=4&program_uid=yH74lp4U5yY&filter_type=event HTTP/1.1" 200 180
+[INFO] 2025-10-27 08:57:31 django.server basehttp.log_message:213 - "GET /api/date-attributes/?instance_id=4&program_uid=o4X9Jhw1LOf&filter_type=event HTTP/1.1" 200 114
+[INFO] 2025-10-27 08:57:31 django.server basehttp.log_message:213 - "GET /api/date-attributes/?instance_id=4&program_uid=UMOEBy6Sp7s&filter_type=event HTTP/1.1" 200 110
+[INFO] 2025-10-27 08:57:31 django.server basehttp.log_message:213 - "GET /api/date-attributes/?instance_id=4&program_uid=kwQByezKGrl&filter_type=event HTTP/1.1" 200 108
+[INFO] 2025-10-27 08:57:31 django.server basehttp.log_message:213 - "GET /api/date-attributes/?instance_id=4&program_uid=siupB4uk4O2&filter_type=event HTTP/1.1" 200 172
+[INFO] 2025-10-27 08:57:32 django.server basehttp.log_message:213 - "GET /api/date-attributes/?instance_id=4&program_uid=CqSzZ0foe5w&filter_type=tracker HTTP/1.1" 200 110
+[INFO] 2025-10-27 08:57:32 django.server basehttp.log_message:213 - "GET /api/date-attributes/?instance_id=4&program_uid=K1gC9uSJcJ8&filter_type=event HTTP/1.1" 200 117
+[INFO] 2025-10-27 08:57:32 django.server basehttp.log_message:213 - "GET /api/date-attributes/?instance_id=4&program_uid=p1El3vnhXVE&filter_type=event HTTP/1.1" 200 108
+[INFO] 2025-10-27 08:57:32 django.server basehttp.log_message:213 - "GET /api/date-attributes/?instance_id=4&program_uid=aaw8nwnmmcC&filter_type=event HTTP/1.1" 200 108
+[INFO] 2025-10-27 08:57:32 django.server basehttp.log_message:213 - "GET /api/date-attributes/?instance_id=4&program_uid=n8sjxbWuJJg&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-27 08:57:32 django.server basehttp.log_message:213 - "GET /api/date-attributes/?instance_id=4&program_uid=ENACXbU5wMY&filter_type=tracker HTTP/1.1" 200 35
+[INFO] 2025-10-27 08:57:33 django.server basehttp.log_message:213 - "GET /api/date-attributes/?instance_id=4&program_uid=LOHCXZMzADu&filter_type=event HTTP/1.1" 200 35
+[INFO] 2025-10-27 08:57:33 django.server basehttp.log_message:213 - "GET /api/date-attributes/?instance_id=4&program_uid=tuc5htf4BlE&filter_type=event HTTP/1.1" 200 185
+[INFO] 2025-10-27 08:57:33 django.server basehttp.log_message:213 - "GET /api/date-attributes/?instance_id=4&program_uid=GardDdKqKy7&filter_type=event HTTP/1.1" 200 188
+[INFO] 2025-10-27 09:26:05 django.utils.autoreload autoreload.trigger_reload:265 - /home/gado/Projects/dhis_sync/dhis_app/models.py changed, reloading.
+[INFO] 2025-10-27 09:26:06 django.utils.autoreload autoreload.run_with_reloader:667 - Watching for file changes with StatReloader
+[INFO] 2025-10-27 09:26:11 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-10-27 09:26:11 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
