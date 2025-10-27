@@ -1,0 +1,377 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuration des Filtres de Date - DHIS2 Sync</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .header-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .table-container {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+        .loading-spinner {
+            display: none;
+        }
+        .loading .loading-spinner {
+            display: inline-block;
+        }
+        .alert-floating {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            min-width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header-section">
+        <div class="container">
+            <h1 class="mb-0">
+                <i class="bi bi-calendar-date"></i> Configuration des Filtres de Date
+            </h1>
+            <p class="mb-0 mt-2">Configurez les attributs de date pour filtrer les données de chaque programme</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mb-5">
+        <!-- Instance Selection -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title mb-3">
+                    <i class="bi bi-server"></i> Sélection de l'Instance Source
+                </h5>
+                <form method="GET" action="{% url 'date_filter_config' %}" id="instanceForm">
+                    <div class="row align-items-end">
+                        <div class="col-md-8">
+                            <label for="instance_id" class="form-label">Instance DHIS2 Source</label>
+                            <select name="instance_id" id="instance_id" class="form-select" required>
+                                <option value="">-- Sélectionnez une instance --</option>
+                                {% for instance in source_instances %}
+                                <option value="{{ instance.id }}" {% if selected_instance and selected_instance.id == instance.id %}selected{% endif %}>
+                                    {{ instance.name }} ({{ instance.base_url }})
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bi bi-arrow-right-circle"></i> Charger les Programmes
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {% if selected_instance %}
+        <!-- Programs Configuration -->
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="card-title mb-0">
+                        <i class="bi bi-list-task"></i> Configuration des Programmes
+                    </h5>
+                    <button type="button" class="btn btn-success" id="saveConfigsBtn">
+                        <span class="loading-spinner spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        <i class="bi bi-save"></i> Sauvegarder les Configurations
+                    </button>
+                </div>
+
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i>
+                    <strong>Instance sélectionnée :</strong> {{ selected_instance.name }}<br>
+                    Pour chaque programme, sélectionnez l'attribut ou dataElement de type date à utiliser pour filtrer les données.
+                </div>
+
+                <!-- Loading Indicator -->
+                <div id="loadingIndicator" class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Chargement...</span>
+                    </div>
+                    <p class="mt-3">Chargement des programmes depuis DHIS2...</p>
+                </div>
+
+                <!-- Programs Table -->
+                <div id="programsTableContainer" class="table-container" style="display: none;">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-primary sticky-top">
+                            <tr>
+                                <th style="width: 5%">#</th>
+                                <th style="width: 35%">Programme</th>
+                                <th style="width: 15%">Type</th>
+                                <th style="width: 45%">Attribut/DataElement de Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="programsTableBody">
+                            <!-- Rows will be dynamically inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- No Programs Message -->
+                <div id="noProgramsMessage" class="alert alert-warning" style="display: none;">
+                    <i class="bi bi-exclamation-triangle"></i> Aucun programme trouvé pour cette instance.
+                </div>
+
+                <!-- Error Message -->
+                <div id="errorMessage" class="alert alert-danger" style="display: none;">
+                    <i class="bi bi-x-circle"></i> <span id="errorMessageText"></span>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const instanceId = {{ selected_instance.id|default:"null" }};
+        const existingConfigs = {{ existing_configs|safe }};
+
+        // État global
+        let programs = [];
+        let programConfigs = {};
+
+        // Fonction pour afficher les messages
+        function showMessage(message, type = 'success') {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show alert-floating`;
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.body.appendChild(alertDiv);
+
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
+        }
+
+        // Charger les programmes au chargement de la page
+        if (instanceId) {
+            loadPrograms();
+        }
+
+        async function loadPrograms() {
+            try {
+                const response = await fetch(`/api/programs/?instance_id=${instanceId}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    programs = data.programs;
+
+                    // Initialiser les configs avec les valeurs existantes
+                    existingConfigs.forEach(config => {
+                        programConfigs[config.program_uid] = {
+                            date_attribute_uid: config.date_attribute_uid,
+                            date_attribute_name: config.date_attribute_name
+                        };
+                    });
+
+                    renderProgramsTable();
+                } else {
+                    showError(data.error || 'Erreur lors du chargement des programmes');
+                }
+            } catch (error) {
+                showError('Erreur réseau: ' + error.message);
+            }
+        }
+
+        function renderProgramsTable() {
+            const tableBody = document.getElementById('programsTableBody');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const tableContainer = document.getElementById('programsTableContainer');
+            const noProgramsMessage = document.getElementById('noProgramsMessage');
+
+            loadingIndicator.style.display = 'none';
+
+            if (programs.length === 0) {
+                noProgramsMessage.style.display = 'block';
+                return;
+            }
+
+            tableContainer.style.display = 'block';
+            tableBody.innerHTML = '';
+
+            programs.forEach((program, index) => {
+                const existingConfig = programConfigs[program.uid];
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>
+                        <strong>${program.name}</strong><br>
+                        <small class="text-muted">${program.uid}</small>
+                    </td>
+                    <td>
+                        <span class="badge bg-${program.filter_type === 'tracker' ? 'info' : 'primary'}">
+                            ${program.filter_type === 'tracker' ? 'Tracker' : 'Event'}
+                        </span>
+                    </td>
+                    <td>
+                        <select class="form-select form-select-sm date-attribute-select"
+                                data-program-uid="${program.uid}"
+                                data-filter-type="${program.filter_type}">
+                            <option value="">-- Chargement... --</option>
+                        </select>
+                        <small class="text-muted">Attribut/DataElement utilisé pour filtrer par date</small>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+
+                // Charger les attributs de date pour ce programme
+                loadDateAttributes(program.uid, program.filter_type);
+            });
+        }
+
+        async function loadDateAttributes(programUid, filterType) {
+            const select = document.querySelector(`.date-attribute-select[data-program-uid="${programUid}"]`);
+
+            try {
+                const response = await fetch(`/api/date-attributes/?instance_id=${instanceId}&program_uid=${programUid}&filter_type=${filterType}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    select.innerHTML = '<option value="">-- Sélectionnez un attribut --</option>';
+
+                    // Ajouter l'option "created" par défaut
+                    select.innerHTML += '<option value="created">created (Par défaut)</option>';
+
+                    // Ajouter les attributs de date
+                    data.attributes.forEach(attr => {
+                        const option = document.createElement('option');
+                        option.value = attr.uid;
+                        option.textContent = `${attr.name} (${attr.valueType})`;
+                        select.appendChild(option);
+                    });
+
+                    // Sélectionner la valeur existante si elle existe
+                    const existingConfig = programConfigs[programUid];
+                    if (existingConfig && existingConfig.date_attribute_uid) {
+                        select.value = existingConfig.date_attribute_uid;
+                    }
+                } else {
+                    select.innerHTML = '<option value="">Erreur de chargement</option>';
+                }
+            } catch (error) {
+                select.innerHTML = '<option value="">Erreur réseau</option>';
+                console.error('Erreur:', error);
+            }
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorMessageText');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+
+            loadingIndicator.style.display = 'none';
+            errorDiv.style.display = 'block';
+            errorText.textContent = message;
+        }
+
+        // Sauvegarder les configurations
+        document.getElementById('saveConfigsBtn')?.addEventListener('click', async function() {
+            const btn = this;
+            btn.classList.add('loading');
+            btn.disabled = true;
+
+            // Collecter les configurations
+            const configs = [];
+            const selects = document.querySelectorAll('.date-attribute-select');
+
+            selects.forEach(select => {
+                const programUid = select.dataset.programUid;
+                const filterType = select.dataset.filterType;
+                const dateAttributeUid = select.value;
+
+                // Trouver le programme
+                const program = programs.find(p => p.uid === programUid);
+
+                // Ne sauvegarder que si un attribut est sélectionné
+                if (dateAttributeUid) {
+                    // Trouver le nom de l'attribut
+                    const selectedOption = select.options[select.selectedIndex];
+                    const dateAttributeName = selectedOption ? selectedOption.textContent.split('(')[0].trim() : '';
+
+                    configs.push({
+                        program_uid: programUid,
+                        program_name: program ? program.name : '',
+                        filter_type: filterType,
+                        date_attribute_uid: dateAttributeUid,
+                        date_attribute_name: dateAttributeName
+                    });
+                }
+            });
+
+            try {
+                const response = await fetch('/api/save-date-filter-configs/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: JSON.stringify({
+                        instance_id: instanceId,
+                        configs: configs
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showMessage(data.message, 'success');
+                } else {
+                    showMessage('Erreur: ' + data.error, 'danger');
+                }
+            } catch (error) {
+                showMessage('Erreur réseau: ' + error.message, 'danger');
+            } finally {
+                btn.classList.remove('loading');
+                btn.disabled = false;
+            }
+        });
+
+        // Fonction utilitaire pour récupérer le token CSRF
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+</body>
+</html>
