@@ -2,5 +2,5 @@
 .claude
 .idea
 run_dockers.sh
-venv
-.env
+__pycache__
+.venv
