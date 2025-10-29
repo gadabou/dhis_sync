@@ -220,9 +220,10 @@ def auto_sync_dashboard(request):
 
     Affiche l'état de toutes les configurations en mode automatique
     """
-    # Récupérer toutes les configurations en mode automatique
+    # Récupérer toutes les configurations actives en mode automatique
     auto_configs = SyncConfiguration.objects.filter(
-        execution_mode='automatic'
+        execution_mode='automatic',
+        is_active=True
     ).select_related('source_instance', 'destination_instance')
 
     # Récupérer le statut du scheduler
@@ -320,7 +321,10 @@ def api_all_auto_sync_status(request):
 
         # Récupérer le détail de chaque config
         configs_status = []
-        auto_configs = SyncConfiguration.objects.filter(execution_mode='automatic')
+        auto_configs = SyncConfiguration.objects.filter(
+            execution_mode='automatic',
+            is_active=True
+        )
 
         for config in auto_configs:
             config_status = scheduler.get_status(config.id)
@@ -518,9 +522,10 @@ def api_dashboard_stats(request):
         from ..models import SyncJob
         scheduler = AutoSyncScheduler.get_instance()
 
-        # Récupérer toutes les configs automatiques
+        # Récupérer toutes les configs actives en mode automatique
         auto_configs = SyncConfiguration.objects.filter(
-            execution_mode='automatic'
+            execution_mode='automatic',
+            is_active=True
         ).select_related('source_instance', 'destination_instance')
 
         configs_data = []

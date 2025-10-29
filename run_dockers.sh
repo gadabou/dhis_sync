@@ -8,10 +8,10 @@ cd ~/Applications/dhis2/dhis2_20
 docker compose down
 docker compose up -d
 
-# Démarrer le conteneur dhis2_21
-# echo "Démarrage de dhis2 21..."
-# cd ~/Applications/Dhis2/dhis2_21
-# docker compose down
+# Démarrer le conteneur dhis2_31
+# echo "Démarrage de dhis2 31..."
+# cd ~/Applications/dhis2/2_31/dhis231
+# docker compose down -v
 # docker compose up -d
 
 # Démarrer le conteneur dhis2_22

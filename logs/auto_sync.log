@@ -1492,3 +1492,41 @@
 [AUTO-SYNC] [INFO] 2025-10-27 16:48:26 [dhis_app.services.auto_sync.lifecycle_manager] - Étape 1/2: Synchronisation des métadonnées
 [AUTO-SYNC] [INFO] 2025-10-27 16:48:26 [dhis_app.services.auto_sync.lifecycle_manager] - Cooldown activé jusqu'à 2025-10-27 17:18:26.300982+00:00
 [AUTO-SYNC] [WARNING] 2025-10-27 16:48:26 [dhis_app.services.auto_sync.tasks] - Synchronisation async échouée: Échec de la synchronisation des métadonnées
+[AUTO-SYNC] [INFO] 2025-10-27 17:10:18 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-27 17:10:18 [dhis_app.services.auto_sync.scheduler] - 0 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-29 08:52:54 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-29 08:52:54 [dhis_app.services.auto_sync.scheduler] - 0 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-29 08:52:54 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-29 08:52:54 [dhis_app.services.auto_sync.scheduler] - 0 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-29 09:54:36 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-29 09:54:36 [dhis_app.services.auto_sync.scheduler] - 0 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-29 09:54:36 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-29 09:54:36 [dhis_app.services.auto_sync.scheduler] - 0 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-29 10:24:53 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-29 10:24:53 [dhis_app.services.auto_sync.scheduler] - 0 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-29 10:25:40 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-29 10:25:40 [dhis_app.services.auto_sync.scheduler] - 0 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-29 10:25:40 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-29 10:25:40 [dhis_app.services.auto_sync.scheduler] - 0 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-29 10:28:19 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-29 10:28:19 [dhis_app.services.auto_sync.scheduler] - 0 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-29 10:28:48 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-29 10:28:48 [dhis_app.services.auto_sync.scheduler] - 0 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-29 10:28:48 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-29 10:28:48 [dhis_app.services.auto_sync.scheduler] - 0 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-29 10:30:06 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-29 10:30:06 [dhis_app.services.auto_sync.scheduler] - 0 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-29 10:43:57 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-10-29 10:43:57 [dhis_app.services.auto_sync.scheduler] - 0 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-10-29 10:48:34 [dhis_app.services.auto_sync.tasks] - Démarrage synchronisation async pour PROD-20
+[AUTO-SYNC] [WARNING] 2025-10-29 10:48:34 [dhis_app.services.auto_sync.tasks] - Synchronisation async échouée: Synchronisation automatique désactivée
+[AUTO-SYNC] [INFO] 2025-10-29 10:52:35 [dhis_app.services.auto_sync.scheduler] - Redémarrage du scheduler pour la configuration 2
+[AUTO-SYNC] [INFO] 2025-10-29 10:52:36 [dhis_app.services.auto_sync.scheduler] - Démarrage de la boucle de monitoring pour PROD-20
+[AUTO-SYNC] [INFO] 2025-10-29 10:52:36 [dhis_app.services.auto_sync.scheduler] - Scheduler démarré pour PROD-20 (ID: 2)
+[AUTO-SYNC] [INFO] 2025-10-29 10:52:36 [dhis_app.services.auto_sync.scheduler] - Délai initial de 30s avant la première synchronisation
+[AUTO-SYNC] [INFO] 2025-10-29 10:52:51 [dhis_app.services.auto_sync.tasks] - Démarrage synchronisation async pour PROD-20
+[AUTO-SYNC] [INFO] 2025-10-29 10:52:51 [dhis_app.services.auto_sync.lifecycle_manager] - Démarrage de la synchronisation initiale pour PROD-20
+[AUTO-SYNC] [INFO] 2025-10-29 10:52:51 [dhis_app.services.auto_sync.lifecycle_manager] - Étape 1/2: Synchronisation des métadonnées
+[AUTO-SYNC] [INFO] 2025-10-29 10:54:22 [dhis_app.services.auto_sync.lifecycle_manager] - Étape 2/2: Synchronisation des données
+[AUTO-SYNC] [INFO] 2025-10-29 10:58:56 [dhis_app.services.auto_sync.lifecycle_manager] - Synchronisation initiale terminée avec succès
+[AUTO-SYNC] [INFO] 2025-10-29 10:58:56 [dhis_app.services.auto_sync.tasks] - Synchronisation async réussie pour PROD-20

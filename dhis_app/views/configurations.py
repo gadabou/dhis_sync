@@ -89,6 +89,22 @@ class SyncConfigurationDetailView(LoginRequiredMixin, DetailView):
         if config.is_composite_sync:
             context['orchestration_steps'] = config.get_orchestration_steps()
 
+        # Informations d'auto-sync si en mode automatique
+        if config.execution_mode == 'automatic':
+            try:
+                from ..models import AutoSyncSettings
+                from ..services.auto_sync import AutoSyncScheduler
+
+                auto_settings = config.auto_sync_settings
+                scheduler = AutoSyncScheduler.get_instance()
+                scheduler_status = scheduler.get_status(config.id)
+
+                context['auto_settings'] = auto_settings
+                context['scheduler_status'] = scheduler_status
+            except AutoSyncSettings.DoesNotExist:
+                context['auto_settings'] = None
+                context['scheduler_status'] = None
+
         return context
 
     def get_compatibility_info(self, config):
