@@ -399,8 +399,8 @@ class ProgramIndicatorsService(BaseMetadataService):
 
 class ProgramsSyncService:
     """
-    Service orchestrateur pour la synchronisation des programmes
-    Respecte l'ordre DHIS2: programs -> programStages -> programStageSections -> programRuleVariables -> programRules -> programRuleActions -> programIndicators
+        Service orchestrateur pour la synchronisation des programmes
+        Respecte l'ordre DHIS2: programs -> programStages -> programStageSections -> programRuleVariables -> programRules -> programRuleActions -> programIndicators
     """
 
     def __init__(self, sync_config: SyncConfiguration):
@@ -499,3 +499,5 @@ class ProgramsSyncService:
                 job.log_message += f"ERREUR CRITIQUE: {error_msg}\n"
                 job.save()
             return {'success': False, 'error': error_msg, 'total_imported': 0, 'total_errors': 1}
+
+

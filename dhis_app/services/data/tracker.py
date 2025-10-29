@@ -259,7 +259,14 @@ class TrackerDataService(BaseDataService):
                                 all_tei_data['events'].extend(events)
 
                     except Exception as e:
-                        self.logger.warning(f"Erreur récupération TEI pour orgUnit {org_unit}: {e}")
+                        error_msg = str(e)
+                        if "At least one organisation unit must be specified" in error_msg:
+                            self.logger.warning(
+                                f"OrgUnit {org_unit} inaccessible ou invalide pour le programme {program_uid}. "
+                                f"Cela peut indiquer que l'orgUnit n'existe pas dans DHIS2 source ou que l'utilisateur n'y a pas accès."
+                            )
+                        else:
+                            self.logger.warning(f"Erreur récupération TEI pour orgUnit {org_unit}: {e}")
                         continue
             else:
                 # Récupérer toutes les TEI du programme
@@ -314,7 +321,14 @@ class TrackerDataService(BaseDataService):
                                         all_tei_data['events'].extend(events)
 
                             except Exception as e:
-                                self.logger.warning(f"Erreur récupération TEI pour orgUnit {org_unit}: {e}")
+                                error_msg = str(e)
+                                if "At least one organisation unit must be specified" in error_msg:
+                                    self.logger.warning(
+                                        f"OrgUnit {org_unit} inaccessible ou invalide pour le programme {program_uid}. "
+                                        f"Cela peut indiquer que l'orgUnit n'existe pas dans DHIS2 source ou que l'utilisateur n'y a pas accès."
+                                    )
+                                else:
+                                    self.logger.warning(f"Erreur récupération TEI pour orgUnit {org_unit}: {e}")
                                 continue
                     else:
                         self.logger.warning(f"Aucune orgUnit assignée au programme {program_uid}")

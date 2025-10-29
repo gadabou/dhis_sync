@@ -318,9 +318,30 @@ class DHIS2ChangeDetector:
         result = {'has_changes': False, 'count': 0}
 
         try:
+            # Récupérer un programme tracker pour la vérification
+            # DHIS2 exige soit program soit trackedEntityType pour cette API
+            programs_response = self.api.get('programs', params={
+                'fields': 'id,programType',
+                'filter': 'programType:eq:WITH_REGISTRATION',
+                'pageSize': 1,
+                'paging': 'true'
+            })
+
+            if programs_response.status_code != 200:
+                self.logger.warning("Impossible de récupérer les programmes tracker pour la vérification")
+                return result
+
+            programs = programs_response.json().get('programs', [])
+            if not programs:
+                # Pas de programmes tracker, donc pas de changements
+                return result
+
+            first_program = programs[0]['id']
+
             last_check = self._get_last_check_timestamp('data', 'tracker')
 
             params = {
+                'program': first_program,  # Requis par DHIS2
                 'skipPaging': 'false',
                 'pageSize': 1,
                 'totalPages': 'true'
