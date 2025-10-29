@@ -292,6 +292,8 @@ class DHIS2Instance(models.Model):
 
         Le filtre de date utilisé est configuré via le modèle DateFilterAttribute.
         Si aucune configuration n'existe pour ce programme, 'created' est utilisé par défaut.
+
+        Si paging='false', utilise la pagination automatique pour récupérer TOUS les événements.
         """
         api = self.get_api_client()
 
@@ -303,8 +305,7 @@ class DHIS2Instance(models.Model):
         # Récupérer l'attribut de filtre de date configuré pour ce programme
         dateAttributFilter = self.get_date_filter_attribute(program_uid=program, filter_type='event')
 
-        params = {
-            "paging": paging,
+        base_params = {
             "program": program,
             "orgUnit": orgUnit,
             "ouMode": ouMode,
@@ -314,16 +315,51 @@ class DHIS2Instance(models.Model):
             ]
         }
         if programStage:
-            params["programStage"] = programStage
+            base_params["programStage"] = programStage
         if status:
-            params["status"] = status
+            base_params["status"] = status
 
         # Pass-through d'éventuels filtres DHIS2 supplémentaires
-        params.update(extra or {})
+        base_params.update(extra or {})
 
-        r = api.get("events", params=params)
-        r.raise_for_status()
-        return r.json()
+        # Si paging='false', récupérer tous les événements par pagination automatique
+        if paging == 'false':
+            all_events = []
+            page = 1
+            page_size = 1000  # Utiliser une taille de page raisonnable
+
+            while True:
+                params = base_params.copy()
+                params['paging'] = 'true'
+                params['page'] = page
+                params['pageSize'] = page_size
+
+                r = api.get("events", params=params)
+                r.raise_for_status()
+                data = r.json()
+
+                events = data.get('events', [])
+                if not events:
+                    break
+
+                all_events.extend(events)
+
+                # Vérifier si c'est la dernière page
+                pager = data.get('pager', {})
+                if pager.get('page', 1) >= pager.get('pageCount', 1):
+                    break
+
+                page += 1
+
+            return {'events': all_events}
+        else:
+            # Pagination normale
+            params = base_params.copy()
+            params['paging'] = paging
+
+            r = api.get("events", params=params)
+            r.raise_for_status()
+            return r.json()
 
     def get_tracked_entity_instances(self, *, program: str, orgUnit: str, startDate: Optional[str] = None, endDate: Optional[str] = None, ouMode: str = "DESCENDANTS", paging: str = "false", lastUpdatedStartDate: Optional[str] = None, lastUpdatedEndDate: Optional[str] = None, trackedEntityType: Optional[str] = None, **attribute_filters,) -> Dict[str, Any]:
         """

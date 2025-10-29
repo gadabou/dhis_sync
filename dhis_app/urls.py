@@ -29,6 +29,7 @@ from .views.synchronisations import (
 )
 from .views.sync_jobs import (
     SyncJobDetailView,
+    sync_job_stats_api,
 )
 from .views import auto_sync, logs, auth
 from .views.date_filter_config import (
@@ -114,6 +115,8 @@ urlpatterns = [
     # === JOBS DE SYNCHRONISATION ===
     # Détail d'un job de synchronisation
     path('jobs/<int:job_id>/', SyncJobDetailView.as_view(), name='sync_job_detail'),
+    # API pour récupérer les stats en temps réel
+    path('api/jobs/<int:job_id>/stats/', sync_job_stats_api, name='sync_job_stats_api'),
 
     # === SYNCHRONISATION AUTOMATIQUE ===
     # Dashboard de synchronisation automatique
