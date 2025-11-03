@@ -89,6 +89,22 @@ class SyncConfigurationDetailView(LoginRequiredMixin, DetailView):
         if config.is_composite_sync:
             context['orchestration_steps'] = config.get_orchestration_steps()
 
+        # Informations d'auto-sync si en mode automatique
+        if config.execution_mode == 'automatic':
+            try:
+                from ..models import AutoSyncSettings
+                from ..services.auto_sync import AutoSyncScheduler
+
+                auto_settings = config.auto_sync_settings
+                scheduler = AutoSyncScheduler.get_instance()
+                scheduler_status = scheduler.get_status(config.id)
+
+                context['auto_settings'] = auto_settings
+                context['scheduler_status'] = scheduler_status
+            except AutoSyncSettings.DoesNotExist:
+                context['auto_settings'] = None
+                context['scheduler_status'] = None
+
         return context
 
     def get_compatibility_info(self, config):
@@ -163,16 +179,29 @@ class SyncConfigurationCreateView(LoginRequiredMixin, CreateView):
                 form.instance.created_by = self.request.user
                 self.object = form.save()
 
+                # Déterminer la redirection selon le mode
+                if self.object.execution_mode == 'automatic':
+                    # Si mode automatique, rediriger vers les paramètres auto-sync
+                    redirect_url = reverse('auto_sync_settings', kwargs={'config_id': self.object.id})
+                    success_message = (
+                        f'Configuration "{self.object.name}" créée avec succès. '
+                        'Veuillez configurer les paramètres de synchronisation automatique.'
+                    )
+                else:
+                    # Sinon, rediriger vers la page de détail
+                    redirect_url = reverse('sync_config_detail', kwargs={'config_id': self.object.id})
+                    success_message = f'Configuration "{self.object.name}" créée avec succès.'
+
                 # Gérer les requêtes AJAX
                 if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                     return JsonResponse({
                         'success': True,
-                        'message': f'Configuration "{self.object.name}" créée avec succès.',
-                        'redirect': reverse('sync_config_detail', kwargs={'config_id': self.object.id})
+                        'message': success_message,
+                        'redirect': redirect_url
                     })
 
-                messages.success(self.request, f'Configuration "{self.object.name}" créée avec succès.')
-                return redirect('sync_config_detail', config_id=self.object.id)
+                messages.success(self.request, success_message)
+                return redirect(redirect_url)
 
         except ValidationError as e:
             error_dict = {}

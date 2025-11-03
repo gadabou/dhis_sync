@@ -1,0 +1,53 @@
+[Unit]
+Description=DHIS2 Sync Gunicorn Application Server
+Documentation=https://docs.djangoproject.com/
+After=network.target redis.service
+
+[Service]
+Type=notify
+User=gado
+Group=gado
+WorkingDirectory=/home/gado/Integrate Health Dropbox/Djakpo GADO/projets/Dhis2/dhis_sync
+
+# Variables d'environnement
+Environment="DJANGO_SETTINGS_MODULE=dhis_sync.settings_production"
+Environment="PYTHONUNBUFFERED=1"
+Environment="PATH=/home/gado/Integrate Health Dropbox/Djakpo GADO/projets/Dhis2/dhis_sync/venv/bin:/usr/local/bin:/usr/bin:/bin"
+
+# Commande de démarrage Gunicorn
+ExecStart=/home/gado/Integrate Health Dropbox/Djakpo GADO/projets/Dhis2/dhis_sync/venv/bin/gunicorn \
+    --bind 127.0.0.1:8000 \
+    --workers 3 \
+    --worker-class sync \
+    --timeout 120 \
+    --access-logfile /home/gado/Integrate Health Dropbox/Djakpo GADO/projets/Dhis2/dhis_sync/logs/gunicorn_access.log \
+    --error-logfile /home/gado/Integrate Health Dropbox/Djakpo GADO/projets/Dhis2/dhis_sync/logs/gunicorn_error.log \
+    --log-level info \
+    --capture-output \
+    --enable-stdio-inheritance \
+    dhis_sync.wsgi:application
+
+# Redémarrer automatiquement en cas d'échec
+Restart=on-failure
+RestartSec=10
+
+# Timeout pour le démarrage et l'arrêt
+TimeoutStartSec=120
+TimeoutStopSec=30
+
+# Logs systemd
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=dhis2-sync-gunicorn
+
+# Sécurité (optionnel mais recommandé)
+# Uncomment these for enhanced security
+# PrivateTmp=true
+# NoNewPrivileges=true
+# ProtectSystem=strict
+# ProtectHome=read-only
+# ReadWritePaths=/home/gado/Integrate Health Dropbox/Djakpo GADO/projets/Dhis2/dhis_sync/logs
+# ReadWritePaths=/home/gado/Integrate Health Dropbox/Djakpo GADO/projets/Dhis2/dhis_sync/media
+
+[Install]
+WantedBy=multi-user.target

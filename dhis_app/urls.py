@@ -29,10 +29,21 @@ from .views.synchronisations import (
 )
 from .views.sync_jobs import (
     SyncJobDetailView,
+    sync_job_stats_api,
 )
-from .views import auto_sync, logs
+from .views import auto_sync, logs, auth
+from .views.date_filter_config import (
+    date_filter_config_view,
+    save_date_filter_configs,
+    get_programs_api,
+    get_date_attributes_api,
+)
 
 urlpatterns = [
+    # === AUTHENTIFICATION ===
+    path('login/', auth.login_view, name='login'),
+    path('logout/', auth.logout_view, name='logout'),
+
     # === TABLEAU DE BORD ===
     path('', DashboardView.as_view(), name='dashboard'),
     # === INSTANCES DHIS2 ===
@@ -104,6 +115,8 @@ urlpatterns = [
     # === JOBS DE SYNCHRONISATION ===
     # Détail d'un job de synchronisation
     path('jobs/<int:job_id>/', SyncJobDetailView.as_view(), name='sync_job_detail'),
+    # API pour récupérer les stats en temps réel
+    path('api/jobs/<int:job_id>/stats/', sync_job_stats_api, name='sync_job_stats_api'),
 
     # === SYNCHRONISATION AUTOMATIQUE ===
     # Dashboard de synchronisation automatique
@@ -133,6 +146,12 @@ urlpatterns = [
     # API: Nettoyage des tâches mortes
     path('api/auto-sync/cleanup/', auto_sync.api_cleanup_tasks, name='api_cleanup_tasks'),
 
+    # API: Progression d'une synchronisation
+    path('api/auto-sync/<int:config_id>/progress/', auto_sync.api_sync_progress, name='api_sync_progress'),
+
+    # API: Statistiques globales du dashboard
+    path('api/auto-sync/dashboard-stats/', auto_sync.api_dashboard_stats, name='api_dashboard_stats'),
+
     # === LOGS ===
     # Visualiseur de logs
     path('logs/', logs.logs_viewer, name='logs_viewer'),
@@ -154,4 +173,17 @@ urlpatterns = [
 
     # Rechercher dans les logs
     path('logs/search/', logs.search_logs, name='search_logs'),
+
+    # === CONFIGURATION DES FILTRES DE DATE ===
+    # Page de configuration des filtres de date
+    path('date-filter-config/', date_filter_config_view, name='date_filter_config'),
+
+    # API: Sauvegarder les configurations de filtres de date
+    path('api/save-date-filter-configs/', save_date_filter_configs, name='save_date_filter_configs'),
+
+    # API: Récupérer les programmes d'une instance
+    path('api/programs/', get_programs_api, name='get_programs_api'),
+
+    # API: Récupérer les attributs/dataElements de type date d'un programme
+    path('api/date-attributes/', get_date_attributes_api, name='get_date_attributes_api'),
 ]

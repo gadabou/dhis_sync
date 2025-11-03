@@ -216,6 +216,7 @@ class EventsDataService(BaseDataService):
 
                 for org_unit in valid_org_units:
                     try:
+
                         events = self.source_instance.get_events(
                             program=program_uid,
                             orgUnit=org_unit,

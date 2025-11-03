@@ -65,8 +65,11 @@ class AutoSyncScheduler:
         """
         if sync_config_id:
             self._start_config(sync_config_id)
+            print("scheduler start 1 ")
         else:
             self._start_all_active_configs()
+            print("scheduler start All ")
+        print("scheduler Pass ")
 
     def stop(self, sync_config_id: Optional[int] = None):
         """
@@ -143,10 +146,7 @@ class AutoSyncScheduler:
     def _start_all_active_configs(self):
         """Démarre le monitoring pour toutes les configurations actives en mode automatique"""
         try:
-            active_configs = SyncConfiguration.objects.filter(
-                execution_mode='automatic',
-                is_active=True
-            )
+            active_configs = SyncConfiguration.objects.filter(execution_mode='automatic', is_active=True)
 
             for config in active_configs:
                 try:

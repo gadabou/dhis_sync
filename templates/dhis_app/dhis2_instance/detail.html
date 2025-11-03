@@ -108,7 +108,7 @@
     </div>
 
     <!-- Actions et tests -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-{% if instance.is_source %}3{% else %}2{% endif %} gap-6">
         <!-- Test de connexion -->
         <div class="bg-white shadow rounded-lg p-6">
             <h2 class="text-lg font-semibold text-gray-900 mb-4">
@@ -137,6 +137,19 @@
                 <i class="fas fa-search mr-2"></i>Explorer Métadonnées
             </a>
         </div>
+
+        <!-- Filtres de Date (uniquement pour les instances sources) -->
+        {% if instance.is_source %}
+        <div class="bg-white shadow rounded-lg p-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">
+                <i class="fas fa-calendar-alt mr-2"></i>Filtres de Date
+            </h2>
+            <p class="text-gray-600 mb-4">Configurez les attributs de date pour filtrer les données de chaque programme.</p>
+            <a href="{% url 'date_filter_config' %}?instance_id={{ instance.id }}" class="btn btn-outline-primary">
+                <i class="fas fa-cog mr-2"></i>Configurer les Filtres
+            </a>
+        </div>
+        {% endif %}
     </div>
 
     <!-- Configurations liées -->

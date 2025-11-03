@@ -2,13 +2,14 @@
 Vues pour le tableau de bord général
 """
 from django.views.generic import TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count, Q
 from django.utils import timezone
 from datetime import timedelta
 from ..models import DHIS2Instance, SyncConfiguration, SyncJob
 
 
-class DashboardView(TemplateView):
+class DashboardView(LoginRequiredMixin, TemplateView):
     """Vue principale du tableau de bord"""
     template_name = 'dhis_app/dashboard/index.html'
 

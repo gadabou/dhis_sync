@@ -3,254 +3,739 @@
 
 {% block title %}Paramètres Auto-Sync - {{ sync_config.name }}{% endblock %}
 
+{% block extra_css %}
+<style>
+    :root {
+        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        --danger-gradient: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);
+        --warning-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --info-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+        background: linear-gradient(to bottom right, #f8f9fa, #e9ecef);
+        min-height: 100vh;
+    }
+
+    /* En-tête moderne */
+    .settings-header {
+        background: white;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border-radius: 15px;
+        box-shadow: var(--card-shadow);
+    }
+
+    .settings-title {
+        font-size: 2rem;
+        font-weight: 700;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Cards modernes */
+    .modern-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: var(--card-shadow);
+        overflow: hidden;
+        transition: all 0.3s ease;
+        border: none;
+        margin-bottom: 1.5rem;
+    }
+
+    .modern-card:hover {
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+    }
+
+    .modern-card-header {
+        padding: 1.5rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+    }
+
+    .modern-card-header h5 {
+        margin: 0;
+        font-weight: 700;
+        font-size: 1.25rem;
+    }
+
+    .modern-card-body {
+        padding: 2rem;
+    }
+
+    /* Sections */
+    .section-divider {
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+        margin: 2rem 0;
+        border: none;
+    }
+
+    .section-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #2d3748;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .section-title i {
+        color: #667eea;
+        font-size: 1.2rem;
+    }
+
+    /* Form Controls */
+    .form-label {
+        font-weight: 600;
+        color: #2d3748;
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+    .form-control, .form-select {
+        border: 3px solid #cbd5e0;
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
+        transition: all 0.3s ease;
+        font-size: 0.95rem;
+        background-color: #ffffff;
+    }
+
+    .form-control:hover {
+        border-color: #a0aec0;
+        background-color: #f7fafc;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.2);
+        background-color: #ffffff;
+    }
+
+    /* Input group text */
+    .input-group-text {
+        border: 3px solid #cbd5e0;
+        border-left: none;
+        background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+        color: #4a5568;
+        font-weight: 600;
+    }
+
+    .form-control:focus + .input-group-text {
+        border-color: #667eea;
+    }
+
+    /* Switch moderne */
+    .form-switch .form-check-input {
+        width: 3rem;
+        height: 1.5rem;
+        border-radius: 2rem;
+        cursor: pointer;
+        border: 2px solid #cbd5e0;
+        transition: all 0.3s ease;
+    }
+
+    .form-switch .form-check-input:checked {
+        background: var(--success-gradient);
+        border-color: #38ef7d;
+    }
+
+    .form-switch .form-check-label {
+        font-weight: 600;
+        color: #2d3748;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    /* Checkbox moderne */
+    .form-check-input {
+        width: 1.25rem;
+        height: 1.25rem;
+        border: 2px solid #cbd5e0;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .form-check-input:checked {
+        background-color: #667eea;
+        border-color: #667eea;
+    }
+
+    .form-check-label {
+        font-weight: 500;
+        color: #2d3748;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    /* Input groups */
+    .input-group-modern {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    /* Helper text */
+    .form-text {
+        color: #718096;
+        font-size: 0.85rem;
+        margin-top: 0.25rem;
+        display: block;
+    }
+
+    /* Boutons modernes */
+    .btn-modern {
+        border-radius: 10px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.875rem;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        border: none;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .btn-modern:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+
+    .btn-modern.btn-primary {
+        background: var(--primary-gradient);
+        color: white;
+    }
+
+    .btn-modern.btn-success {
+        background: var(--success-gradient);
+        color: white;
+    }
+
+    .btn-modern.btn-danger {
+        background: var(--danger-gradient);
+        color: white;
+    }
+
+    .btn-modern.btn-warning {
+        background: var(--warning-gradient);
+        color: white;
+    }
+
+    .btn-modern.btn-info {
+        background: var(--info-gradient);
+        color: white;
+    }
+
+    .btn-modern.btn-secondary {
+        background: #e2e8f0;
+        color: #2d3748;
+    }
+
+    /* Status card */
+    .status-card {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .status-card:hover {
+        box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    }
+
+    .status-indicator {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.875rem;
+        gap: 0.5rem;
+    }
+
+    .status-indicator.active {
+        background: linear-gradient(135deg, rgba(17, 153, 142, 0.1) 0%, rgba(56, 239, 125, 0.1) 100%);
+        color: #11998e;
+        border: 2px solid #38ef7d;
+    }
+
+    .status-indicator.inactive {
+        background: rgba(203, 213, 224, 0.3);
+        color: #718096;
+        border: 2px solid #cbd5e0;
+    }
+
+    .status-indicator i {
+        font-size: 1rem;
+    }
+
+    /* Alert moderne */
+    .alert-modern {
+        border-radius: 12px;
+        padding: 1rem 1.5rem;
+        border: none;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        margin-bottom: 1rem;
+    }
+
+    .alert-modern.alert-success {
+        background: linear-gradient(135deg, rgba(17, 153, 142, 0.1) 0%, rgba(56, 239, 125, 0.1) 100%);
+        color: #11998e;
+        border-left: 4px solid #38ef7d;
+    }
+
+    .alert-modern.alert-info {
+        background: linear-gradient(135deg, rgba(79, 172, 254, 0.1) 0%, rgba(0, 242, 254, 0.1) 100%);
+        color: #4facfe;
+        border-left: 4px solid #00f2fe;
+    }
+
+    .alert-modern.alert-warning {
+        background: linear-gradient(135deg, rgba(240, 147, 251, 0.1) 0%, rgba(245, 87, 108, 0.1) 100%);
+        color: #f093fb;
+        border-left: 4px solid #f5576c;
+    }
+
+    .alert-modern.alert-danger {
+        background: linear-gradient(135deg, rgba(238, 9, 121, 0.1) 0%, rgba(255, 106, 0, 0.1) 100%);
+        color: #ee0979;
+        border-left: 4px solid #ff6a00;
+    }
+
+    /* Badge info */
+    .info-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: 10px;
+        background: #f8f9fa;
+        color: #2d3748;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .info-badge i {
+        color: #667eea;
+    }
+
+    /* Animation */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .modern-card {
+        animation: fadeInUp 0.5s ease;
+    }
+
+    .modern-card:nth-child(1) { animation-delay: 0.1s; }
+    .modern-card:nth-child(2) { animation-delay: 0.2s; }
+    .modern-card:nth-child(3) { animation-delay: 0.3s; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .settings-header {
+            padding: 1.5rem;
+        }
+
+        .settings-title {
+            font-size: 1.5rem;
+        }
+
+        .modern-card-body {
+            padding: 1.5rem;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="container-fluid py-4">
-    <div class="row">
-        <div class="col-12">
-            <!-- En-tête -->
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <div>
-                    <h2>Synchronisation Automatique</h2>
-                    <p class="text-muted">Configuration: <strong>{{ sync_config.name }}</strong></p>
-                </div>
-                <div>
-                    <a href="{% url 'sync_config_detail' sync_config.id %}" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left"></i> Retour
-                    </a>
+    <!-- En-tête moderne -->
+    <div class="settings-header">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <div>
+                <h1 class="settings-title">
+                    <i class="fas fa-cog"></i> Paramètres Auto-Sync
+                </h1>
+                <p class="text-muted mb-0">
+                    Configuration: <strong>{{ sync_config.name }}</strong>
+                </p>
+                <div class="mt-2">
+                    <span class="info-badge">
+                        <i class="fas fa-arrow-right"></i>
+                        {{ sync_config.source_instance.name }} → {{ sync_config.destination_instance.name }}
+                    </span>
                 </div>
             </div>
+            <div class="d-flex gap-2">
+                <a href="{% url 'auto_sync_dashboard' %}" class="btn btn-modern btn-info">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="{% url 'sync_config_detail' sync_config.id %}" class="btn btn-modern btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Retour
+                </a>
+            </div>
+        </div>
+    </div>
 
-            <!-- Messages -->
-            {% if messages %}
-                {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <!-- Messages -->
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert-modern alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            <strong><i class="fas fa-check-circle"></i></strong> {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="row">
+        <!-- Formulaire de configuration -->
+        <div class="col-lg-8">
+            <div class="modern-card">
+                <div class="modern-card-header">
+                    <h5><i class="fas fa-sliders-h"></i> Configuration de la Synchronisation Automatique</h5>
                 </div>
-                {% endfor %}
-            {% endif %}
+                <div class="modern-card-body">
+                    <form method="post" id="settings-form">
+                        {% csrf_token %}
 
-            <div class="row">
-                <!-- Formulaire de configuration -->
-                <div class="col-lg-8">
-                    <div class="card shadow-sm mb-4">
-                        <div class="card-header bg-primary text-white">
-                            <h5 class="mb-0"><i class="fas fa-cog"></i> Paramètres de Synchronisation Automatique</h5>
+                        <!-- Activation principale -->
+                        <div class="input-group-modern">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="is_enabled" name="is_enabled"
+                                       {% if auto_settings.is_enabled %}checked{% endif %}>
+                                <label class="form-check-label" for="is_enabled">
+                                    <strong style="font-size: 1.1rem;">Activer la synchronisation automatique</strong>
+                                </label>
+                            </div>
+                            <small class="form-text">
+                                <i class="fas fa-info-circle"></i> Active ou désactive le monitoring automatique des changements
+                            </small>
                         </div>
-                        <div class="card-body">
-                            <form method="post">
-                                {% csrf_token %}
 
-                                <!-- Activation -->
-                                <div class="mb-3">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="is_enabled" name="is_enabled"
-                                               {% if auto_settings.is_enabled %}checked{% endif %}>
-                                        <label class="form-check-label" for="is_enabled">
-                                            <strong>Activer la synchronisation automatique</strong>
-                                        </label>
-                                    </div>
-                                    <small class="text-muted">Active ou désactive la synchronisation automatique pour cette configuration</small>
+                        <hr class="section-divider">
+
+                        <!-- Paramètres de monitoring -->
+                        <div class="section-title">
+                            <i class="fas fa-search"></i>
+                            <span>Paramètres de Surveillance</span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="check_interval" class="form-label">
+                                    <i class="fas fa-clock"></i> Intervalle de vérification
+                                </label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="check_interval" name="check_interval"
+                                           value="{{ auto_settings.check_interval }}" min="60" required>
+                                    <span class="input-group-text">secondes</span>
                                 </div>
+                                <small class="form-text">Minimum: 60 secondes (1 minute)</small>
+                            </div>
 
-                                <hr>
-
-                                <!-- Paramètres de monitoring -->
-                                <h6 class="mb-3">Surveillance</h6>
-
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="check_interval" class="form-label">Intervalle de vérification (secondes)</label>
-                                        <input type="number" class="form-control" id="check_interval" name="check_interval"
-                                               value="{{ auto_settings.check_interval }}" min="60" required>
-                                        <small class="text-muted">Minimum: 60 secondes</small>
-                                    </div>
-
-                                    <div class="col-md-6 mb-3">
-                                        <label for="delay_before_sync" class="form-label">Délai avant sync (secondes)</label>
-                                        <input type="number" class="form-control" id="delay_before_sync" name="delay_before_sync"
-                                               value="{{ auto_settings.delay_before_sync }}" min="0" required>
-                                        <small class="text-muted">Attente avant de démarrer une synchronisation</small>
-                                    </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="delay_before_sync" class="form-label">
+                                    <i class="fas fa-hourglass-half"></i> Délai avant synchronisation
+                                </label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="delay_before_sync" name="delay_before_sync"
+                                           value="{{ auto_settings.delay_before_sync }}" min="0" required>
+                                    <span class="input-group-text">secondes</span>
                                 </div>
+                                <small class="form-text">Temps d'attente après détection de changement</small>
+                            </div>
+                        </div>
 
-                                <div class="mb-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="immediate_sync" name="immediate_sync"
-                                               {% if auto_settings.immediate_sync %}checked{% endif %}>
-                                        <label class="form-check-label" for="immediate_sync">
-                                            Synchronisation immédiate
-                                        </label>
-                                    </div>
-                                    <small class="text-muted">Démarrer la sync immédiatement après détection de changement</small>
-                                </div>
+                        <div class="input-group-modern">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="immediate_sync" name="immediate_sync"
+                                       {% if auto_settings.immediate_sync %}checked{% endif %}>
+                                <label class="form-check-label" for="immediate_sync">
+                                    <strong>Synchronisation immédiate</strong>
+                                </label>
+                            </div>
+                            <small class="form-text">Démarrer la synchronisation immédiatement sans délai</small>
+                        </div>
 
-                                <hr>
+                        <hr class="section-divider">
 
-                                <!-- Ressources à surveiller -->
-                                <h6 class="mb-3">Ressources surveillées</h6>
+                        <!-- Ressources à surveiller -->
+                        <div class="section-title">
+                            <i class="fas fa-database"></i>
+                            <span>Ressources Surveillées</span>
+                        </div>
 
-                                <div class="mb-3">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-group-modern">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="monitor_metadata" name="monitor_metadata"
                                                {% if auto_settings.monitor_metadata %}checked{% endif %}>
                                         <label class="form-check-label" for="monitor_metadata">
-                                            Surveiller les métadonnées
+                                            <i class="fas fa-sitemap text-primary"></i> <strong>Métadonnées</strong>
                                         </label>
                                     </div>
+                                    <small class="form-text">Organisation Units, Data Elements, etc.</small>
                                 </div>
+                            </div>
 
-                                <div class="mb-3">
+                            <div class="col-md-6">
+                                <div class="input-group-modern">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="monitor_data_values" name="monitor_data_values"
                                                {% if auto_settings.monitor_data_values %}checked{% endif %}>
                                         <label class="form-check-label" for="monitor_data_values">
-                                            Surveiller les données
+                                            <i class="fas fa-chart-bar text-success"></i> <strong>Données</strong>
                                         </label>
                                     </div>
+                                    <small class="form-text">Data Values, Events, Tracker</small>
                                 </div>
+                            </div>
+                        </div>
 
-                                <hr>
+                        <hr class="section-divider">
 
-                                <!-- Limites de sécurité -->
-                                <h6 class="mb-3">Limites de sécurité</h6>
+                        <!-- Limites de sécurité -->
+                        <div class="section-title">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Limites de Sécurité</span>
+                        </div>
 
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="max_sync_per_hour" class="form-label">Max synchronisations par heure</label>
-                                        <input type="number" class="form-control" id="max_sync_per_hour" name="max_sync_per_hour"
-                                               value="{{ auto_settings.max_sync_per_hour }}" min="1" required>
-                                    </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="max_sync_per_hour" class="form-label">
+                                    <i class="fas fa-tachometer-alt"></i> Max synchronisations/heure
+                                </label>
+                                <input type="number" class="form-control" id="max_sync_per_hour" name="max_sync_per_hour"
+                                       value="{{ auto_settings.max_sync_per_hour }}" min="1" max="60" required>
+                                <small class="form-text">Protection contre les boucles infinies</small>
+                            </div>
 
-                                    <div class="col-md-6 mb-3">
-                                        <label for="cooldown_after_error" class="form-label">Cooldown après erreur (secondes)</label>
-                                        <input type="number" class="form-control" id="cooldown_after_error" name="cooldown_after_error"
-                                               value="{{ auto_settings.cooldown_after_error }}" min="60" required>
-                                    </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="cooldown_after_error" class="form-label">
+                                    <i class="fas fa-exclamation-triangle"></i> Cooldown après erreur
+                                </label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="cooldown_after_error" name="cooldown_after_error"
+                                           value="{{ auto_settings.cooldown_after_error }}" min="60" required>
+                                    <span class="input-group-text">secondes</span>
                                 </div>
+                                <small class="form-text">Temps d'attente après une erreur (min: 60s)</small>
+                            </div>
+                        </div>
 
-                                <hr>
+                        <hr class="section-divider">
 
-                                <!-- Notifications -->
-                                <h6 class="mb-3">Notifications</h6>
+                        <!-- Notifications -->
+                        <div class="section-title">
+                            <i class="fas fa-bell"></i>
+                            <span>Notifications</span>
+                        </div>
 
-                                <div class="mb-3">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-group-modern">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="notify_on_change" name="notify_on_change"
                                                {% if auto_settings.notify_on_change %}checked{% endif %}>
                                         <label class="form-check-label" for="notify_on_change">
-                                            Notifier lors de la détection de changements
+                                            <i class="fas fa-eye text-info"></i> <strong>Détection de changements</strong>
                                         </label>
                                     </div>
+                                    <small class="form-text">Notifier lors de la détection</small>
                                 </div>
+                            </div>
 
-                                <div class="mb-3">
+                            <div class="col-md-6">
+                                <div class="input-group-modern">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="notify_on_sync_complete" name="notify_on_sync_complete"
                                                {% if auto_settings.notify_on_sync_complete %}checked{% endif %}>
                                         <label class="form-check-label" for="notify_on_sync_complete">
-                                            Notifier à la fin de la synchronisation
+                                            <i class="fas fa-check-circle text-success"></i> <strong>Fin de synchronisation</strong>
                                         </label>
                                     </div>
+                                    <small class="form-text">Notifier à la fin du processus</small>
                                 </div>
-
-                                <!-- Boutons -->
-                                <div class="d-grid gap-2 mt-4">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="fas fa-save"></i> Enregistrer les paramètres
-                                    </button>
-                                </div>
-                            </form>
+                            </div>
                         </div>
-                    </div>
+
+                        <!-- Bouton de soumission -->
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn-modern btn-primary">
+                                <i class="fas fa-save"></i> Enregistrer les Paramètres
+                            </button>
+                        </div>
+                    </form>
                 </div>
+            </div>
+        </div>
 
-                <!-- Statut et contrôles -->
-                <div class="col-lg-4">
-                    <!-- Statut actuel -->
-                    <div class="card shadow-sm mb-4">
-                        <div class="card-header bg-info text-white">
-                            <h5 class="mb-0"><i class="fas fa-info-circle"></i> Statut</h5>
-                        </div>
-                        <div class="card-body">
-                            {% if scheduler_status.is_running %}
-                                <div class="alert alert-success">
-                                    <i class="fas fa-play-circle"></i> <strong>Actif</strong><br>
-                                    <small>Thread: {{ scheduler_status.thread_name }}</small>
+        <!-- Statut et contrôles -->
+        <div class="col-lg-4">
+            <!-- Statut actuel -->
+            <div class="modern-card">
+                <div class="modern-card-header">
+                    <h5><i class="fas fa-heartbeat"></i> Statut du Scheduler</h5>
+                </div>
+                <div class="modern-card-body">
+                    {% if scheduler_status.is_running %}
+                        <div class="status-card">
+                            <div class="status-indicator active">
+                                <i class="fas fa-play-circle"></i>
+                                <strong>Actif</strong>
+                            </div>
+                            <div class="mt-3">
+                                <small class="text-muted">Thread:</small>
+                                <div class="info-badge mt-1">
+                                    <i class="fas fa-cogs"></i>
+                                    {{ scheduler_status.thread_name }}
                                 </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="status-card">
+                            <div class="status-indicator inactive">
+                                <i class="fas fa-stop-circle"></i>
+                                <strong>Arrêté</strong>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <div class="status-card">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="text-muted" style="font-size: 0.9rem;">Mode d'exécution</span>
+                            <span class="badge" style="background: var(--primary-gradient); color: white; padding: 0.4rem 0.8rem;">
+                                {{ sync_config.get_execution_mode_display }}
+                            </span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-muted" style="font-size: 0.9rem;">Configuration</span>
+                            {% if auto_settings.is_enabled %}
+                                <span class="badge" style="background: var(--success-gradient); color: white; padding: 0.4rem 0.8rem;">
+                                    <i class="fas fa-check"></i> Activé
+                                </span>
                             {% else %}
-                                <div class="alert alert-secondary">
-                                    <i class="fas fa-stop-circle"></i> <strong>Arrêté</strong>
-                                </div>
+                                <span class="badge" style="background: var(--danger-gradient); color: white; padding: 0.4rem 0.8rem;">
+                                    <i class="fas fa-times"></i> Désactivé
+                                </span>
                             {% endif %}
-
-                            <div class="mb-3">
-                                <strong>Mode d'exécution:</strong><br>
-                                <span class="badge bg-primary">{{ sync_config.get_execution_mode_display }}</span>
-                            </div>
-
-                            <div class="mb-3">
-                                <strong>Configuration:</strong><br>
-                                {% if auto_settings.is_enabled %}
-                                    <span class="badge bg-success">Activé</span>
-                                {% else %}
-                                    <span class="badge bg-danger">Désactivé</span>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Contrôles -->
-                    <div class="card shadow-sm">
-                        <div class="card-header bg-warning text-dark">
-                            <h5 class="mb-0"><i class="fas fa-gamepad"></i> Contrôles</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="d-grid gap-2">
-                                {% if scheduler_status.is_running %}
-                                    <!-- Arrêter -->
-                                    <form method="post" action="{% url 'stop_auto_sync' sync_config.id %}">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn btn-danger w-100">
-                                            <i class="fas fa-stop"></i> Arrêter
-                                        </button>
-                                    </form>
-
-                                    <!-- Redémarrer -->
-                                    <form method="post" action="{% url 'restart_auto_sync' sync_config.id %}">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn btn-warning w-100">
-                                            <i class="fas fa-redo"></i> Redémarrer
-                                        </button>
-                                    </form>
-                                {% else %}
-                                    <!-- Démarrer -->
-                                    <form method="post" action="{% url 'start_auto_sync' sync_config.id %}">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn btn-success w-100">
-                                            <i class="fas fa-play"></i> Démarrer
-                                        </button>
-                                    </form>
-                                {% endif %}
-
-                                <!-- Synchroniser maintenant -->
-                                <form method="post" action="{% url 'trigger_sync_now' sync_config.id %}">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-primary w-100">
-                                        <i class="fas fa-sync"></i> Synchroniser maintenant
-                                    </button>
-                                </form>
-
-                                <!-- Lien vers dashboard -->
-                                <a href="{% url 'auto_sync_dashboard' %}" class="btn btn-outline-secondary w-100">
-                                    <i class="fas fa-tachometer-alt"></i> Dashboard global
-                                </a>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Contrôles -->
+            <div class="modern-card">
+                <div class="modern-card-header">
+                    <h5><i class="fas fa-gamepad"></i> Contrôles Rapides</h5>
+                </div>
+                <div class="modern-card-body">
+                    <div class="d-grid gap-3">
+                        {% if scheduler_status.is_running %}
+                            <!-- Arrêter -->
+                            <form method="post" action="{% url 'stop_auto_sync' sync_config.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-modern btn-danger w-100">
+                                    <i class="fas fa-stop"></i> Arrêter le Scheduler
+                                </button>
+                            </form>
+
+                            <!-- Redémarrer -->
+                            <form method="post" action="{% url 'restart_auto_sync' sync_config.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-modern btn-warning w-100">
+                                    <i class="fas fa-redo"></i> Redémarrer
+                                </button>
+                            </form>
+                        {% else %}
+                            <!-- Démarrer -->
+                            <form method="post" action="{% url 'start_auto_sync' sync_config.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-modern btn-success w-100">
+                                    <i class="fas fa-play"></i> Démarrer le Scheduler
+                                </button>
+                            </form>
+                        {% endif %}
+
+                        <!-- Synchroniser maintenant -->
+                        <form method="post" action="{% url 'trigger_sync_now' sync_config.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-modern btn-info w-100">
+                                <i class="fas fa-sync"></i> Sync Maintenant
+                            </button>
+                        </form>
+
+                        <!-- Lien vers dashboard -->
+                        <a href="{% url 'auto_sync_dashboard' %}" class="btn-modern btn-secondary w-100">
+                            <i class="fas fa-tachometer-alt"></i> Dashboard Global
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info card -->
+            <div class="alert-modern alert-info">
+                <strong><i class="fas fa-lightbulb"></i> Astuce</strong><br>
+                <small>
+                    Le scheduler surveille automatiquement les changements et déclenche une synchronisation
+                    lorsque des modifications sont détectées.
+                </small>
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+// Animation smooth pour les checkbox
+document.querySelectorAll('.form-check-input').forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+        this.parentElement.style.transform = 'scale(1.05)';
+        setTimeout(() => {
+            this.parentElement.style.transform = 'scale(1)';
+        }, 200);
+    });
+});
+
+// Validation du formulaire
+document.getElementById('settings-form').addEventListener('submit', function(e) {
+    const checkInterval = document.getElementById('check_interval').value;
+    const cooldown = document.getElementById('cooldown_after_error').value;
+
+    if (checkInterval < 60) {
+        e.preventDefault();
+        alert('L\'intervalle de vérification doit être au moins 60 secondes');
+        return false;
+    }
+
+    if (cooldown < 60) {
+        e.preventDefault();
+        alert('Le cooldown après erreur doit être au moins 60 secondes');
+        return false;
+    }
+});
+</script>
 {% endblock %}

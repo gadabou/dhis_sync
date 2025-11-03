@@ -126,6 +126,11 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# ===== AUTHENTICATION CONFIGURATION =====
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'dashboard'
+LOGOUT_REDIRECT_URL = 'login'
+
 # ===== LOGGING CONFIGURATION =====
 from .logging_config import LOGGING
 

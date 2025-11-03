@@ -289,6 +289,11 @@ class DHIS2Instance(models.Model):
         """
         Récupère des events via /api/events.
         Requis: program, orgUnit, startDate, endDate
+
+        Le filtre de date utilisé est configuré via le modèle DateFilterAttribute.
+        Si aucune configuration n'existe pour ce programme, 'created' est utilisé par défaut.
+
+        Si paging='false', utilise la pagination automatique pour récupérer TOUS les événements.
         """
         api = self.get_api_client()
 
@@ -297,31 +302,75 @@ class DHIS2Instance(models.Model):
         self._require(startDate, "startDate (YYYY-MM-DD)")
         self._require(endDate, "endDate (YYYY-MM-DD)")
 
-        params = {
+        # Récupérer l'attribut de filtre de date configuré pour ce programme
+        dateAttributFilter = self.get_date_filter_attribute(program_uid=program, filter_type='event')
+
+        base_params = {
             "program": program,
             "orgUnit": orgUnit,
             "ouMode": ouMode,
-            "startDate": startDate,
-            "endDate": endDate,
-            "paging": paging,
+            "filter": [
+                dateAttributFilter + ':GE:' + startDate,
+                dateAttributFilter + ':LE:' + endDate
+            ]
         }
         if programStage:
-            params["programStage"] = programStage
+            base_params["programStage"] = programStage
         if status:
-            params["status"] = status
+            base_params["status"] = status
 
         # Pass-through d'éventuels filtres DHIS2 supplémentaires
-        params.update(extra or {})
+        base_params.update(extra or {})
 
-        r = api.get("events", params=params)
-        r.raise_for_status()
-        return r.json()
+        # Si paging='false', récupérer tous les événements par pagination automatique
+        if paging == 'false':
+            all_events = []
+            page = 1
+            page_size = 1000  # Utiliser une taille de page raisonnable
 
-    def get_tracked_entity_instances(self, *, program: str, orgUnit: str, ouMode: str = "DESCENDANTS", paging: str = "false", lastUpdatedStartDate: Optional[str] = None, lastUpdatedEndDate: Optional[str] = None, trackedEntityType: Optional[str] = None, **attribute_filters,) -> Dict[str, Any]:
+            while True:
+                params = base_params.copy()
+                params['paging'] = 'true'
+                params['page'] = page
+                params['pageSize'] = page_size
+
+                r = api.get("events", params=params)
+                r.raise_for_status()
+                data = r.json()
+
+                events = data.get('events', [])
+                if not events:
+                    break
+
+                all_events.extend(events)
+
+                # Vérifier si c'est la dernière page
+                pager = data.get('pager', {})
+                if pager.get('page', 1) >= pager.get('pageCount', 1):
+                    break
+
+                page += 1
+
+            return {'events': all_events}
+        else:
+            # Pagination normale
+            params = base_params.copy()
+            params['paging'] = paging
+
+            r = api.get("events", params=params)
+            r.raise_for_status()
+            return r.json()
+
+    def get_tracked_entity_instances(self, *, program: str, orgUnit: str, startDate: Optional[str] = None, endDate: Optional[str] = None, ouMode: str = "DESCENDANTS", paging: str = "false", lastUpdatedStartDate: Optional[str] = None, lastUpdatedEndDate: Optional[str] = None, trackedEntityType: Optional[str] = None, **attribute_filters,) -> Dict[str, Any]:
         """
         Récupère des TEI via /api/trackedEntityInstances.
         Requis: program, orgUnit
-        Optionnels: ouMode, paging, lastUpdatedStartDate/EndDate, trackedEntityType, attributs en filtres
+        Optionnels: ouMode, paging, startDate/endDate (pour filtre sur attribut de date configuré),
+                   lastUpdatedStartDate/EndDate (pour filtre sur dernière mise à jour),
+                   trackedEntityType, attributs en filtres
+
+        Le filtre de date basé sur startDate/endDate utilise l'attribut configuré via DateFilterAttribute.
+        Si aucune configuration n'existe, le filtre de date personnalisé n'est pas appliqué.
         """
         api = self.get_api_client()
 
@@ -334,6 +383,43 @@ class DHIS2Instance(models.Model):
             "ouMode": ouMode,
             "paging": paging,
         }
+
+        # Filtres de date personnalisés basés sur l'attribut configuré
+        if startDate or endDate:
+            # Récupérer l'attribut de filtre de date configuré pour ce programme
+            dateAttributeUid = self.get_date_filter_attribute(program_uid=program, filter_type='tracker')
+
+            # Pour tracker, on utilise le paramètre 'filter' avec l'attribut
+            # Note: Pour tracker, 'created' n'est pas un attribut valide dans les filtres
+            # Donc on l'applique seulement si ce n'est pas 'created'
+            if dateAttributeUid and dateAttributeUid != 'created':
+                if startDate:
+                    filter_key = f"filter"
+                    if filter_key not in params:
+                        params[filter_key] = []
+                    if isinstance(params[filter_key], str):
+                        params[filter_key] = [params[filter_key]]
+                    params[filter_key].append(f"{dateAttributeUid}:GE:{startDate}")
+
+                if endDate:
+                    filter_key = f"filter"
+                    if filter_key not in params:
+                        params[filter_key] = []
+                    if isinstance(params[filter_key], str):
+                        params[filter_key] = [params[filter_key]]
+                    params[filter_key].append(f"{dateAttributeUid}:LE:{endDate}")
+            else:
+                # Si c'est 'created', utiliser lastUpdatedStartDate/lastUpdatedEndDate comme fallback
+                logging.info(
+                    f"Attribut de date '{dateAttributeUid}' non applicable pour tracker. "
+                    f"Utilisation de lastUpdatedStartDate/lastUpdatedEndDate si fournis."
+                )
+                if startDate and not lastUpdatedStartDate:
+                    lastUpdatedStartDate = startDate
+                if endDate and not lastUpdatedEndDate:
+                    lastUpdatedEndDate = endDate
+
+        # Filtres sur la dernière mise à jour (indépendants du filtre de date personnalisé)
         if lastUpdatedStartDate:
             params["lastUpdatedStartDate"] = lastUpdatedStartDate
         if lastUpdatedEndDate:
@@ -347,6 +433,42 @@ class DHIS2Instance(models.Model):
         r = api.get("trackedEntityInstances", params=params)
         r.raise_for_status()
         return r.json()
+
+    def get_date_filter_attribute(self, program_uid: str, filter_type: str = 'event') -> str:
+        """
+        Récupère l'attribut de filtre de date configuré pour un programme donné.
+
+        Args:
+            program_uid: UID du programme DHIS2 (pour events) ou du trackedEntityType (pour tracker)
+            filter_type: Type de filtre ('event' ou 'tracker'), par défaut 'event'
+
+        Returns:
+            str: UID de l'attribut/dataElement à utiliser pour le filtre de date,
+                 ou 'created' si aucune configuration n'est trouvée
+        """
+        try:
+            # Rechercher la configuration pour ce programme
+            date_filter = self.date_filter_attributes.filter(
+                program_uid=program_uid,
+                filter_type=filter_type
+            ).first()
+
+            if date_filter and date_filter.date_attribute_uid:
+                return date_filter.date_attribute_uid
+
+            # Si aucune configuration trouvée, retourner 'created' par défaut
+            logging.info(
+                f"Aucune configuration de filtre de date trouvée pour le programme {program_uid} "
+                f"(type: {filter_type}). Utilisation de 'created' par défaut."
+            )
+            return 'created'
+
+        except Exception as e:
+            logging.warning(
+                f"Erreur lors de la récupération du filtre de date pour {program_uid}: {e}. "
+                f"Utilisation de 'created' par défaut."
+            )
+            return 'created'
 
     @staticmethod
     def _require(value: Optional[str], label: str):
@@ -1464,6 +1586,104 @@ class DHIS2EntityVersion(models.Model):
     def is_field_supported(self, field_name):
         """Vérifie si un champ est supporté dans cette version"""
         return field_name in self.supported_fields and field_name not in self.deprecated_fields
+
+
+class DateFilterAttribute(models.Model):
+    """
+    Configuration des attributs de filtre de date pour les programmes DHIS2.
+    Permet de spécifier quel attribut/champ utiliser pour filtrer les données par date
+    pour chaque programme (events) ou trackedEntityType (tracker).
+    """
+
+    FILTER_TYPE_CHOICES = [
+        ('event', 'Événement'),
+        ('tracker', 'Entité suivie (Tracker)'),
+    ]
+
+    # Instance DHIS2 source concernée
+    dhis2_instance = models.ForeignKey(
+        DHIS2Instance,
+        on_delete=models.CASCADE,
+        related_name='date_filter_attributes',
+        limit_choices_to={'is_source': True},
+        help_text="Instance DHIS2 source concernée"
+    )
+
+    # Type de filtre (event ou tracker)
+    filter_type = models.CharField(
+        max_length=10,
+        choices=FILTER_TYPE_CHOICES,
+        default='event',
+        help_text="Type de filtre : event (programme) ou tracker (entité suivie)"
+    )
+
+    # UID du programme ou du trackedEntityType
+    program_uid = models.CharField(
+        max_length=11,
+        help_text="UID du programme DHIS2 (pour les events) ou du trackedEntityType (pour tracker)"
+    )
+
+    # Nom du programme (pour faciliter l'identification)
+    program_name = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        help_text="Nom du programme ou de l'entité suivie (optionnel, pour information)"
+    )
+
+    # UID de l'attribut/dataElement à utiliser pour le filtre de date
+    date_attribute_uid = models.CharField(
+        max_length=11,
+        help_text="UID de l'attribut/dataElement DHIS2 à utiliser pour filtrer par date"
+    )
+
+    # Nom de l'attribut (pour faciliter l'identification)
+    date_attribute_name = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        help_text="Nom de l'attribut/dataElement (optionnel, pour information)"
+    )
+
+    # Valeur par défaut si l'attribut n'est pas spécifié ou vide
+    default_to_created = models.BooleanField(
+        default=True,
+        help_text="Utiliser 'created' comme valeur par défaut si l'attribut n'est pas disponible"
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = [['dhis2_instance', 'filter_type', 'program_uid']]
+        indexes = [
+            models.Index(fields=['dhis2_instance', 'filter_type']),
+            models.Index(fields=['program_uid']),
+        ]
+        ordering = ['program_name', 'program_uid']
+        verbose_name = "Attribut de filtre de date"
+        verbose_name_plural = "Attributs de filtre de date"
+
+    def __str__(self):
+        prog_name = self.program_name or self.program_uid
+        attr_name = self.date_attribute_name or self.date_attribute_uid
+        return f"{prog_name} ({self.get_filter_type_display()}) - Filtre: {attr_name}"
+
+    def clean(self):
+        """Validation personnalisée"""
+        super().clean()
+
+        # Valider que l'instance est source
+        if self.dhis2_instance and not self.dhis2_instance.is_source:
+            raise ValidationError("L'instance DHIS2 doit être une instance source.")
+
+        # Valider que le program_uid est bien défini
+        if not self.program_uid or not self.program_uid.strip():
+            raise ValidationError("Le UID du programme/entité est requis.")
+
+        # Valider que le date_attribute_uid est bien défini
+        if not self.date_attribute_uid or not self.date_attribute_uid.strip():
+            raise ValidationError("Le UID de l'attribut de date est requis.")
 
 
 class AutoSyncSettings(models.Model):

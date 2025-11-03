@@ -1,4 +1,10 @@
-__pycache__
 .claude
 .idea
-staticfile
+run_dockers.sh
+__pycache__
+.venv
+logs/
+staticfiles/
+
+db.sqlite3
+celerybeat-schedule

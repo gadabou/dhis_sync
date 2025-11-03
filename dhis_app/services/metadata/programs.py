@@ -399,8 +399,8 @@ class ProgramIndicatorsService(BaseMetadataService):
 
 class ProgramsSyncService:
     """
-    Service orchestrateur pour la synchronisation des programmes
-    Respecte l'ordre DHIS2: programs -> programStageSections -> programStages -> programRuleVariables -> programRules -> programRuleActions -> programIndicators
+        Service orchestrateur pour la synchronisation des programmes
+        Respecte l'ordre DHIS2: programs -> programStages -> programStageSections -> programRuleVariables -> programRules -> programRuleActions -> programIndicators
     """
 
     def __init__(self, sync_config: SyncConfiguration):
@@ -443,18 +443,18 @@ class ProgramsSyncService:
             if not programs_result.get('success', False):
                 total_errors += 1
 
-            # 2. programStageSections (necessite programs)
-            sections_result = self.stage_sections_service.sync(job, strategy)
-            results['programStageSections'] = sections_result
-            total_imported += sections_result.get('imported_count', 0)
-            if not sections_result.get('success', False):
-                total_errors += 1
-
-            # 3. programStages (necessite programs et programStageSections)
+            # 2. programStages (necessite programs)
             stages_result = self.stages_service.sync(job, strategy)
             results['programStages'] = stages_result
             total_imported += stages_result.get('imported_count', 0)
             if not stages_result.get('success', False):
+                total_errors += 1
+
+            # 3. programStageSections (necessite programs et programStages)
+            sections_result = self.stage_sections_service.sync(job, strategy)
+            results['programStageSections'] = sections_result
+            total_imported += sections_result.get('imported_count', 0)
+            if not sections_result.get('success', False):
                 total_errors += 1
 
             # 4. programRuleVariables (necessite programs et programStages)
@@ -499,3 +499,5 @@ class ProgramsSyncService:
                 job.log_message += f"ERREUR CRITIQUE: {error_msg}\n"
                 job.save()
             return {'success': False, 'error': error_msg, 'total_imported': 0, 'total_errors': 1}
+
+
