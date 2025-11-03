@@ -1,0 +1,7 @@
+INFO 2025-10-20 11:02:11,923 apps 🚀 Démarrage automatique de la synchronisation...
+INFO 2025-10-20 11:02:11,923 scheduler AutoSyncScheduler initialisé
+INFO 2025-10-20 11:02:11,932 scheduler Démarrage de la boucle de monitoring pour Local 97-94
+INFO 2025-10-20 11:02:11,932 scheduler Scheduler démarré pour Local 97-94 (ID: 3)
+INFO 2025-10-20 11:02:11,934 scheduler 1 configurations démarrées
+INFO 2025-10-20 11:02:11,934 apps ✅ Synchronisation automatique démarrée avec succès
+INFO 2025-10-20 11:02:11,973 scheduler Délai initial de 30s avant la première synchronisation

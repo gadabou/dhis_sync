@@ -829,3 +829,6 @@ django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 227: '
 [INFO] 2025-10-14 00:31:42 django.server basehttp.log_message:212 - "GET /auto-sync/dashboard/ HTTP/1.1" 200 32056
 [INFO] 2025-10-14 00:31:48 django.server basehttp.log_message:212 - "GET /auto-sync/dashboard/ HTTP/1.1" 200 32056
 [INFO] 2025-10-14 00:31:52 django.server basehttp.log_message:212 - "GET /auto-sync/dashboard/ HTTP/1.1" 200 32056
+[INFO] 2025-11-03 08:19:41 django.utils.autoreload autoreload.run_with_reloader:668 - Watching for file changes with StatReloader
+[INFO] 2025-11-03 08:19:46 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-11-03 08:19:46 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
