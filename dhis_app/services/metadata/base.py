@@ -107,7 +107,7 @@ class BaseMetadataService:
             'resources': ['maps', 'visualizations', 'eventReports', 'dashboards'],
             'description': 'Analytics et visualisations',
             'priority': 15,
-            'dependencies': ['indicators', 'data_elements', 'programs', 'legends']
+            'dependencies': ['indicators', 'data_elements', 'programs', 'legends', 'categories']
         },
         'misc': {
             'resources': ['documents', 'interpretations'],

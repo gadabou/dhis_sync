@@ -45,9 +45,9 @@
         <div class="bg-white rounded-lg shadow-sm border p-6 mb-6">
             <h2 class="text-lg font-semibold text-gray-900 mb-4">Progression</h2>
             <div class="w-full bg-gray-200 rounded-full h-2">
-                <div class="bg-blue-600 h-2 rounded-full transition-all duration-300" style="width: {{ job.progress }}%"></div>
+                <div id="progress-bar" class="bg-blue-600 h-2 rounded-full transition-all duration-300" style="width: {{ job.progress }}%"></div>
             </div>
-            <p class="text-sm text-gray-600 mt-2">{{ job.progress }}% terminé</p>
+            <p id="progress-text" class="text-sm text-gray-600 mt-2">{{ job.progress }}% terminé</p>
         </div>
         {% endif %}
 
@@ -56,19 +56,19 @@
             <h2 class="text-lg font-semibold text-gray-900 mb-4">Statistiques</h2>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div class="text-center p-4 bg-blue-50 rounded-lg">
-                    <div class="text-2xl font-bold text-blue-600">{{ job.total_items }}</div>
+                    <div id="total-items" class="text-2xl font-bold text-blue-600">{{ job.total_items }}</div>
                     <div class="text-sm text-gray-600">Total Items</div>
                 </div>
                 <div class="text-center p-4 bg-green-50 rounded-lg">
-                    <div class="text-2xl font-bold text-green-600">{{ job.success_count }}</div>
+                    <div id="success-count" class="text-2xl font-bold text-green-600">{{ job.success_count }}</div>
                     <div class="text-sm text-gray-600">Succès</div>
                 </div>
                 <div class="text-center p-4 bg-red-50 rounded-lg">
-                    <div class="text-2xl font-bold text-red-600">{{ job.error_count }}</div>
+                    <div id="error-count" class="text-2xl font-bold text-red-600">{{ job.error_count }}</div>
                     <div class="text-sm text-gray-600">Erreurs</div>
                 </div>
                 <div class="text-center p-4 bg-yellow-50 rounded-lg">
-                    <div class="text-2xl font-bold text-yellow-600">{{ job.warning_count }}</div>
+                    <div id="warning-count" class="text-2xl font-bold text-yellow-600">{{ job.warning_count }}</div>
                     <div class="text-sm text-gray-600">Avertissements</div>
                 </div>
             </div>
@@ -97,11 +97,151 @@
                 {% if duration %}
                 <div class="flex items-center">
                     <div class="w-2 h-2 bg-purple-500 rounded-full mr-3"></div>
-                    <div class="text-sm text-gray-600">Durée: {{ duration }}</div>
+                    <div id="duration-value" class="text-sm text-gray-600">Durée: {{ duration }}</div>
                 </div>
                 {% endif %}
             </div>
         </div>
+
+        <!-- Statistiques détaillées des Métadonnées -->
+        {% if metadata_stats %}
+        <div class="bg-white rounded-lg shadow-sm border p-6 mb-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">Détails de Synchronisation - Métadonnées</h2>
+            <div class="overflow-x-auto max-h-96 overflow-y-auto border rounded-lg">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50 sticky top-0">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Métadonnées
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Progression
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Total récupéré
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Créé
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Modifié
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Erreur
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Ignoré
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="metadata-table-body" class="bg-white divide-y divide-gray-200">
+                        {% for stat in metadata_stats %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                {{ stat.name }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <div class="flex items-center">
+                                    <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                                        <div class="bg-blue-600 h-2 rounded-full" style="width: {{ stat.progress }}%"></div>
+                                    </div>
+                                    <span>{{ stat.progress }}%</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ stat.total }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600 font-medium">
+                                {{ stat.created }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 font-medium">
+                                {{ stat.updated }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <span class="{% if stat.errors > 0 %}text-red-600{% else %}text-gray-500{% endif %}">
+                                    {{ stat.errors }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ stat.ignored }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Statistiques détaillées des Données -->
+        {% if data_stats %}
+        <div class="bg-white rounded-lg shadow-sm border p-6 mb-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">Détails de Synchronisation - Données</h2>
+            <div class="overflow-x-auto max-h-96 overflow-y-auto border rounded-lg">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50 sticky top-0">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Données
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Progression
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Total récupéré
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Créé
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Modifié
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Erreur
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Ignoré
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="data-table-body" class="bg-white divide-y divide-gray-200">
+                        {% for stat in data_stats %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                {{ stat.name }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <div class="flex items-center">
+                                    <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                                        <div class="bg-green-600 h-2 rounded-full" style="width: {{ stat.progress }}%"></div>
+                                    </div>
+                                    <span>{{ stat.progress }}%</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ stat.total }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600 font-medium">
+                                {{ stat.created }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 font-medium">
+                                {{ stat.updated }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <span class="{% if stat.errors > 0 %}text-red-600{% else %}text-gray-500{% endif %}">
+                                    {{ stat.errors }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ stat.ignored }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
 
         <!-- Logs -->
         {% if job.log_message %}
@@ -131,15 +271,155 @@
 </div>
 
 <script>
+let autoRefreshInterval = null;
+
 function refreshPage() {
     window.location.reload();
 }
 
+function formatDuration(seconds) {
+    if (!seconds) return 'N/A';
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+
+    if (hours > 0) {
+        return `${hours}h ${minutes}m ${secs}s`;
+    } else if (minutes > 0) {
+        return `${minutes}m ${secs}s`;
+    } else {
+        return `${secs}s`;
+    }
+}
+
+function updateStats(data) {
+    // Mettre à jour la barre de progression
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+    if (progressBar && progressText) {
+        progressBar.style.width = data.progress + '%';
+        progressText.textContent = data.progress + '% terminé';
+    }
+
+    // Mettre à jour les statistiques
+    const stats = {
+        'total-items': data.total_items,
+        'success-count': data.success_count,
+        'error-count': data.error_count,
+        'warning-count': data.warning_count
+    };
+
+    for (const [id, value] of Object.entries(stats)) {
+        const element = document.getElementById(id);
+        if (element) {
+            element.textContent = value;
+        }
+    }
+
+    // Mettre à jour la durée
+    const durationElement = document.getElementById('duration-value');
+    if (durationElement && data.duration_seconds) {
+        durationElement.textContent = 'Durée: ' + formatDuration(data.duration_seconds);
+    }
+
+    // Mettre à jour le tableau des métadonnées
+    updateTable('metadata-table-body', data.metadata_stats, 'blue');
+
+    // Mettre à jour le tableau des données
+    updateTable('data-table-body', data.data_stats, 'green');
+
+    // Si le job n'est plus en cours, arrêter l'auto-refresh et recharger la page
+    if (!data.is_running && autoRefreshInterval) {
+        clearInterval(autoRefreshInterval);
+        autoRefreshInterval = null;
+        // Attendre 2 secondes puis recharger pour afficher l'état final
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000);
+    }
+}
+
+function updateTable(tableBodyId, stats, progressColor) {
+    const tbody = document.getElementById(tableBodyId);
+    if (!tbody || !stats || stats.length === 0) return;
+
+    tbody.innerHTML = '';
+
+    stats.forEach(stat => {
+        const row = document.createElement('tr');
+        row.className = 'hover:bg-gray-50';
+
+        const errorClass = stat.errors > 0 ? 'text-red-600' : 'text-gray-500';
+
+        row.innerHTML = `
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                ${stat.name}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <div class="flex items-center">
+                    <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                        <div class="bg-${progressColor}-600 h-2 rounded-full" style="width: ${stat.progress}%"></div>
+                    </div>
+                    <span>${stat.progress}%</span>
+                </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                ${stat.total}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600 font-medium">
+                ${stat.created}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 font-medium">
+                ${stat.updated}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <span class="${errorClass}">
+                    ${stat.errors}
+                </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                ${stat.ignored}
+            </td>
+        `;
+
+        tbody.appendChild(row);
+    });
+}
+
+async function fetchJobStats() {
+    try {
+        const response = await fetch('{% url "sync_job_stats_api" job.id %}');
+        if (!response.ok) {
+            console.error('Erreur lors de la récupération des stats');
+            return;
+        }
+
+        const data = await response.json();
+        updateStats(data);
+    } catch (error) {
+        console.error('Erreur:', error);
+    }
+}
+
 // Auto-refresh pour les jobs en cours
 {% if job.status == 'running' %}
-setTimeout(function() {
-    window.location.reload();
-}, 5000); // Refresh toutes les 5 secondes
+// Démarrer l'auto-refresh toutes les 5 secondes
+autoRefreshInterval = setInterval(fetchJobStats, 5000);
+
+// Afficher un indicateur de rafraîchissement automatique
+const autoRefreshIndicator = document.createElement('div');
+autoRefreshIndicator.className = 'fixed bottom-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg text-sm flex items-center space-x-2 z-50';
+autoRefreshIndicator.innerHTML = `
+    <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+    </svg>
+    <span>Actualisation automatique...</span>
+`;
+document.body.appendChild(autoRefreshIndicator);
+
+// Faire un premier fetch immédiatement
+fetchJobStats();
 {% endif %}
 </script>
 {% endblock %}
