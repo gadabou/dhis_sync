@@ -170,14 +170,23 @@ class DHIS2Instance(models.Model):
                 logging.error(f"Erreur lors de la récupération de {resource}: {error_str}")
             raise
 
-    def post_metadata(self, resource, data, strategy='CREATE_AND_UPDATE'):
+    def post_metadata(self, resource, data, strategy='CREATE_AND_UPDATE', skip_sharing=False, preheat_mode=None):
         """
         Envoie des métadonnées vers l'instance DHIS2.
+
+        Args:
+            resource: Type de ressource (ex: 'dataElements', 'visualizations')
+            data: Données à envoyer
+            strategy: Stratégie d'import ('CREATE_AND_UPDATE', 'CREATE', 'UPDATE', 'DELETE')
+            skip_sharing: Si True, ignore le sharing pendant l'import (utile pour éviter les erreurs de proxy Hibernate)
+            preheat_mode: Mode de préchargement ('REFERENCE', 'ALL', None).
+                         'REFERENCE' charge les références avant l'import pour éviter les erreurs de proxy.
+                         'ALL' charge tous les objets (plus lent mais plus sûr).
         """
         try:
             api = self.get_api_client()
 
-            # S’assurer que data est une liste
+            # S'assurer que data est une liste
             items = data if isinstance(data, list) else [data]
 
             payload = {
@@ -189,10 +198,14 @@ class DHIS2Instance(models.Model):
                 'importStrategy': strategy,
                 'atomicMode': 'NONE',          # pour permettre des succès partiels
                 'mergeMode': 'REPLACE',        # REPLACE pour remplacer complètement le sharing
-                'skipSharing': 'false',        # Importer le sharing (nettoyé des users invalides)
-                # 'preheatMode': 'REFERENCE',    # ou 'ALL'
+                'skipSharing': 'true' if skip_sharing else 'false',  # Contrôle de l'import du sharing
                 # 'skipValidation': 'false',
             }
+
+            # Ajouter preheatMode si spécifié
+            if preheat_mode:
+                params['preheatMode'] = preheat_mode
+
             response = api.post('metadata', data=payload, params=params)
 
             response.raise_for_status()

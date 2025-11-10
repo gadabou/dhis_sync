@@ -40,6 +40,8 @@ class VisualizationsService(BaseMetadataService):
             # Nettoyer les références aux categoryCombo et autres objets qui peuvent causer des erreurs
             visualizations = self.clean_visualization_references(visualizations)
 
+            # Utiliser atomicMode=NONE avec import normal
+            # Le nettoyage des références problématiques devrait suffire
             result = self.destination_instance.post_metadata(
                 resource='visualizations',
                 data=visualizations,
