@@ -832,3 +832,83 @@ django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 227: '
 [INFO] 2025-11-03 08:19:41 django.utils.autoreload autoreload.run_with_reloader:668 - Watching for file changes with StatReloader
 [INFO] 2025-11-03 08:19:46 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
 [INFO] 2025-11-03 08:19:46 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-11-10 08:57:31 django.utils.autoreload autoreload.run_with_reloader:667 - Watching for file changes with StatReloader
+[INFO] 2025-11-10 08:57:35 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-11-10 08:57:35 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-11-10 08:57:36 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-11-10 08:57:36 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-11-10 09:30:05 django.utils.autoreload autoreload.run_with_reloader:667 - Watching for file changes with StatReloader
+[INFO] 2025-11-10 09:30:10 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-11-10 09:30:10 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-11-10 09:30:10 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-11-10 09:30:10 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-11-10 09:30:17 django.server basehttp.log_message:213 - "GET / HTTP/1.1" 302 0
+[INFO] 2025-11-10 09:30:17 django.server basehttp.log_message:213 - "GET /login/?next=/ HTTP/1.1" 200 6379
+[WARNING] 2025-11-10 09:30:20 django.request log.log_response:253 - Not Found: /favicon.ico
+[WARNING] 2025-11-10 09:30:20 django.server basehttp.log_message:213 - "GET /favicon.ico HTTP/1.1" 404 16518
+[INFO] 2025-11-10 09:30:22 django.server basehttp.log_message:213 - "POST /login/ HTTP/1.1" 200 7191
+[INFO] 2025-11-10 09:30:28 django.server basehttp.log_message:213 - "POST /login/ HTTP/1.1" 200 7191
+[INFO] 2025-11-10 09:30:37 django.server basehttp.log_message:213 - "POST /login/ HTTP/1.1" 200 7191
+[INFO] 2025-11-10 09:30:47 django.server basehttp.log_message:213 - "POST /login/ HTTP/1.1" 200 7191
+[INFO] 2025-11-10 09:31:02 django.server basehttp.log_message:213 - "POST /login/ HTTP/1.1" 200 7191
+[INFO] 2025-11-10 09:31:10 django.server basehttp.log_message:213 - "POST /login/ HTTP/1.1" 200 7191
+[INFO] 2025-11-10 09:31:19 django.server basehttp.log_message:213 - "POST /login/ HTTP/1.1" 200 7191
+[INFO] 2025-11-10 09:31:49 django.server basehttp.log_message:213 - "POST /login/ HTTP/1.1" 200 7191
+[INFO] 2025-11-10 09:32:08 django.server basehttp.log_message:213 - "POST /login/ HTTP/1.1" 200 7191
+[INFO] 2025-11-10 09:33:07 django.server basehttp.log_message:213 - "GET / HTTP/1.1" 302 0
+[INFO] 2025-11-10 09:33:07 django.server basehttp.log_message:213 - "GET /login/?next=/ HTTP/1.1" 200 6379
+[WARNING] 2025-11-10 09:33:11 django.request log.log_response:253 - Not Found: /favicon.ico
+[WARNING] 2025-11-10 09:33:11 django.server basehttp.log_message:213 - "GET /favicon.ico HTTP/1.1" 404 16518
+[INFO] 2025-11-10 09:33:13 django.server basehttp.log_message:213 - "POST /login/ HTTP/1.1" 200 7191
+[INFO] 2025-11-10 09:33:28 django.server basehttp.log_message:213 - "POST /login/ HTTP/1.1" 200 7191
+[INFO] 2025-11-10 09:33:31 django.server basehttp.log_message:213 - "POST /login/ HTTP/1.1" 200 7191
+[INFO] 2025-11-10 09:33:38 django.server basehttp.log_message:213 - "POST /login/ HTTP/1.1" 200 7191
+[INFO] 2025-11-10 09:33:47 django.server basehttp.log_message:213 - "POST /login/ HTTP/1.1" 200 7191
+[INFO] 2025-11-10 09:34:01 django.server basehttp.log_message:213 - "POST /login/ HTTP/1.1" 200 7191
+[INFO] 2025-11-10 09:34:09 django.server basehttp.log_message:213 - "POST /login/ HTTP/1.1" 200 7191
+[INFO] 2025-11-10 09:35:13 django.utils.autoreload autoreload.run_with_reloader:667 - Watching for file changes with StatReloader
+[INFO] 2025-11-10 09:35:18 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-11-10 09:35:18 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-11-10 09:35:18 dhis_app.apps apps.delayed_start:40 - 🚀 Démarrage automatique de la synchronisation...
+[INFO] 2025-11-10 09:35:18 dhis_app.apps apps.delayed_start:42 - ✅ Synchronisation automatique démarrée avec succès
+[INFO] 2025-11-10 09:35:29 django.server basehttp.log_message:213 - "POST /login/ HTTP/1.1" 302 0
+[INFO] 2025-11-10 09:35:29 django.server basehttp.log_message:213 - "GET / HTTP/1.1" 200 29661
+[INFO] 2025-11-10 09:35:29 django.server basehttp.log_message:213 - "GET /static/js/main.js HTTP/1.1" 200 14104
+[INFO] 2025-11-10 09:35:29 django.server basehttp.log_message:213 - "GET /static/css/main.css HTTP/1.1" 200 8477
+[WARNING] 2025-11-10 09:35:30 django.server basehttp.log_message:213 - "GET /static/images/favicon.ico HTTP/1.1" 404 1981
+[INFO] 2025-11-10 09:35:37 django.server basehttp.log_message:213 - "GET / HTTP/1.1" 200 27781
+[INFO] 2025-11-10 09:35:46 django.server basehttp.log_message:213 - "GET /admin/ HTTP/1.1" 200 11911
+[INFO] 2025-11-10 09:35:46 django.server basehttp.log_message:213 - "GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+[INFO] 2025-11-10 09:35:46 django.server basehttp.log_message:213 - "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2808
+[INFO] 2025-11-10 09:35:46 django.server basehttp.log_message:213 - "GET /static/admin/js/theme.js HTTP/1.1" 200 1653
+[INFO] 2025-11-10 09:35:46 django.server basehttp.log_message:213 - "GET /static/admin/css/base.css HTTP/1.1" 200 22120
+[INFO] 2025-11-10 09:35:46 django.server basehttp.log_message:213 - "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2810
+[INFO] 2025-11-10 09:35:46 django.server basehttp.log_message:213 - "GET /static/admin/css/responsive.css HTTP/1.1" 200 16565
+[INFO] 2025-11-10 09:35:46 django.server basehttp.log_message:213 - "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+[INFO] 2025-11-10 09:35:46 django.server basehttp.log_message:213 - "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+[INFO] 2025-11-10 09:35:46 django.server basehttp.log_message:213 - "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+[INFO] 2025-11-10 09:35:48 django.server basehttp.log_message:213 - "GET /admin/auth/user/ HTTP/1.1" 200 15578
+[INFO] 2025-11-10 09:35:48 django.server basehttp.log_message:213 - "GET /static/admin/css/changelists.css HTTP/1.1" 200 6878
+[INFO] 2025-11-10 09:35:48 django.server basehttp.log_message:213 - "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 9777
+[INFO] 2025-11-10 09:35:48 django.server basehttp.log_message:213 - "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+[INFO] 2025-11-10 09:35:48 django.server basehttp.log_message:213 - "GET /static/admin/js/core.js HTTP/1.1" 200 6208
+[INFO] 2025-11-10 09:35:48 django.server basehttp.log_message:213 - "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+[INFO] 2025-11-10 09:35:48 django.server basehttp.log_message:213 - "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+[INFO] 2025-11-10 09:35:48 django.server basehttp.log_message:213 - "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 325171
+[INFO] 2025-11-10 09:35:49 django.server basehttp.log_message:213 - "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+[INFO] 2025-11-10 09:35:49 django.server basehttp.log_message:213 - "GET /static/admin/js/actions.js HTTP/1.1" 200 8076
+[INFO] 2025-11-10 09:35:49 django.server basehttp.log_message:213 - "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[INFO] 2025-11-10 09:35:49 django.server basehttp.log_message:213 - "GET /static/admin/img/icon-yes.svg HTTP/1.1" 200 436
+[INFO] 2025-11-10 09:35:49 django.server basehttp.log_message:213 - "GET /static/admin/img/search.svg HTTP/1.1" 200 458
+[INFO] 2025-11-10 09:35:49 django.server basehttp.log_message:213 - "GET /static/admin/js/filters.js HTTP/1.1" 200 978
+[INFO] 2025-11-10 09:35:49 django.server basehttp.log_message:213 - "GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 200 581
+[INFO] 2025-11-10 09:35:49 django.server basehttp.log_message:213 - "GET /static/admin/img/sorting-icons.svg HTTP/1.1" 200 1097
+[INFO] 2025-11-10 09:35:49 django.server basehttp.log_message:213 - "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 200 331
+[INFO] 2025-11-10 09:36:30 django.server basehttp.log_message:213 - "GET /admin/auth/user/?_facets=True HTTP/1.1" 200 15989
+[INFO] 2025-11-10 09:36:30 django.server basehttp.log_message:213 - "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[INFO] 2025-11-10 09:36:30 django.server basehttp.log_message:213 - "GET /static/admin/img/icon-hidelink.svg HTTP/1.1" 200 784
+[INFO] 2025-11-10 09:36:30 django.server basehttp.log_message:213 - "GET /admin/auth/user/? HTTP/1.1" 200 15578
+[INFO] 2025-11-10 09:36:30 django.server basehttp.log_message:213 - "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[INFO] 2025-11-10 09:37:30 django.server basehttp.log_message:213 - "GET /instances/ HTTP/1.1" 200 32205
+[INFO] 2025-11-10 09:37:32 django.server basehttp.log_message:213 - "POST /instances/bulk-status-check/ HTTP/1.1" 200 97
+[INFO] 2025-11-10 09:37:33 django.server basehttp.log_message:213 - "GET /configurations/ HTTP/1.1" 200 38400

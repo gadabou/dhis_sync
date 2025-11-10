@@ -158,3 +158,15 @@
 [AUTO-SYNC] [WARNING] 2025-11-03 08:45:16 [dhis_app.services.auto_sync.change_detector] - Erreur vérification événements: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/events.json?skipPaging=false&pageSize=1&totalPages=true (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7444cbfc28d0>: Failed to establish a new connection: [Errno 111] Connection refused'))
 [AUTO-SYNC] [WARNING] 2025-11-03 08:45:16 [dhis_app.services.auto_sync.change_detector] - Erreur vérification tracker: HTTPConnectionPool(host='localhost', port=8087): Max retries exceeded with url: /api/trackedEntityInstances.json?skipPaging=false&pageSize=1&totalPages=true (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7444cbfc28a0>: Failed to establish a new connection: [Errno 111] Connection refused'))
 [AUTO-SYNC] [INFO] 2025-11-03 08:45:16 [dhis_app.services.auto_sync.change_detector] - Détection de changements pour Local 87: Métadonnées=False, Données=False
+[AUTO-SYNC] [INFO] 2025-11-10 08:57:35 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [ERROR] 2025-11-10 08:57:35 [dhis_app.services.auto_sync.scheduler] - Erreur lors du démarrage de toutes les configurations: no such table: dhis_app_syncconfiguration
+[AUTO-SYNC] [INFO] 2025-11-10 08:57:36 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [ERROR] 2025-11-10 08:57:36 [dhis_app.services.auto_sync.scheduler] - Erreur lors du démarrage de toutes les configurations: no such table: dhis_app_syncconfiguration
+[AUTO-SYNC] [INFO] 2025-11-10 09:30:10 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-11-10 09:30:10 [dhis_app.services.auto_sync.scheduler] - 0 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-11-10 09:30:10 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-11-10 09:30:10 [dhis_app.services.auto_sync.scheduler] - 0 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-11-10 09:35:18 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-11-10 09:35:18 [dhis_app.services.auto_sync.scheduler] - 0 configurations démarrées
+[AUTO-SYNC] [INFO] 2025-11-10 09:35:18 [dhis_app.services.auto_sync.scheduler] - AutoSyncScheduler initialisé
+[AUTO-SYNC] [INFO] 2025-11-10 09:35:18 [dhis_app.services.auto_sync.scheduler] - 0 configurations démarrées

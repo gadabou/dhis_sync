@@ -2,7 +2,7 @@
 .idea
 run_dockers.sh
 __pycache__
-.venv
+.venv/
 logs/
 staticfiles/
 
