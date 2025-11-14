@@ -376,7 +376,13 @@ class BaseMetadataService:
 
     def clean_visualization_references(self, visualizations: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """
-        Nettoie les références dans les visualizations qui peuvent causer des erreurs
+        Nettoie les références dans les visualizations qui peuvent causer des erreurs de proxy Hibernate.
+
+        L'erreur "could not initialize proxy - no Session" se produit quand DHIS2 essaie de charger
+        des objets liés (comme CategoryCombo) en dehors d'une session Hibernate active.
+
+        Cette méthode retire UNIQUEMENT le categoryCombo qui est la cause principale de l'erreur,
+        tout en préservant les autres champs nécessaires au fonctionnement de la visualization.
 
         Args:
             visualizations: Liste des visualizations
@@ -386,36 +392,29 @@ class BaseMetadataService:
         """
         try:
             for viz in visualizations:
-                # Retirer les références aux categoryCombo qui peuvent causer des erreurs
-                # Les visualizations n'ont généralement pas besoin de categoryCombo explicite
+                # Retirer UNIQUEMENT categoryCombo qui cause l'erreur Hibernate
+                # Les autres champs sont nécessaires pour le fonctionnement correct des visualizations
                 if 'categoryCombo' in viz:
                     del viz['categoryCombo']
 
-                # Nettoyer les dataDimensionItems qui peuvent avoir des références invalides
-                if 'dataDimensionItems' in viz:
-                    cleaned_items = []
+                # Nettoyer les dataDimensionItems
+                if 'dataDimensionItems' in viz and isinstance(viz['dataDimensionItems'], list):
                     for item in viz['dataDimensionItems']:
-                        # Garder seulement les items qui ont un ID valide
                         if item and isinstance(item, dict):
                             # Retirer categoryCombo des dataDimensionItems
                             if 'categoryCombo' in item:
                                 del item['categoryCombo']
-                            cleaned_items.append(item)
-                    viz['dataDimensionItems'] = cleaned_items
 
                 # Nettoyer les dimensions columns/rows/filters
                 for dimension_type in ['columns', 'rows', 'filters']:
-                    if dimension_type in viz and viz[dimension_type]:
-                        cleaned_dimensions = []
+                    if dimension_type in viz and isinstance(viz[dimension_type], list):
                         for dimension in viz[dimension_type]:
                             if dimension and isinstance(dimension, dict):
                                 # Retirer categoryCombo des dimensions
                                 if 'categoryCombo' in dimension:
                                     del dimension['categoryCombo']
-                                cleaned_dimensions.append(dimension)
-                        viz[dimension_type] = cleaned_dimensions
 
-            self.logger.info(f"Nettoyé {len(visualizations)} visualizations")
+            self.logger.info(f"Nettoyé {len(visualizations)} visualizations (retiré categoryCombo)")
             return visualizations
 
         except Exception as e:
