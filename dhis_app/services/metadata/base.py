@@ -381,6 +381,9 @@ class BaseMetadataService:
         L'erreur "could not initialize proxy - no Session" se produit quand DHIS2 essaie de charger
         des objets liés (comme CategoryCombo) en dehors d'une session Hibernate active.
 
+        Cette méthode retire UNIQUEMENT le categoryCombo qui est la cause principale de l'erreur,
+        tout en préservant les autres champs nécessaires au fonctionnement de la visualization.
+
         Args:
             visualizations: Liste des visualizations
 
@@ -389,59 +392,29 @@ class BaseMetadataService:
         """
         try:
             for viz in visualizations:
-                # Retirer toutes les références qui peuvent causer des erreurs de proxy
-                problematic_fields = [
-                    'categoryCombo',
-                    'categoryDimensions',
-                    'attributeDimensions',
-                    'user',  # Référence à l'utilisateur qui peut causer des erreurs
-                    'favorites',  # Peut contenir des références invalides
-                    'subscribers',  # Idem
-                    'translations',  # Peut contenir des références invalides
-                ]
+                # Retirer UNIQUEMENT categoryCombo qui cause l'erreur Hibernate
+                # Les autres champs sont nécessaires pour le fonctionnement correct des visualizations
+                if 'categoryCombo' in viz:
+                    del viz['categoryCombo']
 
-                for field in problematic_fields:
-                    if field in viz:
-                        del viz[field]
-
-                # Nettoyer les dataDimensionItems qui peuvent avoir des références invalides
+                # Nettoyer les dataDimensionItems
                 if 'dataDimensionItems' in viz and isinstance(viz['dataDimensionItems'], list):
-                    cleaned_items = []
                     for item in viz['dataDimensionItems']:
                         if item and isinstance(item, dict):
-                            # Retirer les champs problématiques des dataDimensionItems
-                            for field in problematic_fields:
-                                if field in item:
-                                    del item[field]
-
-                            # Garder seulement si l'item a au moins un identifiant
-                            if any(key in item for key in ['id', 'dataElement', 'indicator', 'programIndicator']):
-                                cleaned_items.append(item)
-                    viz['dataDimensionItems'] = cleaned_items
+                            # Retirer categoryCombo des dataDimensionItems
+                            if 'categoryCombo' in item:
+                                del item['categoryCombo']
 
                 # Nettoyer les dimensions columns/rows/filters
                 for dimension_type in ['columns', 'rows', 'filters']:
                     if dimension_type in viz and isinstance(viz[dimension_type], list):
-                        cleaned_dimensions = []
                         for dimension in viz[dimension_type]:
                             if dimension and isinstance(dimension, dict):
-                                # Retirer les champs problématiques
-                                for field in problematic_fields:
-                                    if field in dimension:
-                                        del dimension[field]
-                                cleaned_dimensions.append(dimension)
-                        viz[dimension_type] = cleaned_dimensions
+                                # Retirer categoryCombo des dimensions
+                                if 'categoryCombo' in dimension:
+                                    del dimension['categoryCombo']
 
-                # Nettoyer les organisationUnits - garder seulement les IDs
-                if 'organisationUnits' in viz and isinstance(viz['organisationUnits'], list):
-                    cleaned_org_units = []
-                    for ou in viz['organisationUnits']:
-                        if ou and isinstance(ou, dict) and 'id' in ou:
-                            # Garder seulement l'ID pour éviter les références complexes
-                            cleaned_org_units.append({'id': ou['id']})
-                    viz['organisationUnits'] = cleaned_org_units
-
-            self.logger.info(f"Nettoyé {len(visualizations)} visualizations")
+            self.logger.info(f"Nettoyé {len(visualizations)} visualizations (retiré categoryCombo)")
             return visualizations
 
         except Exception as e:
